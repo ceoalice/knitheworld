@@ -1,0 +1,7 @@
+.blocks {
+  flex: 1;
+}
+
+.blocks :global(.blocklyScrollbarHandle) {
+  display: none;
+}

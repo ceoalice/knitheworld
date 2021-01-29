@@ -1,0 +1,15 @@
+.pixelCountTools {
+  display: flex;
+  user-select: none;
+}
+
+.pixelCount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 5px 0;
+  color: white;
+  font: 18px sans-serif;
+  text-align: center;
+}

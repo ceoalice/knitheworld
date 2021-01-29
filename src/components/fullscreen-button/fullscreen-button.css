@@ -1,0 +1,21 @@
+.container {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.fullscreen {
+  top: auto;
+  bottom: 0;
+  filter: brightness(0.5);
+}
+
+.startButton {
+  pointer-events: none;
+}

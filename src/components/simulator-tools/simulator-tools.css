@@ -1,0 +1,12 @@
+.pixelStyleTools {
+  display: flex;
+  position: absolute;
+  bottom: 40px;
+  left: 5px;
+}
+
+.pixelCountContainer {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
