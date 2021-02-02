@@ -128,18 +128,18 @@ class Scratch3MicroworldBlocks {
     }
 
     knitUntilEndOfRow () {
-        return new Promise (res => {
-            this.runtime.emit('PIXEL_EVENT', {
-                type: 'knitUntilEndOfRow',
-            });
-            setTimeout(res, 1000);
+        this.runtime.emit('PIXEL_EVENT', {
+            type: 'knitUntilEndOfRow',
         });
         console.log("test knit until end of row");
     }
 
     purlUntilEndOfRow () {
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'purlUntilEndOfRow',
+        return new Promise (res => {
+            this.runtime.emit('PIXEL_EVENT', {
+                type: 'purlUntilEndOfRow',
+            });
+            setTimeout(res, 1000);
         });
         console.log("test purl until end of row");
     }
