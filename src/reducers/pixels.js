@@ -10,6 +10,7 @@ const SET_PIXEL_TYPE = 'setPixelType';
 const FORWARD_PIXEL = 'forwardPixel';
 const BACK_PIXEL = 'backPixel';
 const DOWNLOAD_PIXELS = 'downloadPixels';
+const DOWNLOAD_CODE = 'downloadCode';
 const NEXT_ROW = 'nextRow';
 const KNIT_STITCHES = 'knitStitches';
 const PURL_STITCHES = 'purlStitches';
@@ -64,9 +65,9 @@ const randomColorRGB = count => {
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 10,
+    pixelCount: 20,
     rowCount: 8,
-    pixelColors: grayedSquares(80),
+    pixelColors: grayedSquares(160),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200
 };
@@ -160,7 +161,11 @@ const reducer = function (state, action) {
         });
     }
     case DOWNLOAD_PIXELS: {
-        console.log("logged download!");
+        console.log("logged download pixels!");
+        return state;
+    }
+    case DOWNLOAD_CODE: {
+        console.log("logged download code!");
         return state;
     }
     case NEXT_ROW: {
@@ -365,6 +370,12 @@ const downloadThePixels = function () {
     };
 };
 
+const downloadTheCode = function () {
+    return {
+        type: DOWNLOAD_CODE
+    };
+};
+
 const goToNextRow = function () {
     return {
         type: NEXT_ROW
@@ -457,6 +468,7 @@ export {
     moveBackPixels,
     setAllPixelColor,
     downloadThePixels,
+    downloadTheCode,
     goToNextRow,
     knitXStitches,
     purlXStitches,

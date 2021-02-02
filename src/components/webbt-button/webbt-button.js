@@ -11,12 +11,12 @@ const WebBTButtonComponent = props => {
             className={styles.buttonContainer}
             onClick={props.handleClick}
         >
-            <img
+            {/* <img
                 className={styles.button}
                 draggable={false}
                 src={bluetoothIconNormal}
                 width={40}
-            />
+            /> */}
         </div>
     );
 };

@@ -1,0 +1,16 @@
+.rowCountTools {
+    display: flex;
+    user-select: none;
+  }
+  
+  .rowCount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    padding: 5px 0;
+    color: white;
+    font: 18px sans-serif;
+    text-align: center;
+  }
+  

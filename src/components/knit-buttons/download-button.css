@@ -14,4 +14,11 @@
   .button {
     pointer-events: none;
   }
+
+  .pixelStyleTools {
+    display: flex;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
   

@@ -80,37 +80,37 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 
-import {downloadThePixels} from '../reducers/pixels.js';
+import {
+    downloadThePixels, 
+    downloadTheCode
+} from '../reducers/pixels.js';
 
 import DownloadButtonComponent from '../components/knit-buttons/download-button.js';
 
 class DownloadButton extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick () {
-        this.props.downloadPixels();
-    }
-
-    render () {
+    render() {
         return (
-            <DownloadButtonComponent
-                handleClick={this.handleClick}
-            />
+            <DownloadButtonComponent {...this.props} />
         );
     }
 }
 
-DownloadButton.propTypes = {
-    downloadPixels: PropTypes.func
-};
-
-const mapDispatchToProps = dispatch => ({
-    downloadPixels: () => dispatch(downloadThePixels())
+const mapStateToProps = state => ({
+    pixelType: state.pixels.pixelType
 });
 
-export default connect(null, mapDispatchToProps)(DownloadButton);
+const mapDispatchToProps = dispatch => ({
+    downloadPixels: () => dispatch(downloadThePixels()),
+    downloadCode: () => dispatch(downloadTheCode())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DownloadButton);
+
