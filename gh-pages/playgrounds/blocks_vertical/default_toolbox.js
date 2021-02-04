@@ -560,60 +560,27 @@ Blockly.Blocks.defaultToolbox = '<xml id="toolbox-categories" style="display: no
         '</shadow>' +
       '</value>' +
     '</block>' +
-    '<block type="knit_nextrow" id="knit_nextrow" />' +
     '<block type="knit_knitstitches" id="knit_knitstitches">' +
       '<value name="VALUE">' +
-        '<shadow type="math_number">' +
+        '<shadow type="math_positive_number">' +
           '<field name="NUM">1</field>' +
-          '</shadow>' +
+        '</shadow>' +
       '</value>' +
     '</block>' +
-    '<block type="knit_purlstitches" id="knit_purlstitches">' +
-      '<value name="VALUE">' +
-        '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
+    '<block type="knit_knituntilendofrow" id="knit_knituntilendofrow"></block>' +
+    '<block type="knit_changecolorto">' +
+      '<value name="COLOR">' +
+        '<shadow type="colour_picker">' +
         '</shadow>' +
       '</value>' +
     '</block>' +
     '<block type="knit_castonstitches" id="knit_castonstitches">' +
       '<value name="VALUE">' +
-        '<shadow type="math_number">' +
+        '<shadow type="math_positive_number">' +
           '<field name="NUM">1</field>' +
         '</shadow>' +
       '</value>' +
     '</block>' +
-    '<block type="knit_castoffstitches" id="knit_castoffstitches">' +
-      '<value name="VALUE">' +
-        '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
-        '</shadow>' +
-      '</value>' +
-    '</block>' +
-    '<block type="knit_changecolorto" id="knit_changecolorto">' +
-      '<value name="COLOR">' +
-        '<shadow type="colour_picker"></shadow>' +
-      '</value>' +
-    '</block>' +
-    '<block type="knit_untilendofrow" id="knit_untilendofrow"></block>' +
-    '<block type="knit_removerow" />' +
-    '<block type="knit_hsbcolor" id="knit_hsbcolor">' +
-      '<value name="HUE">' +
-        '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
-        '</shadow>' +
-      '</value>' +
-      '<value name="SATURATION">' +
-        '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
-        '</shadow>' +
-      '</value>' +
-      '<value name="BRIGHTNESS">' +
-        '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
-        '</shadow>' +
-      '</value>' +
-    '</block>' +
-    '<block type="knit_knituntilendofrow" />' +
-    '<block type="knit_purluntilendofrow" />' +
+    '<block type="knit_castoffstitches" id="knit_castoffstitches"></block>' +
     '</category>' +
   '</xml>';

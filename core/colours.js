@@ -71,7 +71,7 @@ Blockly.Colours = {
     "tertiary": "#DB6E00"
   },
   "knit": {
-    "primary": "#ffffff",
+    "primary": "#278754",
     "secondary": "#93A5DC",
     "tertiary": "#748CD2"
   },

@@ -30,7 +30,7 @@ goog.require('Blockly.ScratchBlocks.VerticalExtensions');
 Blockly.Blocks['event_whenstarted'] = {
   init: function() {
     this.jsonInit({
-      "message0": "when started %1",
+      "message0": "when knitting %1",
         "args0": [
         {
           "type": "field_image",
@@ -186,7 +186,7 @@ Blockly.Blocks['knit_nextrow'] = {
 Blockly.Blocks['knit_knitstitches'] = {
   init: function() {
     this.jsonInit({
-      "message0": "%1 %2 knit stitches %3",
+      "message0": "%1 %2 knit %3 stitches",
       "args0": [
         {
           "type": "field_image",
@@ -233,10 +233,31 @@ Blockly.Blocks['knit_purlstitches'] = {
   }
 };
 
+Blockly.Blocks['knit_knituntilendofrow'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1 %2 knit until end of row",
+      "args0": [
+        {
+          "type": "field_image",
+          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
+          "width": 40,
+          "height": 40
+        },
+        {
+          "type": "field_vertical_separator"
+        }
+      ],
+      "category": Blockly.Categories.knit,
+      "extensions": ["colours_knit", "shape_statement"]
+    });
+  }
+};
+
 Blockly.Blocks['knit_castonstitches'] = {
   init: function() {
     this.jsonInit({
-      "message0": "%1 %2 cast on stitches %3",
+      "message0": "%1 %2 cast on %3 rows",
       "args0": [
         {
           "type": "field_image",
@@ -261,7 +282,7 @@ Blockly.Blocks['knit_castonstitches'] = {
 Blockly.Blocks['knit_castoffstitches'] = {
   init: function() {
     this.jsonInit({
-      "message0": "%1 %2 cast off stitches %3",
+      "message0": "%1 %2 cast off",
       "args0": [
         {
           "type": "field_image",
@@ -271,10 +292,6 @@ Blockly.Blocks['knit_castoffstitches'] = {
         },
         {
           "type": "field_vertical_separator"
-        },
-        {
-          "type": "input_value",
-          "name": "VALUE"
         }
       ],
       "category": Blockly.Categories.knit,
@@ -383,27 +400,6 @@ Blockly.Blocks['knit_hsbcolor'] = {
   }
 };
 
-Blockly.Blocks['knit_knituntilendofrow'] = {
-  init: function() {
-    this.jsonInit({
-      "message0": "%1 %2 knit until end of row",
-      "args0": [
-        {
-          "type": "field_image",
-          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
-          "width": 40,
-          "height": 40
-        },
-        {
-          "type": "field_vertical_separator"
-        }
-      ],
-      "category": Blockly.Categories.knit,
-      "extensions": ["colours_knit", "shape_statement"]
-    });
-  }
-};
-
 Blockly.Blocks['knit_purluntilendofrow'] = {
   init: function() {
     this.jsonInit({
@@ -423,8 +419,4 @@ Blockly.Blocks['knit_purluntilendofrow'] = {
       "extensions": ["colours_knit", "shape_statement"]
     });
   }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> cc9c1e7a6351f276eb4d2ceed8d74777f98bfed0
