@@ -135,8 +135,11 @@ class Scratch3MicroworldBlocks {
     }
 
     purlUntilEndOfRow () {
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'purlUntilEndOfRow',
+        return new Promise (res => {
+            this.runtime.emit('PIXEL_EVENT', {
+                type: 'purlUntilEndOfRow',
+            });
+            setTimeout(res, 1000);
         });
         console.log("test purl until end of row");
     }
