@@ -40,7 +40,7 @@ const randomColorInts = count => {
 const grayedSquares = count => {
     const colors = [];
     for (let i=0; i<count; i++) {
-        colors.push('rgb(189, 195, 199)');
+      colors.push('rgba(255,255,255,0)');
     }
     return colors;
 }
@@ -65,11 +65,12 @@ const randomColorRGB = count => {
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 30,
-    rowCount: 30,
-    pixelColors: grayedSquares(900),
+    pixelCount: 25,
+    rowCount: 12,
+    pixelColors: grayedSquares(300),
     currentColor: "rgb(169,169,169)",
-    knitDelay: 200
+    knitDelay: 200,
+    downloadingPixels: false
 };
 
 const reducer = function (state, action) {
@@ -124,12 +125,20 @@ const reducer = function (state, action) {
     case ADD_PIXEL: {
         const newColors = [...state.pixelColors];
         for (let i=0; i<state.rowCount; i++){
-            newColors.push('rgb(189, 195, 199)');
+            newColors.push('rgba(255,255,255,0)');
         }
-        return Object.assign({}, state, {
-            pixelCount: state.pixelCount+1,
-            pixelColors: newColors
-        });
+        if (state.pixelCount < 25){
+          console.log("adding column...");
+          return Object.assign({}, state, {
+              pixelCount: state.pixelCount+1,
+              pixelColors: newColors
+          });
+        }
+        else {
+          console.log("max stitch width reached!");
+          return state;
+        }
+
     }
     case REMOVE_PIXEL: {
         if (state.pixelCount === 1) return;
@@ -162,6 +171,67 @@ const reducer = function (state, action) {
     }
     case DOWNLOAD_PIXELS: {
         console.log("logged download pixels!");
+
+        // This might work, maybe probably?
+        // https://stackoverflow.com/questions/8215021/create-svg-tag-with-javascript
+        // https://dinbror.dk/blog/how-to-download-an-inline-svg-as-jpg-or-png/
+        // var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        // var path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        // var path2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        //
+        // svg.setAttribute('width', state.pixelCount);
+        // svg.setAttribute('height', state.rowCount);
+        // svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink")
+        //
+        // path1.setAttribute('d', 'M0 0h24v24H0z');
+        // path1.setAttribute('fill', 'none');
+        //
+        // path2.setAttribute('d', 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z');
+        // path2.setAttribute('fill', '#2962ff');
+        //
+        // svg.appendChild(path1);
+        // svg.appendChild(path2);
+        // document.body.appendChild(svg);
+        // 
+        // var canvas = document.createElement('canvas');
+        // var ctx = canvas.getContext("2d");
+        // var image = new Image();
+        //
+        // image.onload = function () {
+        //   ctx.drawImage(image, 0, 0, state.pixelCount, state.rowCount);
+        //
+        //   canvas.toBlob(function (blob) {
+        //     var newImg = document.createElement("img"),
+        //     url = URL.createObjectURL(blob);
+        //     newImg.onload = function() {
+        //       URL.revokeObjectURL(url);
+        //     };
+        //     newImg.src = url;
+        //   }, "image/jpeg", 0.8);
+        //
+        //   var event = new MouseEvent('click', {
+        //     'view': window,
+        //     'bubbles': true,
+        //     'cancelable': true
+        //   });
+        //
+        //   var a = document.createElement('a');
+        //   var downloadAttrSupport = typeof a.download !== "undefined";
+        //   a.setAttribute('download', 'image.jpg');
+        //   a.setAttribute('href', url);
+        //   a.setAttribute('target', '_blank');
+        //   a.dispatchEvent(event);
+        //
+        //   var opened = window.open();
+        //   if (opened) {
+        //     opened.document.write(svg);
+        //     opened.document.close();
+        //     opened.focus();
+        //   }
+        // }
+        // image.src = "data:image/svg+xml;base64," + window.btoa(svg);
+        // image.onload();
+
         return state;
     }
     case DOWNLOAD_CODE: {
@@ -172,12 +242,20 @@ const reducer = function (state, action) {
         console.log("logged next row!");
         const newColors = [...state.pixelColors];
         for (let i=0; i<state.pixelCount; i++){
-            newColors.push('rgb(189, 195, 199)');
+            newColors.push('rgba(255,255,255,0)');
         }
-        return Object.assign({}, state, {
-            rowCount: state.rowCount+1,
-            pixelColors: newColors
-        });
+        if (state.rowCount < 12){
+          console.log("adding row...");
+          return Object.assign({}, state, {
+              rowCount: state.rowCount+1,
+              pixelColors: newColors
+          });
+        }
+        else{
+          console.log("max row limit reached!");
+          return state;
+        }
+
     }
     case KNIT_STITCHES: {
         console.log("logged knit stitches!");
@@ -227,12 +305,50 @@ const reducer = function (state, action) {
         return state;
     }
     case CAST_ON_STITCHES: {
-        console.log("logged cast on stitches!");
-        return state;
+        let select = state.selectedPixel;
+        let nextRow = Math.floor(select/state.pixelCount)+1;
+        const newColors = [...state.pixelColors];
+
+        let toKnit = (state.pixelCount*nextRow*action.value)-select;
+
+        for (let i=0; i<toKnit; i++){
+          newColors[select+i] = state.currentColor;
+        }
+
+        if (nextRow === 1){
+          console.log("casting on..." + toKnit + " stitches");
+          return Object.assign({}, state, {
+            pixelColors: newColors,
+            selectedPixel: select+toKnit
+          });
+        }
+        else{
+          console.log("not the first row!");
+          return state;
+        }
     }
     case CAST_OFF_STITCHES: {
-        console.log("logged cast off stitches!");
-        return state;
+        let select = state.selectedPixel;
+        let nextRow = Math.floor(select/state.pixelCount)+1;
+        const newColors = [...state.pixelColors];
+
+        let toKnit = (state.pixelCount*nextRow)-select;
+
+        for (let i=0; i<toKnit; i++){
+          newColors[select+i] = state.currentColor;
+        }
+
+        if (select+toKnit === state.pixelCount*state.rowCount){
+          console.log("casting off..." + toKnit + " stitches");
+          return Object.assign({}, state, {
+            pixelColors: newColors,
+            selectedPixel: select+toKnit
+          });
+        }
+        else{
+          console.log("can't cast off yet!");
+          return state;
+        }
     }
     case CHANGE_YARN_COLOR: {
         const newColor = "rgb(" + action.value[0] + "," + action.value[1] + "," + action.value[2] + ")";
@@ -402,11 +518,11 @@ const knitUntilEndOfTheRow = function () {
     }
 }
 
-const purlUntilEndOfTheRow = function () {{
+const purlUntilEndOfTheRow = function () {
     return {
         type: PURL_UNTIL_END_OF_ROW
-    }
-}}
+    };
+}
 
 const castOnXStitches = function (value) {
     return {
@@ -415,10 +531,9 @@ const castOnXStitches = function (value) {
     };
 }
 
-const castOffXStitches = function (value) {
+const castOffXStitches = function () {
     return {
         type: CAST_OFF_STITCHES,
-        value: value
     };
 }
 

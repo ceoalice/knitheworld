@@ -82,8 +82,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {
-    downloadThePixels, 
-    downloadTheCode
+    downloadThePixels,
+    downloadTheCode,
+    clearThePixels
 } from '../reducers/pixels.js';
 
 import DownloadButtonComponent from '../components/knit-buttons/download-button.js';
@@ -106,11 +107,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     downloadPixels: () => dispatch(downloadThePixels()),
-    downloadCode: () => dispatch(downloadTheCode())
+    downloadCode: () => dispatch(downloadTheCode()),
+    unravelPixels: () => dispatch(clearThePixels())
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(DownloadButton);
-

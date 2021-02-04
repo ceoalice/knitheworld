@@ -14,6 +14,14 @@ const defaultToolbox =
           </shadow>
         </value>
       </block>
+      <block type="knit_castonstitches">
+        <value name="VALUE">
+          <shadow type="math_positive_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="knit_castoffstitches" />
       <block id="control_waitms" type="control_waitms">
         <value name="VALUE">
           <shadow type="math_positive_number">

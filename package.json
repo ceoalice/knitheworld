@@ -45,5 +45,7 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-pwa-manifest": "^4.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-zoom-pan-pinch": "^1.6.1"
+  }
 }

@@ -7,6 +7,8 @@ import {clearThePixels} from '../reducers/pixels.js';
 
 import GUIComponent from '../components/gui/gui.js';
 
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 class GUI extends React.Component {
     constructor (props) {
         super(props);
@@ -18,7 +20,12 @@ class GUI extends React.Component {
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
 
         // whenever the start button is pressed again, it resets the board and clears the stitches
-        this.vm.on('PROJECT_RUN_START', this.props.clearPixels);
+
+        // return new Promise (res => {
+        //   this.vm.on('PROJECT_RUN_START', this.props.clearPixels);
+        //   setTimeout(res, 500);
+        // });
+        // this.vm.on('PROJECT_RUN_STOP', this.props.clearPixels);
     }
 
     componentWillUnmount () {
@@ -29,10 +36,14 @@ class GUI extends React.Component {
     render () {
         const {...componentProps} = this.props;
         return (
-            <GUIComponent
+          //<TransformWrapper>
+            //<TransformComponent>
+              <GUIComponent
                 vm={this.vm}
                 {...componentProps}
-            />
+              />
+            //</TransformComponent>
+          //</TransformWrapper>
         );
     }
 }

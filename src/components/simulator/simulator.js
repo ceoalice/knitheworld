@@ -50,12 +50,6 @@ class SimulatorComponent extends React.Component {
         }
 
         ctx.restore();
-
-        // console.log("canvas" + canvas.toDataURL());
-    }
-
-    downloadPixels(canvas) {
-
     }
 
     drawPixelKnit(ctx){
@@ -67,8 +61,7 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        const version = "v2.3.21.0"
-
+        const version = "v2.4.21.0"
         // note pixelCount is a legacy variable from pixelplay,
         // it refers to the number of columns in the pattern as
         // as set by the user.
@@ -144,6 +137,42 @@ class SimulatorComponent extends React.Component {
         const pixelSize = !this.props.fullscreenVisible ? 12 : 30;
         const pixelGap = !this.props.fullscreenVisible ? 5 : 5;
 
+        for (let i=0; i<stitchCount; i++){
+          let currentRow = Math.floor(i/pixelCount);
+
+          let relativeX = (i%pixelCount) * (pixelSize + pixelGap);
+          let relativeY = currentRow * (pixelSize + pixelGap);
+
+          let rowCountX = this.width/2-pixelCount*(pixelSize + pixelGap)/2-pixelSize-pixelGap;
+
+          let currentX = 0;
+          // controls direction of pixel movement
+          // starts left to right, alternates
+          if (currentRow % 2 == 0){
+              currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
+          }
+          else {
+              currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
+          }
+
+          let currentY = relativeY + carriageDepth*1.25 + pixelGap;
+
+          let dark = "#d9d9d9"
+          let light = "#ffffff"
+
+          let gridColor = dark;
+          if (i%2 === 0){
+            gridColor = dark;
+          }
+          else{
+            gridColor = light;
+          }
+
+          ctx.fillStyle = gridColor;
+          ctx.fillRect(currentX, currentY, pixelSize, pixelSize);
+
+        }
+
         // draw the 'carriage' from which the pattern will appear
         ctx.fillStyle = '#555555'
         ctx.fillRect(this.width*1/6, 0, this.width*2/3, carriageDepth);
@@ -151,10 +180,6 @@ class SimulatorComponent extends React.Component {
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.fillText(version, 55, this.height - 10);
-
-        if (!this.props.fullscreenVisible) {
-
-        }
 
         for (let i=0; i<stitchCount; i++){
             let currentRow = Math.floor(i/pixelCount);
@@ -168,12 +193,14 @@ class SimulatorComponent extends React.Component {
 
             // controls direction of pixel movement
             // starts left to right, alternates
-            if (currentRow % 2 == 0){
-                currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
-            }
-            else {
-                currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
-            }
+            // if (currentRow % 2 == 0){
+            //     currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
+            // }
+            // else {
+            //     currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
+            // }
+
+            currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
 
             let currentY = relativeY + carriageDepth*1.25 + pixelGap;
 

@@ -82,7 +82,7 @@ class Simulator extends React.Component {
             this.props.castOnStitches(data.value);
             break;
         case 'castOffStitches':
-            this.props.castOffStitches(data.value);
+            this.props.castOffStitches();
             break;
         case 'changeColorTo':
             this.props.changeColorTo(data.value);
@@ -110,6 +110,7 @@ class Simulator extends React.Component {
                 knitDelay={this.props.knitDelay}
                 currentColor={this.props.currentColor}
                 fullscreenVisible={this.props.fullscreenVisible}
+                downloadingPixels={this.props.downloadingPixels}
             />
         );
     }
@@ -124,6 +125,7 @@ const mapStateToProps = state => ({
     rowCount: state.pixels.rowCount,
     currentColor: state.pixels.currentColor,
     fullscreenVisible: state.modals.fullscreenSimulator,
+    downloadingPixels: state.pixels.downloadingPixels
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -140,7 +142,7 @@ const mapDispatchToProps = dispatch => ({
     knitUntilEndOfRow: () => dispatch(knitUntilEndOfTheRow()),
     purlUntilEndOfRow: () => dispatch(purlUntilEndOfTheRow()),
     castOnStitches: value => dispatch(castOnXStitches(value)),
-    castOffStitches: value => dispatch(castOffXStitches(value)),
+    castOffStitches: () => dispatch(castOffXStitches()),
     changeColorTo: value => dispatch(changeYarnColor(value)),
     untilEndOfRow: () => dispatch(untilEndOfTheRow()),
     removeRow: () => dispatch(removeLastRow()),
