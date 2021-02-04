@@ -67,11 +67,11 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        const version = "v2.2.21.0"
+        const version = "v2.3.21.0"
 
         // note pixelCount is a legacy variable from pixelplay,
         // it refers to the number of columns in the pattern as
-        // as set by the user. 
+        // as set by the user.
 
         // pixelCount (number of columns) is initialized to 10 inside
         // pixeplay/src/reducers/pixels.js
@@ -79,13 +79,13 @@ class SimulatorComponent extends React.Component {
         // console.log(pixelColors);
 
         function drawStitch(x, y, size, visibility){
-            
+
             // approximate scale factor: 1/42 = 0.02381
 
             // ctx.scale(size*0.015, size*0.015);
 
             const scaleFactor = 0.5*size/20
-            const translator = !visibility ? [19, 30] : [55, 100];
+            const translator = !visibility ? [14, 26] : [55, 100];
 
             ctx.scale(scaleFactor, scaleFactor);
             ctx.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
@@ -95,9 +95,9 @@ class SimulatorComponent extends React.Component {
             ctx.translate(50, 83);
             ctx.rotate(Math.PI/3);
             ctx.translate(-50, -83);
-            
+
             ctx.beginPath();
-            ctx.moveTo(25, 75);       
+            ctx.moveTo(25, 75);
             ctx.lineTo(50,75);
             ctx.arc(50,100,25,6*Math.PI/4, 0,false);
             ctx.lineTo(50, 100);
@@ -129,7 +129,7 @@ class SimulatorComponent extends React.Component {
             ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
 
-        const padding = 25;
+        const padding = 15;
         const carriageDepth = 25;
 
         // console.log("current color from simulator: ")
@@ -141,16 +141,16 @@ class SimulatorComponent extends React.Component {
         const gridSize = !this.props.fullscreenVisible ? (this.height - padding) / 2 :
             this.height < this.width ? (this.height - 120) / 2 : (this.width - 120) / 2;
 
-        const pixelSize = !this.props.fullscreenVisible ? 20 : 60;
-        const pixelGap = !this.props.fullscreenVisible ? 4 : 10;
+        const pixelSize = !this.props.fullscreenVisible ? 12 : 30;
+        const pixelGap = !this.props.fullscreenVisible ? 5 : 5;
 
         // draw the 'carriage' from which the pattern will appear
         ctx.fillStyle = '#555555'
         ctx.fillRect(this.width*1/6, 0, this.width*2/3, carriageDepth);
 
-        ctx.fillStyle = '#dddddd';
+        ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
-        ctx.fillText(version, this.width/2, carriageDepth/2);
+        ctx.fillText(version, 55, this.height - 10);
 
         if (!this.props.fullscreenVisible) {
 
@@ -158,10 +158,12 @@ class SimulatorComponent extends React.Component {
 
         for (let i=0; i<stitchCount; i++){
             let currentRow = Math.floor(i/pixelCount);
-               
+
             let relativeX = (i%pixelCount) * (pixelSize + pixelGap);
             let relativeY = currentRow * (pixelSize + pixelGap);
-            
+
+            let rowCountX = this.width/2-pixelCount*(pixelSize + pixelGap)/2-pixelSize-pixelGap;
+
             let currentX = 0;
 
             // controls direction of pixel movement
@@ -172,8 +174,8 @@ class SimulatorComponent extends React.Component {
             else {
                 currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
             }
-            
-            let currentY = relativeY + carriageDepth + pixelGap;
+
+            let currentY = relativeY + carriageDepth*1.25 + pixelGap;
 
             ctx.strokeStyle = '#ffd500'
             ctx.fillStyle = pixelColors[i];
@@ -182,10 +184,27 @@ class SimulatorComponent extends React.Component {
 
             drawStitch(currentX, currentY, pixelSize, this.props.fullscreenVisible);
 
+            if (i<=pixelCount){
+              ctx.fillStyle = '#ffffff';
+              ctx.fillText(i + 1, currentX, carriageDepth/2);
+            }
+
+            if (i%rowCount==0) {
+              ctx.fillStyle = '#ffffff';
+              ctx.fillText(i/rowCount+1, rowCountX, currentY);
+            }
+
             ctx.fillStyle = '#333333';
             ctx.textAlign = 'center';
-            ctx.fillText(i+1, currentX + (pixelSize/2), currentY + 1.125*(pixelSize/2));
-
+            if (i<99){
+              ctx.font = '10px sans-serif';
+            }
+            else if (i<999){
+              ctx.font = '9px sans-serif';
+            }
+            else {
+              ctx.font = '7px sans-serif';
+            }
         }
     }
 

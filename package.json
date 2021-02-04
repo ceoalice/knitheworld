@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "homepage": "http://Alexander-Greer.github.io/pixelplay-prototype",
+  "homepage": "http://ceoalice.github.io/knitheworld",
   "scripts": {
     "test": "eslint . --ext .js",
     "start": "webpack-dev-server --open --mode development",

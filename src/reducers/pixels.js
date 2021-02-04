@@ -65,9 +65,9 @@ const randomColorRGB = count => {
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 20,
-    rowCount: 8,
-    pixelColors: grayedSquares(160),
+    pixelCount: 30,
+    rowCount: 30,
+    pixelColors: grayedSquares(900),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200
 };
@@ -190,7 +190,7 @@ const reducer = function (state, action) {
         for (let i=0; i<action.value; i++){
             newColors[select+i] = state.currentColor;
         }
-        
+
         return Object.assign({}, state, {
             pixelColors: newColors,
             selectedPixel: select+action.value
@@ -260,7 +260,7 @@ const reducer = function (state, action) {
         //     type: KNIT_STITCHES,
         //     value: toKnit
         // });
-        
+
         return state;
     }
     case REMOVE_ROW: {
