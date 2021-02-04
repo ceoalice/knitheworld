@@ -106,7 +106,7 @@ class Scratch3MicroworldBlocks {
         this.runtime.emit('PIXEL_EVENT', {
             type: 'nextRow'
         });
-        console.log("test next row :)")
+//        console.log("test next row :)")
     }
 
     knitStitches (args) {
@@ -115,7 +115,7 @@ class Scratch3MicroworldBlocks {
             type: 'knitStitches',
             value: value
         });
-        console.log("test knit stitches")
+//        console.log("test knit stitches")
     }
 
     purlStitches (args) {
@@ -124,14 +124,14 @@ class Scratch3MicroworldBlocks {
             type: 'purlStitches',
             value: value
         });
-        console.log("test purl stitches")
+//        console.log("test purl stitches")
     }
 
     knitUntilEndOfRow () {
         this.runtime.emit('PIXEL_EVENT', {
           type: 'knitUntilEndOfRow',
         });
-        console.log("test knit until end of row");
+//        console.log("test knit until end of row");
     }
 
     purlUntilEndOfRow () {
@@ -141,7 +141,7 @@ class Scratch3MicroworldBlocks {
             });
             setTimeout(res, 1000);
         });
-        console.log("test purl until end of row");
+//        console.log("test purl until end of row");
     }
 
     castOnStitches (args) {
@@ -150,16 +150,14 @@ class Scratch3MicroworldBlocks {
             type: 'castOnStitches',
             value: value
         });
-        console.log("test cast on stitches")
+//        console.log("test cast on stitches")
     }
 
-    castOffStitches (args) {
-        const value = Cast.toNumber(args.VALUE);
+    castOffStitches () {
         this.runtime.emit('PIXEL_EVENT', {
-            type: 'castOffStitches',
-            value: value
+            type: 'castOffStitches'
         });
-        console.log("test cast off stitches")
+//        console.log("test cast off")
     }
 
     changeColorTo (args) {
@@ -168,21 +166,21 @@ class Scratch3MicroworldBlocks {
             type: 'changeColorTo',
             value: color
         });
-        console.log("test change color to " + color)
+//        console.log("test change color to " + color)
     }
 
     untilEndOfRow (){
         this.runtime.emit('PIXEL_EVENT', {
             type: 'untilEndOfRow'
         });
-        console.log("test until end of row")
+//       console.log("test until end of row")
     }
 
     removeRow (){
         this.runtime.emit('PIXEL_EVENT', {
             type: 'removeRow'
         });
-        console.log("test remove row")
+//        console.log("test remove row")
     }
 
     hsbColor (args){
@@ -196,7 +194,7 @@ class Scratch3MicroworldBlocks {
             type: 'hsbColor',
             value: color
         });
-        console.log("test hsb color " + color)
+//        console.log("test hsb color " + color)
     }
 }
 
