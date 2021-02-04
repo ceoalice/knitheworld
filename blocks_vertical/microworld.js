@@ -249,8 +249,8 @@ Blockly.Blocks['knit_castonstitches'] = {
         },
         {
           "type": "input_value",
-          "name": "MATRIX"
-        },
+          "name": "VALUE"
+        }
       ],
       "category": Blockly.Categories.knit,
       "extensions": ["colours_knit", "shape_statement"]
@@ -423,4 +423,8 @@ Blockly.Blocks['knit_purluntilendofrow'] = {
       "extensions": ["colours_knit", "shape_statement"]
     });
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> cc9c1e7a6351f276eb4d2ceed8d74777f98bfed0
