@@ -1,7 +1,12 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import {getColorHex} from '../../lib/colors.js';
 import {getRGBfromHex} from '../../lib/colors.js';
+
+import {
+  downloadThePixels
+} from '../../reducers/pixels.js';
 
 import styles from './simulator.css';
 
@@ -9,8 +14,9 @@ class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
         this.canvasRef = React.createRef();
-        this.pixelCanvas = React.createRef();
+        this.toggleDownload = this.toggleDownload.bind(this);
         this.refreshCanvas = this.refreshCanvas.bind(this);
+        window.download = this.toggleDownload;
     }
 
     componentDidMount() {
@@ -22,8 +28,67 @@ class SimulatorComponent extends React.Component {
         window.removeEventListener('resize', this.refreshCanvas);
     }
 
-    componentDidUpdate() {
-        this.refreshCanvas();
+    componentDidUpdate () {
+      if (this.props.downloadingPixels === true){
+        this.toggleDownload();
+        console.log("downloading!");
+      }
+
+      this.refreshCanvas();
+      console.log("test: " + this.props.downloadingPixels);
+      console.log(this.props);
+    }
+
+    toggleDownload () {
+      const {
+          pixelCount,
+          selectedPixel,
+          pixelColors,
+          rowCount,
+          currentColor
+      } = {...this.props};
+
+      this.props.toggleDownloadPixels();
+      console.log("toggled to " + this.props.downloadingPixels + "!");
+
+      // make new canvas for downloading here
+
+      const pixelCanvas = document.createElement('canvas');
+      console.log("pixelCanvas is " + pixelCanvas);
+      console.log(pixelCanvas);
+      pixelCanvas.width = pixelCount;
+      pixelCanvas.height = rowCount;
+
+      const pixelctx = pixelCanvas.getContext('2d');
+
+      pixelctx.save();
+
+      // draw jawns
+      // pixelctx.fillStyle = "#ff0000";
+      // pixelctx.fillRect(0, 0, 1, 1);
+
+      let stitchCount = pixelCount * rowCount;
+
+      for (let i=0; i<stitchCount; i++) {
+        pixelctx.fillStyle = pixelColors[i];
+        let currentRow = Math.floor(i/pixelCount);
+        pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
+      }
+
+      pixelctx.restore();
+
+      // new button for downloading an actual image of the
+
+      // new canvas elemtn fro just stitches
+
+        let a = document.createElement('a');
+        a.setAttribute('download', 'canvas.png');
+        pixelCanvas.toBlob(blob => {
+            let url = URL.createObjectURL(blob);
+            a.setAttribute('href', url);
+            a.click();
+        })
+        // console.log(this.canvasRef);
     }
 
     refreshCanvas () {
@@ -61,13 +126,10 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        const version = "v2.4.21.0"
+        const version = "v2.5.21.1"
         // note pixelCount is a legacy variable from pixelplay,
         // it refers to the number of columns in the pattern as
         // as set by the user.
-
-        // pixelCount (number of columns) is initialized to 10 inside
-        // pixeplay/src/reducers/pixels.js
 
         // console.log(pixelColors);
 
@@ -258,4 +320,17 @@ CanvasRenderingContext2D.prototype.roundedRect = function(x, y, w, h, r) {
     this.lineTo(x+r, y);
 }
 
-export default SimulatorComponent;
+const mapStateToProps = state => ({
+    downloadingPixels: state.pixels.downloadingPixels
+});
+
+const mapDispatchToProps = dispatch => ({
+    toggleDownloadPixels: () => dispatch(downloadThePixels(false)),
+    downloadCode: () => dispatch(downloadTheCode()),
+    unravelPixels: () => dispatch(clearThePixels())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SimulatorComponent);

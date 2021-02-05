@@ -13,6 +13,9 @@ class GUI extends React.Component {
     constructor (props) {
         super(props);
         this.vm = new VM();
+        this.vm.on('PROJECT_CHANGED', () => {
+            console.log(this.vm.runtime.targets[0].blocks._blocks);
+        });
     }
 
     componentDidMount () {

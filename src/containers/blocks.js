@@ -244,8 +244,8 @@ Blocks.defaultOptions = {
     },
     comments: true,
     collapse: false,
-    horizontalLayout: true,
-    toolboxPosition: 'end',
+    horizontalLayout: false,
+    toolboxPosition: 'beginning',
     scrollbars: true,
     media: './static/blocks-media/',
     sounds: false

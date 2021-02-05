@@ -1,5 +1,6 @@
 const defaultToolbox =
 `<xml id="aot-toolbox" style="display: none">
+  <category name="Knitting" id="knit" colour="#FFFFFF" secondaryColour="#93A5DC">
       <block type="knit_knitstitches">
         <value name="VALUE">
           <shadow type="math_positive_number">
@@ -22,6 +23,8 @@ const defaultToolbox =
         </value>
       </block>
       <block type="knit_castoffstitches" />
+    </category>
+    <category name="Control" id="control" colour="#FFAB19" secondaryColour="#EC9C13">
       <block id="control_waitms" type="control_waitms">
         <value name="VALUE">
           <shadow type="math_positive_number">
@@ -50,6 +53,8 @@ const defaultToolbox =
           </shadow>
         </value>
       </block>
+    </category>
+    <category name="My Blocks" id="myBlocks" colour="#FF6680" secondaryColour="#FF4D6A" custom="PROCEDURE"></category>
   </xml>`;
 
 export default defaultToolbox;

@@ -106,7 +106,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    downloadPixels: () => dispatch(downloadThePixels()),
+    downloadPixels: () => dispatch(downloadThePixels(true)),
     downloadCode: () => dispatch(downloadTheCode()),
     unravelPixels: () => dispatch(clearThePixels())
 });

@@ -9,19 +9,17 @@ const REMOVE_PIXEL = 'removePixel';
 const SET_PIXEL_TYPE = 'setPixelType';
 const FORWARD_PIXEL = 'forwardPixel';
 const BACK_PIXEL = 'backPixel';
-const DOWNLOAD_PIXELS = 'downloadPixels';
-const DOWNLOAD_CODE = 'downloadCode';
 const NEXT_ROW = 'nextRow';
 const KNIT_STITCHES = 'knitStitches';
-const PURL_STITCHES = 'purlStitches';
 const KNIT_UNTIL_END_OF_ROW = 'knitUntilEndOfRow'
-const PURL_UNTIL_END_OF_ROW = 'purlUntilEndOfRow'
 const CAST_ON_STITCHES = 'castOnStitches';
 const CAST_OFF_STITCHES = 'castOffStitches';
 const CHANGE_YARN_COLOR = 'changeColorTo';
 const UNTIL_END_OF_ROW = 'untilEndOfRow';
 const REMOVE_ROW = 'removeRow';
 const HSB_COLOR = 'hsbColor';
+const DOWNLOAD_PIXELS = 'downloadPixels';
+const DOWNLOAD_CODE = 'downloadCode';
 const CLEAR_PIXELS = 'clearPixels';
 
 const randomInt = max => {
@@ -169,75 +167,6 @@ const reducer = function (state, action) {
             selectedPixel: select
         });
     }
-    case DOWNLOAD_PIXELS: {
-        console.log("logged download pixels!");
-
-        // This might work, maybe probably?
-        // https://stackoverflow.com/questions/8215021/create-svg-tag-with-javascript
-        // https://dinbror.dk/blog/how-to-download-an-inline-svg-as-jpg-or-png/
-        // var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        // var path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-        // var path2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-        //
-        // svg.setAttribute('width', state.pixelCount);
-        // svg.setAttribute('height', state.rowCount);
-        // svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink")
-        //
-        // path1.setAttribute('d', 'M0 0h24v24H0z');
-        // path1.setAttribute('fill', 'none');
-        //
-        // path2.setAttribute('d', 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z');
-        // path2.setAttribute('fill', '#2962ff');
-        //
-        // svg.appendChild(path1);
-        // svg.appendChild(path2);
-        // document.body.appendChild(svg);
-        // 
-        // var canvas = document.createElement('canvas');
-        // var ctx = canvas.getContext("2d");
-        // var image = new Image();
-        //
-        // image.onload = function () {
-        //   ctx.drawImage(image, 0, 0, state.pixelCount, state.rowCount);
-        //
-        //   canvas.toBlob(function (blob) {
-        //     var newImg = document.createElement("img"),
-        //     url = URL.createObjectURL(blob);
-        //     newImg.onload = function() {
-        //       URL.revokeObjectURL(url);
-        //     };
-        //     newImg.src = url;
-        //   }, "image/jpeg", 0.8);
-        //
-        //   var event = new MouseEvent('click', {
-        //     'view': window,
-        //     'bubbles': true,
-        //     'cancelable': true
-        //   });
-        //
-        //   var a = document.createElement('a');
-        //   var downloadAttrSupport = typeof a.download !== "undefined";
-        //   a.setAttribute('download', 'image.jpg');
-        //   a.setAttribute('href', url);
-        //   a.setAttribute('target', '_blank');
-        //   a.dispatchEvent(event);
-        //
-        //   var opened = window.open();
-        //   if (opened) {
-        //     opened.document.write(svg);
-        //     opened.document.close();
-        //     opened.focus();
-        //   }
-        // }
-        // image.src = "data:image/svg+xml;base64," + window.btoa(svg);
-        // image.onload();
-
-        return state;
-    }
-    case DOWNLOAD_CODE: {
-        console.log("logged download code!");
-        return state;
-    }
     case NEXT_ROW: {
         console.log("logged next row!");
         const newColors = [...state.pixelColors];
@@ -274,14 +203,6 @@ const reducer = function (state, action) {
             selectedPixel: select+action.value
         });
     }
-    case PURL_STITCHES: {
-        console.log("logged purl stitches!");
-        const newColors = [...state.pixelColors];
-        newColors[2] = randomColorRGB(1)[0];
-        return Object.assign({}, state, {
-            pixelColors: newColors
-        });
-    }
     case KNIT_UNTIL_END_OF_ROW: {
         console.log("logged knit until end of row");
         let select = state.selectedPixel;
@@ -299,10 +220,6 @@ const reducer = function (state, action) {
             pixelColors: newColors,
             selectedPixel: select+toKnit
         });
-    }
-    case PURL_UNTIL_END_OF_ROW: {
-        console.log("logged purl until end of row");
-        return state;
     }
     case CAST_ON_STITCHES: {
         let select = state.selectedPixel;
@@ -357,28 +274,6 @@ const reducer = function (state, action) {
             currentColor: newColor
         });
     }
-    case UNTIL_END_OF_ROW: {
-        console.log("logged until end of row!");
-        let select = state.selectedPixel;
-        let nextRow = Math.floor(select/state.pixelCount)+1;
-        // const newColors = [...state.pixelColors];
-        let toKnit = (state.pixelCount*nextRow)-select;
-        // for (let i=0; i<toKnit; i++){
-        //     newColors[select+i] = state.currentColor;
-        // }
-        // console.log("knit " + toKnit + " from " + select + " to " + state.pixelCount*nextRow);
-        // return Object.assign({}, state, {
-        //     pixelColors: newColors,
-        //     selectedPixel: state.pixelCount*nextRow
-        // });
-
-        // return Object.assign({}, action, {
-        //     type: KNIT_STITCHES,
-        //     value: toKnit
-        // });
-
-        return state;
-    }
     case REMOVE_ROW: {
         console.log("logged remove row!");
         const newColors = [...state.pixelColors];
@@ -390,10 +285,6 @@ const reducer = function (state, action) {
             pixelColors: newColors
         });
     }
-    case HSB_COLOR: {
-        console.log("logged hsb color!");
-        return state;
-    }
     case CLEAR_PIXELS: {
         console.log("logged clear pixels!");
         let newColors = grayedSquares(state.rowCount * state.pixelCount);
@@ -401,6 +292,17 @@ const reducer = function (state, action) {
             pixelColors: newColors,
             selectedPixel: 0
         });
+    }
+    case DOWNLOAD_PIXELS: {
+        console.log("logged download pixels!");
+
+        return Object.assign({}, state, {
+            downloadingPixels: action.value
+        });
+    }
+    case DOWNLOAD_CODE: {
+        console.log("logged download code!");
+        return state;
     }
     default:
         return state;
@@ -480,18 +382,6 @@ const moveBackPixels = function (value) {
     };
 };
 
-const downloadThePixels = function () {
-    return {
-        type: DOWNLOAD_PIXELS
-    };
-};
-
-const downloadTheCode = function () {
-    return {
-        type: DOWNLOAD_CODE
-    };
-};
-
 const goToNextRow = function () {
     return {
         type: NEXT_ROW
@@ -505,23 +395,10 @@ const knitXStitches = function (value) {
     };
 }
 
-const purlXStitches = function (value) {
-    return {
-        type: PURL_STITCHES,
-        value: value
-    };
-}
-
 const knitUntilEndOfTheRow = function () {
     return {
         type: KNIT_UNTIL_END_OF_ROW
     }
-}
-
-const purlUntilEndOfTheRow = function () {
-    return {
-        type: PURL_UNTIL_END_OF_ROW
-    };
 }
 
 const castOnXStitches = function (value) {
@@ -544,21 +421,9 @@ const changeYarnColor = function (value) {
     };
 }
 
-const untilEndOfTheRow = function () {
-    return {
-        type: UNTIL_END_OF_ROW
-    };
-}
-
 const removeLastRow = function () {
     return {
         type: REMOVE_ROW
-    };
-}
-
-const hsbColorOut = function () {
-    return {
-        type: HSB_COLOR
     };
 }
 
@@ -567,6 +432,19 @@ const clearThePixels = function () {
         type: CLEAR_PIXELS
     };
 }
+
+const downloadThePixels = function (value) {
+    return {
+        type: DOWNLOAD_PIXELS,
+        value: value
+    };
+};
+
+const downloadTheCode = function () {
+    return {
+        type: DOWNLOAD_CODE
+    };
+};
 
 export {
     reducer as default,
@@ -582,18 +460,14 @@ export {
     moveForwardPixels,
     moveBackPixels,
     setAllPixelColor,
-    downloadThePixels,
-    downloadTheCode,
     goToNextRow,
     knitXStitches,
-    purlXStitches,
     knitUntilEndOfTheRow,
-    purlUntilEndOfTheRow,
     castOnXStitches,
     castOffXStitches,
     changeYarnColor,
-    untilEndOfTheRow,
     removeLastRow,
-    hsbColorOut,
-    clearThePixels
+    clearThePixels,
+    downloadThePixels,
+    downloadTheCode
 };

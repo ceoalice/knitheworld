@@ -12,15 +12,13 @@ import {
     setAllPixelColor,
     goToNextRow,
     knitXStitches,
-    purlXStitches,
     knitUntilEndOfTheRow,
-    purlUntilEndOfTheRow,
     castOnXStitches,
     castOffXStitches,
     changeYarnColor,
-    untilEndOfTheRow,
     removeLastRow,
-    hsbColorOut
+    downloadThePixels,
+    downloadTheCode
 } from '../reducers/pixels.js';
 
 import SimulatorComponent from '../components/simulator/simulator.js'
@@ -69,14 +67,8 @@ class Simulator extends React.Component {
         case 'knitStitches':
             this.props.knitStitches(data.value);
             break;
-        case 'purlStitches':
-            this.props.purlStitches(data.value);
-            break;
         case 'knitUntilEndOfRow':
             this.props.knitUntilEndOfRow();
-            break;
-        case 'purlUntilEndOfRow':
-            this.props.purlUntilEndOfRow();
             break;
         case 'castOnStitches':
             this.props.castOnStitches(data.value);
@@ -87,15 +79,14 @@ class Simulator extends React.Component {
         case 'changeColorTo':
             this.props.changeColorTo(data.value);
             break;
-        case 'untilEndOfRow':
-            this.props.untilEndOfRow();
-            break;
         case 'removeRow':
             this.props.removeRow();
             break;
-        case 'hsbColor':
-            this.props.hsbColor(data.value);
+        case 'downloadPixels':
+            this.props.downloadPixels();
             break;
+        case 'downloadCode':
+            this.props.downloadCode();
         }
     }
 
@@ -138,15 +129,13 @@ const mapDispatchToProps = dispatch => ({
     setAllPixels: value => dispatch(setAllPixelColor(value)),
     nextRow: () => dispatch(goToNextRow()),
     knitStitches: value => dispatch(knitXStitches(value)),
-    purlStitches: value => dispatch(purlXStitches(value)),
     knitUntilEndOfRow: () => dispatch(knitUntilEndOfTheRow()),
-    purlUntilEndOfRow: () => dispatch(purlUntilEndOfTheRow()),
     castOnStitches: value => dispatch(castOnXStitches(value)),
     castOffStitches: () => dispatch(castOffXStitches()),
     changeColorTo: value => dispatch(changeYarnColor(value)),
-    untilEndOfRow: () => dispatch(untilEndOfTheRow()),
     removeRow: () => dispatch(removeLastRow()),
-    hsbColor: value => dispatch(hsbColorOut(value))
+    downloadPixels: () => dispatch(downloadThePixels()),
+    downloadCode: () => dispatch(downloadTheCode())
 });
 
 export default connect(
