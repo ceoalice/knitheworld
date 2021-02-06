@@ -25,15 +25,11 @@ class Scratch3MicroworldBlocks {
             looks_setallcolors: this.setAllPixels,
             knit_nextrow: this.nextRow,
             knit_knitstitches: this.knitStitches,
-            knit_purlstitches: this.purlStitches,
             knit_knituntilendofrow: this.knitUntilEndOfRow,
-            knit_purluntilendofrow: this.purlUntilEndOfRow,
             knit_castonstitches: this.castOnStitches,
             knit_castoffstitches: this.castOffStitches,
             knit_changecolorto: this.changeColorTo,
-            knit_untilendofrow: this.untilEndOfRow,
             knit_removerow: this.removeRow,
-            knit_hsbcolor: this.hsbColor
         };
     }
 
@@ -118,30 +114,11 @@ class Scratch3MicroworldBlocks {
 //        console.log("test knit stitches")
     }
 
-    purlStitches (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'purlStitches',
-            value: value
-        });
-//        console.log("test purl stitches")
-    }
-
     knitUntilEndOfRow () {
         this.runtime.emit('PIXEL_EVENT', {
           type: 'knitUntilEndOfRow',
         });
 //        console.log("test knit until end of row");
-    }
-
-    purlUntilEndOfRow () {
-        return new Promise (res => {
-            this.runtime.emit('PIXEL_EVENT', {
-                type: 'purlUntilEndOfRow',
-            });
-            setTimeout(res, 1000);
-        });
-//        console.log("test purl until end of row");
     }
 
     castOnStitches (args) {
@@ -169,32 +146,11 @@ class Scratch3MicroworldBlocks {
 //        console.log("test change color to " + color)
     }
 
-    untilEndOfRow (){
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'untilEndOfRow'
-        });
-//       console.log("test until end of row")
-    }
-
     removeRow (){
         this.runtime.emit('PIXEL_EVENT', {
             type: 'removeRow'
         });
 //        console.log("test remove row")
-    }
-
-    hsbColor (args){
-        const h = Cast.toNumber(args.HUE);
-        const s = Cast.toNumber(args.SATURATION);
-        const b = Cast.toNumber(args.BRIGHTNESS);
-
-        const color = [h, s, b];
-
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'hsbColor',
-            value: color
-        });
-//        console.log("test hsb color " + color)
     }
 }
 
