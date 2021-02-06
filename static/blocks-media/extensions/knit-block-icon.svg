@@ -16,105 +16,57 @@
 	<rect x="28.9" y="10" class="st0" width="2.5" height="2.5"/>
 	<rect x="31.4" y="10" class="st0" width="2.5" height="2.5"/>
 	<rect x="31.4" y="12.5" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="33.9" y="12.5" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 70.3158 27.5593)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="33.9" y="14.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 70.3158 32.1024)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="14.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 32.1024)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="17.3" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 37.105)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="19.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 42.1076)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="22.3" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 47.1103)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="24.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 51.2175)" class="st0" width="2.5" height="2.5"/>
+	<rect x="33.9" y="12.6" class="st0" width="2.5" height="2.5"/>
+	<rect x="33.9" y="14.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="14.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="17.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="19.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="22.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="24.3" class="st0" width="2.5" height="2.5"/>
 	<rect x="36.4" y="28.9" class="st0" width="2.5" height="2.5"/>
 	<rect x="33.9" y="28.9" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="33.9" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 70.3158 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="31.4" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 65.3131 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="28.9" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 60.3105 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="28.9" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 60.3105 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="26.4" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 55.3079 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="23.9" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 50.3052 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="21.4" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 45.3026 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="18.9" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 40.3 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="16.4" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 35.2974 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="13.9" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 30.2947 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="11.4" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 25.2921 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="8.9" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 20.2895 70.3326)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="8.9" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 20.2895 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="6.4" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 15.2869 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="3.9" y="31.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 10.2842 65.3299)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="3.9" y="28.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 10.2842 60.3273)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="28.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 60.3273)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="26.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 55.3247)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="23.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 50.3221)" class="st0" width="2.5" height="2.5"/>
-	<rect x="1.4" y="22" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 46.4463)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="19.5" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 41.5266)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="17.2" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 36.8421)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="1.4" y="14.7" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 5.2816 31.8463)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="3.8" y="14.1" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 10.0532 30.6365)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="3.8" y="11.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 10.0532 26.0971)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="6.3" y="11.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 15.0558 26.0971)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="14.6" y="17" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 31.7509 36.524)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="14.6" y="19.5" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 31.7509 41.5266)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="14.6" y="22" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 31.7509 46.4446)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="24.3" y="17" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 51.0333 36.524)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="24.3" y="19.5" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 51.0333 41.5266)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="24.3" y="22" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 51.0333 46.4446)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="24.3" y="26.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 51.0333 56.2201)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="26.5" y="26.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 55.4997 56.2201)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="12.3" y="26.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 27.0164 56.2201)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="14.5" y="26.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 31.4828 56.2201)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="14.9" y="29.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 32.2871 61.2227)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="17.1" y="29.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 36.7535 61.2227)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="19.6" y="29.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 41.6893 61.2227)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="21.8" y="29.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 46.1557 61.2227)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="23.9" y="29.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 50.3052 61.2227)" class="st0" width="2.5" height="2.5"/>
-
-		<rect x="36.4" y="26.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 75.3184 56.2201)" class="st0" width="2.5" height="2.5"/>
+	<rect x="33.9" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="31.4" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="28.9" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="28.9" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="26.4" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="23.9" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="21.4" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="18.9" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="16.4" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="13.9" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="11.4" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="8.9" y="33.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="8.9" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="6.4" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="3.9" y="31.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="3.9" y="28.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="28.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="26.4" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="23.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="21.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="19.5" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="17.1" class="st0" width="2.5" height="2.5"/>
+	<rect x="1.4" y="14.6" class="st0" width="2.5" height="2.5"/>
+	<rect x="3.8" y="14" class="st0" width="2.5" height="2.5"/>
+	<rect x="3.8" y="11.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="6.3" y="11.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="14.7" y="17" class="st0" width="2.5" height="2.5"/>
+	<rect x="14.7" y="19.5" class="st0" width="2.5" height="2.5"/>
+	<rect x="14.7" y="21.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="24.2" y="17" class="st0" width="2.5" height="2.5"/>
+	<rect x="24.2" y="19.5" class="st0" width="2.5" height="2.5"/>
+	<rect x="24.2" y="21.9" class="st0" width="2.5" height="2.5"/>
+	<rect x="24.2" y="26.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="26.5" y="26.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="12.2" y="26.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="14.5" y="26.8" class="st0" width="2.5" height="2.5"/>
+	<rect x="14.9" y="29.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="17.2" y="29.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="19.6" y="29.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="21.9" y="29.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="23.9" y="29.3" class="st0" width="2.5" height="2.5"/>
+	<rect x="36.4" y="26.8" class="st0" width="2.5" height="2.5"/>
 	<rect x="17" y="12.5" class="st0" width="2.5" height="2.5"/>
 	<rect x="19.5" y="12.5" class="st0" width="2.5" height="2.5"/>
 	<rect x="21.5" y="12.5" class="st0" width="2.5" height="2.5"/>
