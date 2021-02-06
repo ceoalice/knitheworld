@@ -1,6 +1,6 @@
 const defaultToolbox =
 `<xml id="aot-toolbox" style="display: none">
-  <category name="Knitting" id="knit" colour="#FFFFFF" secondaryColour="#93A5DC">
+  <category name="Knitting" id="knit" colour="#ffffff" secondaryColour="#8ca1ef">
       <block type="knit_knitstitches">
         <value name="VALUE">
           <shadow type="math_positive_number">
@@ -12,6 +12,7 @@ const defaultToolbox =
       <block type="knit_changecolorto">
         <value name="COLOR">
           <shadow type="colour_picker">
+            <field name="COLOUR">#b6c3f5</field>
           </shadow>
         </value>
       </block>
@@ -24,14 +25,7 @@ const defaultToolbox =
       </block>
       <block type="knit_castoffstitches" />
     </category>
-    <category name="Control" id="control" colour="#FFAB19" secondaryColour="#EC9C13">
-      <block id="control_waitms" type="control_waitms">
-        <value name="VALUE">
-          <shadow type="math_positive_number">
-            <field name="NUM">50</field>
-          </shadow>
-        </value>
-      </block>
+    <category name="%{BKY_CATEGORY_CONTROL}" id="control" colour="#ccfccb" secondaryColour="#b3fbb2">
       <block id="control_repeat" type="control_repeat">
         <value name="TIMES">
           <shadow type="math_whole_number">
@@ -39,9 +33,74 @@ const defaultToolbox =
           </shadow>
         </value>
       </block>
+      <block type="control_repeat_until" id="control_repeat_until"></block>
       <block id="control_forever" type="control_forever"></block>
+      <block type="control_if" id="control_if"></block>
+      <block type="control_if_else" id="control_if_else"></block>
       <block id="control_stop" type="control_stop"></block>
-      <block id="operator_random" type="operator_random">
+    </category>
+    <category name="%{BKY_CATEGORY_OPERATORS}" id="operators" colour="#40BF4A" secondaryColour="#389438">
+      <block type="operator_add" id="operator_add">
+        <value name="NUM1">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+        <value name="NUM2">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_subtract" id="operator_subtract">
+        <value name="NUM1">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+        <value name="NUM2">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_multiply" id="operator_multiply">
+        <value name="NUM1">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+        <value name="NUM2">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_divide" id="operator_divide">
+        <value name="NUM1">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+        <value name="NUM2">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_mod" id="operator_mod">
+        <value name="NUM1">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+        <value name="NUM2">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_random" id="operator_random">
         <value name="FROM">
           <shadow type="math_number">
             <field name="NUM">1</field>
@@ -53,8 +112,63 @@ const defaultToolbox =
           </shadow>
         </value>
       </block>
+      <block type="operator_round" id="operator_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_mathop" id="operator_mathop">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_lt" id="operator_lt">
+        <value name="OPERAND1">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="OPERAND2">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_equals" id="operator_equals">
+        <value name="OPERAND1">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="OPERAND2">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_gt" id="operator_gt">
+        <value name="OPERAND1">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="OPERAND2">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="operator_and" id="operator_and"></block>
+      <block type="operator_or" id="operator_or"></block>
+      <block type="operator_not" id="operator_not"></block>
     </category>
-    <category name="My Blocks" id="myBlocks" colour="#FF6680" secondaryColour="#FF4D6A" custom="PROCEDURE"></category>
+    <category name="%{BKY_CATEGORY_VARIABLES}" id="data" colour="#8be4ac" secondaryColour="#6adc94" custom="VARIABLE"></category>
+    <category name="%{BKY_CATEGORY_MYBLOCKS}" id="more" colour="#ffa686" secondaryColour="#ff875c" custom="PROCEDURE"></category>
+    <category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="#F7B05B" secondaryColour="#F6A23C"></category>
   </xml>`;
 
 export default defaultToolbox;

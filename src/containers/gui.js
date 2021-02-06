@@ -14,17 +14,37 @@ class GUI extends React.Component {
         super(props);
         this.vm = new VM();
         this.state = {
-          blockKeys: []
+          blockKeys: [],
+          startupToggle: false
         };
         this.vm.on('PROJECT_CHANGED', () => {
-            let currentBlocks = this.vm.runtime.targets[0].blocks._blocks;
-            if (currentBlocks !== this.state.blockKeys){
-              console.log("changed!");
-              this.setState({blockKeys: Object.keys(this.vm.runtime.targets[0].blocks._blocks)});
-              this.componentDidMount();
-            }
-            console.log(this.vm.runtime.targets[0].blocks._blocks);
-            console.log(Object.keys(this.vm.runtime.targets[0].blocks._blocks));
+
+          // https://stackoverflow.com/questions/25469972/getting-the-values-for-a-specific-key-from-all-objects-in-an-array
+          let blockParentIDs = Object.values(this.vm.runtime.targets[0].blocks._blocks).map(value => value.parent);
+
+          // https://stackoverflow.com/questions/281264/remove-empty-elements-from-an-array-in-javascript
+          var filteredBlockParentIDs = blockParentIDs.filter(function (el) {
+            return el != null;
+          });
+
+          // https://www.30secondsofcode.org/blog/s/javascript-array-comparison
+          const equals = (a, b) =>
+            a.length === b.length &&
+            a.every((v, i) => v === b[i]);
+
+          // since we can't init BlockKeys in the constructor with values from the runtime,
+          // we use this toggle to init the value once the comopnent is constructed
+          if (this.state.startupToggle === false) {
+            console.log("toggled, init");
+            this.setState({blockKeys: filteredBlockParentIDs});
+            this.setState({startupToggle: true});
+          }
+
+          if (equals(filteredBlockParentIDs,this.state.blockKeys) === false && this.state.startupToggle === true){
+            console.log("changed!");
+            this.setState({blockKeys: filteredBlockParentIDs});
+            this.props.clearPixels();
+          }
         });
     }
 

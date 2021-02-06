@@ -21,6 +21,7 @@ const HSB_COLOR = 'hsbColor';
 const DOWNLOAD_PIXELS = 'downloadPixels';
 const DOWNLOAD_CODE = 'downloadCode';
 const CLEAR_PIXELS = 'clearPixels';
+const DOWNLOAD_STITCHES = 'downloadStitches';
 
 const randomInt = max => {
     return Math.floor(Math.random() * Math.floor(max));
@@ -68,7 +69,8 @@ const initialState = {
     pixelColors: grayedSquares(300),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
-    downloadingPixels: false
+    downloadingPixels: false,
+    downloadingStitches: false
 };
 
 const reducer = function (state, action) {
@@ -81,7 +83,7 @@ const reducer = function (state, action) {
     case NEXT_PIXEL: {
         let select = state.selectedPixel+1;
         if (select >= state.pixelCount*state.rowCount) select = 0;
-        console.log("currently selected pixel is" + select);
+//        console.log("currently selected pixel is" + select);
         return Object.assign({}, state, {
             selectedPixel: select
         });
@@ -89,7 +91,7 @@ const reducer = function (state, action) {
     case PREV_PIXEL: {
         let select = state.selectedPixel-1;
         if (select < 0) select = (state.pixelCount*state.rowCount)-1;
-        console.log("currently selected pixel is" + select);
+//        console.log("currently selected pixel is" + select);
         return Object.assign({}, state, {
             selectedPixel: select
         });
@@ -125,27 +127,33 @@ const reducer = function (state, action) {
         for (let i=0; i<state.rowCount; i++){
             newColors.push('rgba(255,255,255,0)');
         }
-        if (state.pixelCount < 25){
+        // if (state.pixelCount < 25){
           console.log("adding column...");
           return Object.assign({}, state, {
               pixelCount: state.pixelCount+1,
               pixelColors: newColors
           });
-        }
-        else {
-          console.log("max stitch width reached!");
-          return state;
-        }
-
+        // }
+        // else {
+        //   console.log("max stitch width reached!");
+        //   return state;
+        // }
     }
     case REMOVE_PIXEL: {
         if (state.pixelCount === 1) return;
         const newColors = [...state.pixelColors];
         newColors.pop();
-        return Object.assign({}, state, {
-            pixelCount: state.pixelCount-1,
-            pixelColors: newColors
-        });
+
+        if (state.pixelCount > 1){
+          return Object.assign({}, state, {
+              pixelCount: state.pixelCount-1,
+              pixelColors: newColors
+
+          });
+        } else {
+          console.log("min stitch width reached!");
+          return state;
+        }
     }
     case SET_PIXEL_TYPE: {
         return Object.assign({}, state, {
@@ -173,34 +181,32 @@ const reducer = function (state, action) {
         for (let i=0; i<state.pixelCount; i++){
             newColors.push('rgba(255,255,255,0)');
         }
-        if (state.rowCount < 12){
+        // if (state.rowCount < 12){
           console.log("adding row...");
           return Object.assign({}, state, {
               rowCount: state.rowCount+1,
               pixelColors: newColors
           });
-        }
-        else{
-          console.log("max row limit reached!");
-          return state;
-        }
-
+        // }
+        // else{
+        //   console.log("max row limit reached!");
+        //   return state;
+        // }
     }
     case KNIT_STITCHES: {
         console.log("logged knit stitches!");
-        // let select = (state.selectedPixel) % (state.pixelCount*state.rowCount);
         let select = state.selectedPixel
         const newColors = [...state.pixelColors];
-
-        // console.log("should be knitting " + action.value + " stitch(es)");
 
         for (let i=0; i<action.value; i++){
             newColors[select+i] = state.currentColor;
         }
 
+        let increase = action.value <= 0 ? 0 : action.value;
+
         return Object.assign({}, state, {
             pixelColors: newColors,
-            selectedPixel: select+action.value
+            selectedPixel: select+increase
         });
     }
     case KNIT_UNTIL_END_OF_ROW: {
@@ -210,7 +216,6 @@ const reducer = function (state, action) {
         const newColors = [...state.pixelColors];
 
         let toKnit = (state.pixelCount*nextRow)-select;
-        // console.log("knit " + toKnit + " from " + select + " to " + state.pixelCount*nextRow);
 
         for (let i=0; i<toKnit; i++){
             newColors[select+i] = state.currentColor;
@@ -280,10 +285,16 @@ const reducer = function (state, action) {
         for (let i=0; i<state.pixelCount; i++){
             newColors.pop();
         }
-        return Object.assign({}, state, {
-            rowCount: state.rowCount-1,
-            pixelColors: newColors
-        });
+
+        if (state.rowCount > 1) {
+          return Object.assign({}, state, {
+              rowCount: state.rowCount-1,
+              pixelColors: newColors
+          });
+        } else {
+          console.log("min row count reached!");
+          return state;
+        }
     }
     case CLEAR_PIXELS: {
         console.log("logged clear pixels!");
@@ -298,6 +309,13 @@ const reducer = function (state, action) {
 
         return Object.assign({}, state, {
             downloadingPixels: action.value
+        });
+    }
+    case DOWNLOAD_STITCHES: {
+        console.log("logged download stitches!");
+
+        return Object.assign({}, state, {
+            downloadingStitches: action.value
         });
     }
     case DOWNLOAD_CODE: {
@@ -440,6 +458,13 @@ const downloadThePixels = function (value) {
     };
 };
 
+const downloadTheStitches = function (value) {
+    return {
+        type: DOWNLOAD_STITCHES,
+        value: value
+    };
+};
+
 const downloadTheCode = function () {
     return {
         type: DOWNLOAD_CODE
@@ -469,5 +494,6 @@ export {
     removeLastRow,
     clearThePixels,
     downloadThePixels,
+    downloadTheStitches,
     downloadTheCode
 };

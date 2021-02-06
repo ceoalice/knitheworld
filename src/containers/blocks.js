@@ -100,47 +100,44 @@ Blocks.defaultWorkspace =
 `<xml>
   <block type="event_whenstarted" deletable="false" x="25" y="50">
     <next>
-      <block type="control_forever">
-        <statement name="SUBSTACK">
-          <block type="knit_changecolorto">
-            <value name="COLOR">
-              <shadow type="colour_picker">
+      <block type="knit_changecolorto">
+        <value name="COLOR">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#b6c3f5</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="knit_castonstitches">
+            <value name="VALUE">
+              <shadow type="math_positive_number">
+                <field name="NUM">1</field>
               </shadow>
             </value>
             <next>
-              <block type="knit_knitstitches">
-                <value name="VALUE">
-                  <shadow type="math_positive_number">
-                    <field name="NUM">1</field>
+              <block type="control_repeat" id="control_repeat">
+                <value name="TIMES">
+                  <shadow type="math_whole_number">
+                    <field name="NUM">5</field>
                   </shadow>
                 </value>
-                <next>
-                  <block type="control_waitms">
-                    <value name="VALUE">
-                      <shadow type="math_positive_number">
-                        <field name="NUM">200</field>
+                <statement name="SUBSTACK">
+                  <block type="knit_changecolorto">
+                    <value name="COLOR">
+                      <shadow type="colour_picker">
+                        <field name="COLOUR">#bfd7ea</field>
                       </shadow>
                     </value>
                     <next>
-                      <block type="knit_changecolorto">
-                        <value name="COLOR">
-                          <shadow type="colour_picker">
-                          </shadow>
-                        </value>
+                      <block type="knit_knituntilendofrow">
                         <next>
-                          <block type="knit_knitstitches">
-                            <value name="VALUE">
-                              <shadow type="math_positive_number">
-                                <field name="NUM">1</field>
+                          <block type="knit_changecolorto">
+                            <value name="COLOR">
+                              <shadow type="colour_picker">
+                                <field name="COLOUR">#b6c3f5</field>
                               </shadow>
                             </value>
                             <next>
-                              <block type="control_waitms">
-                                <value name="VALUE">
-                                  <shadow type="math_positive_number">
-                                    <field name="NUM">200</field>
-                                  </shadow>
-                                </value>
+                              <block type="knit_knituntilendofrow">
                               </block>
                             </next>
                           </block>
@@ -148,15 +145,172 @@ Blocks.defaultWorkspace =
                       </block>
                     </next>
                   </block>
+                </statement>
+                <next>
+                  <block type="knit_changecolorto">
+                    <value name="COLOR">
+                      <shadow type="colour_picker">
+                        <field name="COLOUR">#bfd7ea</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="knit_castoffstitches" id="knit_castoffstitches">
+                      </block>
+                    </next>
+                  </block>
                 </next>
               </block>
             </next>
           </block>
-        </statement>
+        </next>
       </block>
     </next>
   </block>
 </xml>`;
+
+/*
+<block type="event_whenstarted" deletable="false" x="25" y="50">
+	<next>
+		<block type="knit_changecolorto">
+      <value name="COLOR">
+        <shadow type="colour_picker">
+        </shadow>
+      </value>
+      <next>
+        <block type="knit_castonstitches">
+          <value name="VALUE">
+            <shadow type="math_positive_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <next>
+            <block type="control_repeat" id="control_repeat">
+              <value name="TIMES">
+                <shadow type="math_whole_number">
+                  <field name="NUM">5</field>
+                </shadow>
+              </value>
+              <statement name="SUBSTACK">
+                <block type="knit_changecolorto">
+                  <value name="COLOR">
+                    <shadow type="colour_picker">
+                    </shadow>
+                  </value>
+                  <next>
+                    <block type="knit_knitstitches">
+                      <value name="VALUE">
+                        <shadow type="math_positive_number">
+                          <field name="NUM">1</field>
+                        </shadow>
+                      </value>
+                      <next>
+                        <block type="knit_changecolorto">
+                          <value name="COLOR">
+                            <shadow type="colour_picker">
+                            </shadow>
+                          </value>
+                          <next>
+                            <block type="knit_knitstitches">
+                              <value name="VALUE">
+                                <shadow type="math_positive_number">
+                                  <field name="NUM">1</field>
+                                </shadow>
+                              </value>
+                            </block>
+                          </next>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </statement>
+              <next>
+                <block type="knit_changecolorto">
+                  <value name="COLOR">
+                    <shadow type="colour_picker">
+                    </shadow>
+                  </value>
+                  <next>
+                    <block type="knit_castoffstitches" id="knit_castoffstitches">
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </next>
+    </block>
+	</next>
+</block>
+
+
+
+*/
+
+/*
+
+<block type="event_whenstarted" deletable="false" x="25" y="50">
+  <next>
+    <block type="control_forever">
+      <statement name="SUBSTACK">
+        <block type="knit_changecolorto">
+          <value name="COLOR">
+            <shadow type="colour_picker">
+            </shadow>
+          </value>
+          <next>
+            <block type="knit_knitstitches">
+              <value name="VALUE">
+                <shadow type="math_positive_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+              <next>
+                <block type="control_waitms">
+                  <value name="VALUE">
+                    <shadow type="math_positive_number">
+                      <field name="NUM">200</field>
+                    </shadow>
+                  </value>
+                  <next>
+                    <block type="knit_changecolorto">
+                      <value name="COLOR">
+                        <shadow type="colour_picker">
+                        </shadow>
+                      </value>
+                      <next>
+                        <block type="knit_knitstitches">
+                          <value name="VALUE">
+                            <shadow type="math_positive_number">
+                              <field name="NUM">1</field>
+                            </shadow>
+                          </value>
+                          <next>
+                            <block type="control_waitms">
+                              <value name="VALUE">
+                                <shadow type="math_positive_number">
+                                  <field name="NUM">200</field>
+                                </shadow>
+                              </value>
+                            </block>
+                          </next>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </block>
+  </next>
+</block>
+
+
+*/
 
 {/* PREVIOUS DEFAULT CODE BLOCK
 <block type="looks_changecolor">

@@ -18,6 +18,7 @@ import {
     changeYarnColor,
     removeLastRow,
     downloadThePixels,
+    downloadTheStitches,
     downloadTheCode
 } from '../reducers/pixels.js';
 
@@ -102,6 +103,7 @@ class Simulator extends React.Component {
                 currentColor={this.props.currentColor}
                 fullscreenVisible={this.props.fullscreenVisible}
                 downloadingPixels={this.props.downloadingPixels}
+                downloadingStitches={this.props.downloadingStitches}
             />
         );
     }
@@ -116,7 +118,8 @@ const mapStateToProps = state => ({
     rowCount: state.pixels.rowCount,
     currentColor: state.pixels.currentColor,
     fullscreenVisible: state.modals.fullscreenSimulator,
-    downloadingPixels: state.pixels.downloadingPixels
+    downloadingPixels: state.pixels.downloadingPixels,
+    downloadingStitches: state.pixels.downloadingStitches
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -135,6 +138,7 @@ const mapDispatchToProps = dispatch => ({
     changeColorTo: value => dispatch(changeYarnColor(value)),
     removeRow: () => dispatch(removeLastRow()),
     downloadPixels: () => dispatch(downloadThePixels()),
+    downloadTheStitches: () => dispatch(downloadTheStitches()),
     downloadCode: () => dispatch(downloadTheCode())
 });
 

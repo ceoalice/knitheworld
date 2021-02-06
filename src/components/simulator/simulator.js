@@ -5,7 +5,8 @@ import {getColorHex} from '../../lib/colors.js';
 import {getRGBfromHex} from '../../lib/colors.js';
 
 import {
-  downloadThePixels
+  downloadThePixels,
+  downloadTheStitches
 } from '../../reducers/pixels.js';
 
 import styles from './simulator.css';
@@ -30,14 +31,19 @@ class SimulatorComponent extends React.Component {
 
     componentDidUpdate () {
       if (this.props.downloadingPixels === true){
-        this.toggleDownload();
+        this.toggleDownload(1);
         console.log("downloading!");
+      }
+      if (this.props.downloadingStitches === true){
+        this.toggleDownload(2);
+        console.log("downloading stitches!");
       }
 
       this.refreshCanvas();
     }
 
-    toggleDownload () {
+    // type of download: 1 = pixels, 2 = stitches
+    toggleDownload (type) {
       const {
           pixelCount,
           selectedPixel,
@@ -46,42 +52,124 @@ class SimulatorComponent extends React.Component {
           currentColor
       } = {...this.props};
 
-      this.props.toggleDownloadPixels();
-      console.log("toggled to " + this.props.downloadingPixels + "!");
+      if (type === 1) {
+        this.props.toggleDownloadPixels();
+        console.log("toggled to " + this.props.downloadingPixels + "!");
 
-      // make new canvas for downloading here
+        // make new canvas for downloading here
 
-      const pixelCanvas = document.createElement('canvas');
-      console.log("pixelCanvas is " + pixelCanvas);
-      console.log(pixelCanvas);
-      pixelCanvas.width = pixelCount;
-      pixelCanvas.height = rowCount;
+        const pixelCanvas = document.createElement('canvas');
+        console.log("pixelCanvas is " + pixelCanvas);
+        console.log(pixelCanvas);
+        pixelCanvas.width = pixelCount;
+        pixelCanvas.height = rowCount;
 
-      const pixelctx = pixelCanvas.getContext('2d');
+        const pixelctx = pixelCanvas.getContext('2d');
 
-      pixelctx.save();
+        pixelctx.save();
 
-      let stitchCount = pixelCount * rowCount;
+        let stitchCount = pixelCount * rowCount;
 
-      for (let i=0; i<stitchCount; i++) {
-        pixelctx.fillStyle = pixelColors[i];
-        let currentRow = Math.floor(i/pixelCount);
-        pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
-      }
+        for (let i=0; i<stitchCount; i++) {
+          pixelctx.fillStyle = pixelColors[i];
+          let currentRow = Math.floor(i/pixelCount);
+          pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
+        }
 
-      pixelctx.restore();
-
-      // new button for downloading an actual image of the
-
-      // new canvas elemtn fro just stitches
+        pixelctx.restore();
 
         let a = document.createElement('a');
-        a.setAttribute('download', 'canvas.png');
+        a.setAttribute('download', 'My Pixel Pattern.png');
         pixelCanvas.toBlob(blob => {
             let url = URL.createObjectURL(blob);
             a.setAttribute('href', url);
             a.click();
-        })
+        });
+      }
+
+      else if (type === 2) {
+        this.props.toggleDownloadStitches();
+        console.log("toggled to " + this.props.downloadingStitches + "!");
+
+        const pixelCanvas = document.createElement('canvas');
+        console.log("pixelCanvas is " + pixelCanvas);
+        console.log(pixelCanvas);
+        pixelCanvas.width = 25*pixelCount+10;
+        pixelCanvas.height = 25*rowCount+10;
+
+        const pixelctx = pixelCanvas.getContext('2d');
+
+        pixelctx.save();
+
+        function drawStitch(x, y, size){
+            //
+            // var img = new Image();
+            // img.onload = function() {
+            //   ctx.drawImage(img, x, y);
+            // }
+            // img.src = "./knit-block-icon.svg";
+
+            const scaleFactor = 0.5*size/20
+            const translator = [14, 26];
+
+            pixelctx.scale(scaleFactor, scaleFactor);
+            pixelctx.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
+
+
+            pixelctx.translate(50, 83);
+            pixelctx.rotate(Math.PI/3);
+            pixelctx.translate(-50, -83);
+
+            pixelctx.beginPath();
+            pixelctx.moveTo(25, 75);
+            pixelctx.lineTo(50,75);
+            pixelctx.arc(50,100,25,6*Math.PI/4, 0,false);
+            pixelctx.lineTo(50, 100);
+            pixelctx.arc(50,75,25,Math.PI/2,Math.PI,false);
+            pixelctx.closePath();
+            pixelctx.fill();
+
+            pixelctx.translate(50, 83);
+            pixelctx.rotate(-1*Math.PI/3);
+            pixelctx.translate(-50, -83);
+
+            pixelctx.translate(67, 83);
+            pixelctx.rotate(-1*Math.PI/3);
+            pixelctx.translate(-67, -83);
+
+            pixelctx.moveTo(92,75);
+            pixelctx.lineTo(67,75);
+            pixelctx.arc(67,100,25,6*Math.PI/4, Math.PI, true);
+            pixelctx.lineTo(67,100);
+            pixelctx.arc(67,75,25,Math.PI/2,0,true);
+            pixelctx.fill();
+
+            pixelctx.translate(67, 83);
+            pixelctx.rotate(Math.PI/3);
+            pixelctx.translate(-67, -83);
+
+            pixelctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+
+        let stitchCount = pixelCount * rowCount;
+
+        for (let i=0; i<stitchCount; i++) {
+          // draw jawns
+          pixelctx.fillStyle = pixelColors[i];
+          let currentRow = Math.floor(i/pixelCount);
+          drawStitch(25*(i%pixelCount), 25*currentRow, 20);
+        }
+
+        pixelctx.restore();
+
+        let a = document.createElement('a');
+        a.setAttribute('download', 'My Knit Pattern.png');
+        pixelCanvas.toBlob(blob => {
+            let url = URL.createObjectURL(blob);
+            a.setAttribute('href', url);
+            a.click();
+        });
+      }
     }
 
     refreshCanvas () {
@@ -168,7 +256,7 @@ class SimulatorComponent extends React.Component {
             ctx.lineTo(67,100);
             ctx.arc(67,75,25,Math.PI/2,0,true);
             ctx.fill();
-            
+
             ctx.translate(67, 83);
             ctx.rotate(Math.PI/3);
             ctx.translate(-67, -83);
@@ -313,11 +401,13 @@ CanvasRenderingContext2D.prototype.roundedRect = function(x, y, w, h, r) {
 }
 
 const mapStateToProps = state => ({
-    downloadingPixels: state.pixels.downloadingPixels
+    downloadingPixels: state.pixels.downloadingPixels,
+    downloadingStitches: state.pixels.downloadingStitches
 });
 
 const mapDispatchToProps = dispatch => ({
     toggleDownloadPixels: () => dispatch(downloadThePixels(false)),
+    toggleDownloadStitches: () => dispatch(downloadTheStitches(false)),
     downloadCode: () => dispatch(downloadTheCode()),
     unravelPixels: () => dispatch(clearThePixels())
 });
