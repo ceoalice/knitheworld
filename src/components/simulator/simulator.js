@@ -35,8 +35,6 @@ class SimulatorComponent extends React.Component {
       }
 
       this.refreshCanvas();
-      console.log("test: " + this.props.downloadingPixels);
-      console.log(this.props);
     }
 
     toggleDownload () {
@@ -63,10 +61,6 @@ class SimulatorComponent extends React.Component {
 
       pixelctx.save();
 
-      // draw jawns
-      // pixelctx.fillStyle = "#ff0000";
-      // pixelctx.fillRect(0, 0, 1, 1);
-
       let stitchCount = pixelCount * rowCount;
 
       for (let i=0; i<stitchCount; i++) {
@@ -88,7 +82,6 @@ class SimulatorComponent extends React.Component {
             a.setAttribute('href', url);
             a.click();
         })
-        // console.log(this.canvasRef);
     }
 
     refreshCanvas () {
@@ -134,10 +127,12 @@ class SimulatorComponent extends React.Component {
         // console.log(pixelColors);
 
         function drawStitch(x, y, size, visibility){
-
-            // approximate scale factor: 1/42 = 0.02381
-
-            // ctx.scale(size*0.015, size*0.015);
+            //
+            // var img = new Image();
+            // img.onload = function() {
+            //   ctx.drawImage(img, x, y);
+            // }
+            // img.src = "./knit-block-icon.svg";
 
             const scaleFactor = 0.5*size/20
             const translator = !visibility ? [14, 26] : [55, 100];
@@ -145,7 +140,6 @@ class SimulatorComponent extends React.Component {
             ctx.scale(scaleFactor, scaleFactor);
             ctx.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
 
-            // ctx.translate((x-35), y-60);
 
             ctx.translate(50, 83);
             ctx.rotate(Math.PI/3);
@@ -174,13 +168,11 @@ class SimulatorComponent extends React.Component {
             ctx.lineTo(67,100);
             ctx.arc(67,75,25,Math.PI/2,0,true);
             ctx.fill();
-
+            
             ctx.translate(67, 83);
             ctx.rotate(Math.PI/3);
             ctx.translate(-67, -83);
 
-            // ctx.scale(size/0.015, size/0.015);
-            // ctx.translate(x+35, y+60);
             ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
 

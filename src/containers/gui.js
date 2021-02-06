@@ -13,22 +13,24 @@ class GUI extends React.Component {
     constructor (props) {
         super(props);
         this.vm = new VM();
+        this.state = {
+          blockKeys: []
+        };
         this.vm.on('PROJECT_CHANGED', () => {
+            let currentBlocks = this.vm.runtime.targets[0].blocks._blocks;
+            if (currentBlocks !== this.state.blockKeys){
+              console.log("changed!");
+              this.setState({blockKeys: Object.keys(this.vm.runtime.targets[0].blocks._blocks)});
+              this.componentDidMount();
+            }
             console.log(this.vm.runtime.targets[0].blocks._blocks);
+            console.log(Object.keys(this.vm.runtime.targets[0].blocks._blocks));
         });
     }
 
     componentDidMount () {
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
-
-        // whenever the start button is pressed again, it resets the board and clears the stitches
-
-        // return new Promise (res => {
-        //   this.vm.on('PROJECT_RUN_START', this.props.clearPixels);
-        //   setTimeout(res, 500);
-        // });
-        // this.vm.on('PROJECT_RUN_STOP', this.props.clearPixels);
     }
 
     componentWillUnmount () {
