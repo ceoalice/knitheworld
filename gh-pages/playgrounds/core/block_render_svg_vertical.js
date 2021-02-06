@@ -146,7 +146,7 @@ Blockly.BlockSvg.START_HAT_HEIGHT = 16;
  * of a block, such as extension icons.
  * @const
  */
-Blockly.BlockSvg.ICON_SEPARATOR_HEIGHT = 6 * Blockly.BlockSvg.GRID_UNIT;
+Blockly.BlockSvg.ICON_SEPARATOR_HEIGHT = 10 * Blockly.BlockSvg.GRID_UNIT;
 
 /**
  * Path of the top hat's curve.
@@ -159,13 +159,20 @@ Blockly.BlockSvg.START_HAT_PATH = 'c 25,-22 71,-22 96,0';
  * @const
  */
 Blockly.BlockSvg.NOTCH_PATH_LEFT = (
-  'c 3,0 4,0 5,1 ' +
-  'c 1,1 1,5 2,6 ' +
-  'c 1,1 2,1 5,1 ' +
-  'h 4 ' +
-  'c 3,0 4,0 5,-1 ' +
-  'c 1,-1 1,-5 2,-6 ' +
-  'c 1,-1 2,-1 5,-1'
+  // 'c 3,0 4,0 5,1 ' +
+  // 'c 1,1 1,5 2,6 ' +
+  // 'c 1,1 2,1 5,1 ' +
+  // 'h 4 ' +
+  // 'c 3,0 4,0 5,-1 ' +
+  // 'c 1,-1 1,-5 2,-6 ' +
+  // 'c 1,-1 2,-1 5,-1'
+  'c 2,0 3,1 4,2 ' +
+  'l 4,4 ' +
+  'c 1,1 2,2 4,2 ' +
+  'h 12 ' +
+  'c 2,0 3,-1 4,-2 ' +
+  'l 4,-4 ' +
+  'c 1,-1 2,-2 4,-2'
 );
 
 /**

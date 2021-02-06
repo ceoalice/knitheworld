@@ -162,56 +162,10 @@ Blockly.Blocks['looks_setallcolors'] = {
   }
 };
 
-Blockly.Blocks['knit_nextrow'] = {
-  init: function() {
-    this.jsonInit({
-      "message0": "%1 %2 move to next row",
-      "args0": [
-        {
-          "type": "field_image",
-          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
-          "width": 40,
-          "height": 40
-        },
-        {
-          "type": "field_vertical_separator"
-        }
-      ],
-      "category": Blockly.Categories.knit,
-      "extensions": ["colours_knit", "shape_statement"]
-    });
-  }
-};
-
 Blockly.Blocks['knit_knitstitches'] = {
   init: function() {
     this.jsonInit({
       "message0": "%1 %2 knit %3 stitches",
-      "args0": [
-        {
-          "type": "field_image",
-          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
-          "width": 40,
-          "height": 40
-        },
-        {
-          "type": "field_vertical_separator"
-        },
-        {
-          "type": "input_value",
-          "name": "VALUE"
-        }
-      ],
-      "category": Blockly.Categories.knit,
-      "extensions": ["colours_knit", "shape_statement"]
-    });
-  }
-};
-
-Blockly.Blocks['knit_purlstitches'] = {
-  init: function() {
-    this.jsonInit({
-      "message0": "%1 %2 purl stitches %3",
       "args0": [
         {
           "type": "field_image",
@@ -282,7 +236,7 @@ Blockly.Blocks['knit_castonstitches'] = {
 Blockly.Blocks['knit_castoffstitches'] = {
   init: function() {
     this.jsonInit({
-      "message0": "%1 %2 cast off",
+      "message0": "%1 %2 bind off",
       "args0": [
         {
           "type": "field_image",
@@ -295,7 +249,7 @@ Blockly.Blocks['knit_castoffstitches'] = {
         }
       ],
       "category": Blockly.Categories.knit,
-      "extensions": ["colours_knit", "shape_statement"]
+      "extensions": ["colours_knit", "shape_end"]
     });
   }
 };
@@ -317,6 +271,54 @@ Blockly.Blocks['knit_changecolorto'] = {
         {
           "type": "input_value",
           "name": "COLOR"
+        }
+      ],
+      "category": Blockly.Categories.knit,
+      "extensions": ["colours_knit", "shape_statement"]
+    });
+  }
+};
+
+// UNIMPLEMENTED KNIT BLOCKS
+
+Blockly.Blocks['knit_nextrow'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1 %2 move to next row",
+      "args0": [
+        {
+          "type": "field_image",
+          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
+          "width": 40,
+          "height": 40
+        },
+        {
+          "type": "field_vertical_separator"
+        }
+      ],
+      "category": Blockly.Categories.knit,
+      "extensions": ["colours_knit", "shape_statement"]
+    });
+  }
+};
+
+Blockly.Blocks['knit_purlstitches'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1 %2 purl stitches %3",
+      "args0": [
+        {
+          "type": "field_image",
+          "src": Blockly.mainWorkspace.options.pathToMedia + "extensions/knit-block-icon.svg",
+          "width": 40,
+          "height": 40
+        },
+        {
+          "type": "field_vertical_separator"
+        },
+        {
+          "type": "input_value",
+          "name": "VALUE"
         }
       ],
       "category": Blockly.Categories.knit,

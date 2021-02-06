@@ -460,9 +460,9 @@ Blockly.Css.CONTENT = [
 
   '.blocklyText {',
     'fill: #777;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    'font-family: Futura, "Trebuchet MS", Arial, sans-serif;',
     'font-size: 12pt;',
-    'font-weight: 500;',
+    'font-weight: normal;',
   '}',
 
   '.blocklyTextTruncated {',
