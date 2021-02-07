@@ -248,7 +248,7 @@ Blockly.Blocks.defaultToolbox = '<xml id="toolbox-categories" style="display: no
   //   '</block>' +
   //   '<block type="sound_volume" id="sound_volume"></block>' +
   // '</category>' +
-  '<category name="Knitting" id="knit" colour="#f1fffa" secondaryColour="#adffe2">' +
+  '<category name="Knitting" id="knit" colour="#ffffff" secondaryColour="#8ca1ef">' +
     '<block type="knit_knitstitches" id="knit_knitstitches">' +
       '<value name="VALUE">' +
         '<shadow type="math_positive_number">' +
@@ -272,7 +272,34 @@ Blockly.Blocks.defaultToolbox = '<xml id="toolbox-categories" style="display: no
     '</block>' +
     '<block type="knit_castoffstitches" id="knit_castoffstitches"></block>' +
   '</category>' +
-  '<category name="%{BKY_CATEGORY_CONTROL}" id="control" colour="#ccfccb" secondaryColour="#b3fbb2">' +
+  '<category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="#F7B05B" secondaryColour="#F6A23C">' +
+    '<block type="event_whenflagclicked" id="event_whenflagclicked"></block>' +
+    '<block type="event_whenkeypressed" id="event_whenkeypressed">' +
+    '</block>' +
+    '<block type="event_whenthisspriteclicked" id="event_whenthisspriteclicked"></block>' +
+    '<block type="event_whenbackdropswitchesto" id="event_whenbackdropswitchesto">' +
+    '</block>' +
+    '<block type="event_whengreaterthan" id="event_whengreaterthan">' +
+      '<value name="VALUE">' +
+        '<shadow type="math_number">' +
+          '<field name="NUM">10</field>' +
+        '</shadow>' +
+      '</value>' +
+    '</block>' +
+    '<block type="event_whenbroadcastreceived" id="event_whenbroadcastreceived">' +
+    '</block>' +
+    '<block type="event_broadcast" id="event_broadcast">' +
+      '<value name="BROADCAST_INPUT">' +
+        '<shadow type="event_broadcast_menu"></shadow>' +
+      '</value>' +
+    '</block>' +
+    '<block type="event_broadcastandwait" id="event_broadcastandwait">' +
+      '<value name="BROADCAST_INPUT">' +
+        '<shadow type="event_broadcast_menu"></shadow>' +
+      '</value>' +
+    '</block>' +
+  '</category>' +
+  '<category name="%{BKY_CATEGORY_CONTROL}" id="control" colour="#85E0DF" secondaryColour="#70BAB9">' +
     '<block type="control_wait" id="control_wait">' +
       '<value name="DURATION">' +
         '<shadow type="math_positive_number">' +
@@ -345,7 +372,7 @@ Blockly.Blocks.defaultToolbox = '<xml id="toolbox-categories" style="display: no
   //   '<block type="sensing_current" id="sensing_current"></block>' +
   //   '<block type="sensing_dayssince2000" id="sensing_dayssince2000"></block>' +
   // '</category>' +
-  '<category name="%{BKY_CATEGORY_OPERATORS}" id="operators" colour="#40BF4A" secondaryColour="#389438">' +
+  '<category name="%{BKY_CATEGORY_OPERATORS}" id="operators" colour="#ccfccb" secondaryColour="#8df88b">' +
     '<block type="operator_add" id="operator_add">' +
       '<value name="NUM1">' +
         '<shadow type="math_number">' +
@@ -558,31 +585,4 @@ Blockly.Blocks.defaultToolbox = '<xml id="toolbox-categories" style="display: no
     //     '</shadow>' +
     //   '</value>' +
     // '</block>' +
-    '<category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="#F7B05B" secondaryColour="#F6A23C">' +
-      '<block type="event_whenflagclicked" id="event_whenflagclicked"></block>' +
-      '<block type="event_whenkeypressed" id="event_whenkeypressed">' +
-      '</block>' +
-      '<block type="event_whenthisspriteclicked" id="event_whenthisspriteclicked"></block>' +
-      '<block type="event_whenbackdropswitchesto" id="event_whenbackdropswitchesto">' +
-      '</block>' +
-      '<block type="event_whengreaterthan" id="event_whengreaterthan">' +
-        '<value name="VALUE">' +
-          '<shadow type="math_number">' +
-            '<field name="NUM">10</field>' +
-          '</shadow>' +
-        '</value>' +
-      '</block>' +
-      '<block type="event_whenbroadcastreceived" id="event_whenbroadcastreceived">' +
-      '</block>' +
-      '<block type="event_broadcast" id="event_broadcast">' +
-        '<value name="BROADCAST_INPUT">' +
-          '<shadow type="event_broadcast_menu"></shadow>' +
-        '</value>' +
-      '</block>' +
-      '<block type="event_broadcastandwait" id="event_broadcastandwait">' +
-        '<value name="BROADCAST_INPUT">' +
-          '<shadow type="event_broadcast_menu"></shadow>' +
-        '</value>' +
-      '</block>' +
-    '</category>' +
   '</xml>';
