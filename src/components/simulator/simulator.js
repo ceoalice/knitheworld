@@ -207,7 +207,7 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        const version = "v2.5.21.1"
+        const version = "v2.7.21.0"
         // note pixelCount is a legacy variable from pixelplay,
         // it refers to the number of columns in the pattern as
         // as set by the user.

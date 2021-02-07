@@ -128,7 +128,7 @@ const reducer = function (state, action) {
             newColors.push('rgba(255,255,255,0)');
         }
         // if (state.pixelCount < 25){
-          console.log("adding column...");
+          // console.log("adding column...");
           return Object.assign({}, state, {
               pixelCount: state.pixelCount+1,
               pixelColors: newColors
@@ -176,13 +176,13 @@ const reducer = function (state, action) {
         });
     }
     case NEXT_ROW: {
-        console.log("logged next row!");
+        // console.log("logged next row!");
         const newColors = [...state.pixelColors];
         for (let i=0; i<state.pixelCount; i++){
             newColors.push('rgba(255,255,255,0)');
         }
         // if (state.rowCount < 12){
-          console.log("adding row...");
+          // console.log("adding row...");
           return Object.assign({}, state, {
               rowCount: state.rowCount+1,
               pixelColors: newColors
@@ -194,7 +194,7 @@ const reducer = function (state, action) {
         // }
     }
     case KNIT_STITCHES: {
-        console.log("logged knit stitches!");
+        // console.log("logged knit stitches!");
         let select = state.selectedPixel
         const newColors = [...state.pixelColors];
 
@@ -210,7 +210,7 @@ const reducer = function (state, action) {
         });
     }
     case KNIT_UNTIL_END_OF_ROW: {
-        console.log("logged knit until end of row");
+        // console.log("logged knit until end of row");
         let select = state.selectedPixel;
         let nextRow = Math.floor(select/state.pixelCount)+1;
         const newColors = [...state.pixelColors];
@@ -238,7 +238,7 @@ const reducer = function (state, action) {
         }
 
         if (nextRow === 1){
-          console.log("casting on..." + toKnit + " stitches");
+          // console.log("casting on..." + toKnit + " stitches");
           return Object.assign({}, state, {
             pixelColors: newColors,
             selectedPixel: select+toKnit
@@ -261,7 +261,7 @@ const reducer = function (state, action) {
         }
 
         if (select+toKnit === state.pixelCount*state.rowCount){
-          console.log("casting off..." + toKnit + " stitches");
+          // console.log("casting off..." + toKnit + " stitches");
           return Object.assign({}, state, {
             pixelColors: newColors,
             selectedPixel: select+toKnit
@@ -274,13 +274,13 @@ const reducer = function (state, action) {
     }
     case CHANGE_YARN_COLOR: {
         const newColor = "rgb(" + action.value[0] + "," + action.value[1] + "," + action.value[2] + ")";
-        console.log("logged change color to " + newColor);
+        // console.log("logged change color to " + newColor);
         return Object.assign({}, state, {
             currentColor: newColor
         });
     }
     case REMOVE_ROW: {
-        console.log("logged remove row!");
+        // console.log("logged remove row!");
         const newColors = [...state.pixelColors];
         for (let i=0; i<state.pixelCount; i++){
             newColors.pop();

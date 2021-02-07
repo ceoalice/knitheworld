@@ -12,7 +12,6 @@ import styles from './download-button.css';
 
 const DownloadButtonComponent = props => {
     return (
-        <>
         <div className={styles.pixelStyleTools}>
             <ImageButtonComponent
                 width={40}
@@ -39,7 +38,6 @@ const DownloadButtonComponent = props => {
                 src={downloadStitchButton}
             />
         </div>
-        </>
     );
 };
 

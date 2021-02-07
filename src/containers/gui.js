@@ -15,6 +15,7 @@ class GUI extends React.Component {
         this.vm = new VM();
         this.state = {
           blockKeys: [],
+          fieldValues: [],
           startupToggle: false
         };
         this.vm.on('PROJECT_CHANGED', () => {
@@ -27,6 +28,19 @@ class GUI extends React.Component {
             return el != null;
           });
 
+
+          let blockFields = Object.values(this.vm.runtime.targets[0].blocks._blocks).map(value => value.fields);
+
+          var blockFieldIDs = []
+
+          for (var i in blockFields){
+            blockFieldIDs.push(Object.values(blockFields[i]).map(value => value.value));
+          }
+
+          var filteredBlockFieldIDs = blockFieldIDs.filter(function (el) {
+            return el.length != 0;
+          });
+
           // https://www.30secondsofcode.org/blog/s/javascript-array-comparison
           const equals = (a, b) =>
             a.length === b.length &&
@@ -35,15 +49,18 @@ class GUI extends React.Component {
           // since we can't init BlockKeys in the constructor with values from the runtime,
           // we use this toggle to init the value once the comopnent is constructed
           if (this.state.startupToggle === false) {
-            console.log("toggled, init");
             this.setState({blockKeys: filteredBlockParentIDs});
+            this.setState({fieldValues: filteredBlockFieldIDs});
             this.setState({startupToggle: true});
-          }
+          } else {
+            if (equals(filteredBlockParentIDs,this.state.blockKeys) === false || equals(filteredBlockFieldIDs,this.state.fieldValues) === false){
 
-          if (equals(filteredBlockParentIDs,this.state.blockKeys) === false && this.state.startupToggle === true){
-            console.log("changed!");
-            this.setState({blockKeys: filteredBlockParentIDs});
-            this.props.clearPixels();
+              console.log("updating canvas...");
+              this.setState({blockKeys: filteredBlockParentIDs});
+              // trigger an update here somehow!
+              this.props.clearPixels();
+              this.vm.runtime.startHats('event_whenstarted');
+            }
           }
         });
     }

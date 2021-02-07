@@ -25,7 +25,7 @@ const defaultToolbox =
       </block>
       <block type="knit_castoffstitches" />
     </category>
-    <category name="%{BKY_CATEGORY_CONTROL}" id="control" colour="#ccfccb" secondaryColour="#b3fbb2">
+    <category name="Logic" id="control" colour="#85E0DF" secondaryColour="#70BAB9">
       <block id="control_repeat" type="control_repeat">
         <value name="TIMES">
           <shadow type="math_whole_number">
@@ -39,7 +39,7 @@ const defaultToolbox =
       <block type="control_if_else" id="control_if_else"></block>
       <block id="control_stop" type="control_stop"></block>
     </category>
-    <category name="%{BKY_CATEGORY_OPERATORS}" id="operators" colour="#40BF4A" secondaryColour="#389438">
+    <category name="Math" id="operators" colour="#ccfccb" secondaryColour="#8df88b">
       <block type="operator_add" id="operator_add">
         <value name="NUM1">
           <shadow type="math_number">
@@ -168,7 +168,6 @@ const defaultToolbox =
     </category>
     <category name="%{BKY_CATEGORY_VARIABLES}" id="data" colour="#8be4ac" secondaryColour="#6adc94" custom="VARIABLE"></category>
     <category name="%{BKY_CATEGORY_MYBLOCKS}" id="more" colour="#ffa686" secondaryColour="#ff875c" custom="PROCEDURE"></category>
-    <category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="#F7B05B" secondaryColour="#F6A23C"></category>
   </xml>`;
 
 export default defaultToolbox;
