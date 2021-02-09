@@ -7,8 +7,6 @@ import {clearThePixels} from '../reducers/pixels.js';
 
 import GUIComponent from '../components/gui/gui.js';
 
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
 class GUI extends React.Component {
     constructor (props) {
         super(props);

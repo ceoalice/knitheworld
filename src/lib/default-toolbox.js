@@ -38,6 +38,12 @@ const defaultToolbox =
       <block type="control_if" id="control_if"></block>
       <block type="control_if_else" id="control_if_else"></block>
       <block id="control_stop" type="control_stop"></block>
+      <block type="event_whenbroadcastreceived" id="event_whenbroadcastreceived"></block>
+      <block type="event_broadcastandwait" id="event_broadcastandwait">
+        <value name="BROADCAST_INPUT">
+          <shadow type="event_broadcast_menu"></shadow>
+        </value>
+      </block>
     </category>
     <category name="Math" id="operators" colour="#ccfccb" secondaryColour="#8df88b">
       <block type="operator_add" id="operator_add">

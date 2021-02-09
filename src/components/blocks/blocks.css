@@ -1,5 +1,7 @@
 .blocks {
-  flex: 1;
+  width: 60%;
+  height: 100%;
+  float: left;
 }
 
 .blocks :global(.blocklyScrollbarHandle) {

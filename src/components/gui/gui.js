@@ -20,10 +20,10 @@ const GUIComponent = props => {
         <SimulatorPanelComponent vm={props.vm} />;
     return (
         <React.Fragment>
+            <Blocks vm={props.vm} />
             <div className={styles.simulatorContainer}>
                 {props.fullscreenVisible ? null : panel}
             </div>
-            <Blocks vm={props.vm} />
             <WebBTButton />
             <DownloadButton />
             {props.fullscreenVisible ? (
