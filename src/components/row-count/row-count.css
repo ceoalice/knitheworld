@@ -1,16 +1,19 @@
 .rowCountTools {
-    display: flex;
+    display: inline-block;
     user-select: none;
+    vertical-align: middle;
+    padding: 0px 5px 0px 5px
   }
-  
+
   .rowCount {
-    display: flex;
+    display: inline-block;
+    margin: auto;
     align-items: center;
     justify-content: center;
-    height: 35px;
-    padding: 5px 0;
+    height: 25px;
+    padding: 0px 5px 0px 5px;
     color: white;
-    font: 18px sans-serif;
+    font: 15px sans-serif;
     text-align: center;
+    vertical-align: middle;
   }
-  

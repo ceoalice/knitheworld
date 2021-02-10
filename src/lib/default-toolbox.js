@@ -38,12 +38,6 @@ const defaultToolbox =
       <block type="control_if" id="control_if"></block>
       <block type="control_if_else" id="control_if_else"></block>
       <block id="control_stop" type="control_stop"></block>
-      <block type="event_whenbroadcastreceived" id="event_whenbroadcastreceived"></block>
-      <block type="event_broadcastandwait" id="event_broadcastandwait">
-        <value name="BROADCAST_INPUT">
-          <shadow type="event_broadcast_menu"></shadow>
-        </value>
-      </block>
     </category>
     <category name="Math" id="operators" colour="#ccfccb" secondaryColour="#8df88b">
       <block type="operator_add" id="operator_add">
@@ -173,7 +167,14 @@ const defaultToolbox =
       <block type="operator_not" id="operator_not"></block>
     </category>
     <category name="%{BKY_CATEGORY_VARIABLES}" id="data" colour="#8be4ac" secondaryColour="#6adc94" custom="VARIABLE"></category>
-    <category name="%{BKY_CATEGORY_MYBLOCKS}" id="more" colour="#ffa686" secondaryColour="#ff875c" custom="PROCEDURE"></category>
+    <category name="Functions" id="events" colour="#F7B05B" secondaryColour="#F6A23C">
+      <block type="event_whenbroadcastreceived" id="event_whenbroadcastreceived"></block>
+      <block type="event_broadcastandwait" id="event_broadcastandwait">
+        <value name="BROADCAST_INPUT">
+          <shadow type="event_broadcast_menu"></shadow>
+        </value>
+      </block>
+    </category>
   </xml>`;
 
 export default defaultToolbox;

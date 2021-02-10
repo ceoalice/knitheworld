@@ -90,8 +90,6 @@ import {
 
 import VMScratchBlocks from '../lib/blocks.js';
 
-
-
 import DownloadButtonComponent from '../components/knit-buttons/download-button.js';
 
 class DownloadButton extends React.Component {
@@ -138,7 +136,7 @@ class DownloadButton extends React.Component {
 
     render() {
         return (
-            <DownloadButtonComponent 
+            <DownloadButtonComponent
                 downloadCode = {this.downloadCode}
                 uploadCode = {this.uploadCode}
                 fileChooser = {this.fileChooser}

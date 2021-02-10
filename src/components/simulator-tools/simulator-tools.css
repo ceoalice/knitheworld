@@ -7,5 +7,10 @@
 
 .pixelCountContainer {
   position: absolute;
-  top: 0px
+  bottom: 65%;
+}
+
+.rowCountContainer {
+  position: absolute;
+  top: 35%;
 }

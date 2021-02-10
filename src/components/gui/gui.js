@@ -8,6 +8,8 @@ import SimulatorModal from '../../containers/simulator-modal.js';
 import WebBTButton from '../../containers/webbt-button.js';
 import DownloadButton from '../../containers/download-button.js';
 
+import StartButton from '../../containers/start-button.js';
+
 import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
 import DownloadPanelComponent from '../download-panel/download-panel.js';
 
@@ -24,13 +26,6 @@ const GUIComponent = props => {
             <div className={styles.simulatorContainer}>
                 {props.fullscreenVisible ? null : panel}
             </div>
-            <WebBTButton />
-            <DownloadButton />
-            {props.fullscreenVisible ? (
-                <SimulatorModal
-                    {...componentProps}
-                />
-            ) : null}
         </React.Fragment>
     );
 };
@@ -42,3 +37,9 @@ GUIComponent.propTypes = {
 };
 
 export default GUIComponent;
+
+// {props.fullscreenVisible ? (
+//     <SimulatorModal
+//         {...componentProps}
+//     />
+// ) : null}

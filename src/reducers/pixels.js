@@ -65,13 +65,16 @@ const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
     pixelCount: 25,
-    rowCount: 12,
+    rowCount: 20,
     pixelColors: grayedSquares(300),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
     downloadingPixels: false,
     downloadingStitches: false
 };
+// note pixelCount is a legacy variable from pixelplay,
+// it refers to the number of columns in the pattern as
+// as set by the user.
 
 const reducer = function (state, action) {
     if (typeof state === 'undefined') state = initialState;

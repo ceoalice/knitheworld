@@ -7,6 +7,7 @@ import downloadButton from './icon--pattern_download.svg';
 import downloadCodeButton from './icon--download.svg';
 import unravelButton from './icon--unravel.svg';
 import downloadStitchButton from './icon--download_stitches.svg';
+import uploadCodeButton from './icon--upload_code.svg'
 // put an upload button image source file here
 
 import styles from './download-button.css';
@@ -42,9 +43,9 @@ const DownloadButtonComponent = props => {
                 width={40}
                 height={40}
                 handleClick={props.uploadCode}
-                src={downloadCodeButton}
+                src={uploadCodeButton}
             />
-            <input 
+            <input
                 type="file"
                 className={styles.fileInput}
                 onInput={props.loadCode}

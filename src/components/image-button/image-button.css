@@ -6,6 +6,9 @@
   padding: 5px;
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .button {

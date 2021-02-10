@@ -10,7 +10,7 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: none;
   }
-  
+
   .button {
     pointer-events: none;
   }
@@ -18,11 +18,10 @@
   .pixelStyleTools {
     display: flex;
     position: absolute;
-    top: 5px;
-    left: 5px;
+    bottom: 65%;
+    right: 10%;
   }
 
   .fileInput {
     display: none;
   }
-  

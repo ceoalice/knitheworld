@@ -76,14 +76,10 @@ class GUI extends React.Component {
     render () {
         const {...componentProps} = this.props;
         return (
-          //<TransformWrapper>
-            //<TransformComponent>
-              <GUIComponent
-                vm={this.vm}
-                {...componentProps}
-              />
-            //</TransformComponent>
-          //</TransformWrapper>
+            <GUIComponent
+              vm={this.vm}
+              {...componentProps}
+            />
         );
     }
 }

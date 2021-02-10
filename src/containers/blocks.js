@@ -103,7 +103,7 @@ Blocks.defaultWorkspace =
       <block type="knit_changecolorto">
         <value name="COLOR">
           <shadow type="colour_picker">
-            <field name="COLOUR">#b6c3f5</field>
+            <field name="COLOUR">#ffa686</field>
           </shadow>
         </value>
         <next>
@@ -124,7 +124,7 @@ Blocks.defaultWorkspace =
                   <block type="knit_changecolorto">
                     <value name="COLOR">
                       <shadow type="colour_picker">
-                        <field name="COLOUR">#bfd7ea</field>
+                        <field name="COLOUR">#f7ed77</field>
                       </shadow>
                     </value>
                     <next>
@@ -133,7 +133,7 @@ Blocks.defaultWorkspace =
                           <block type="knit_changecolorto">
                             <value name="COLOR">
                               <shadow type="colour_picker">
-                                <field name="COLOUR">#b6c3f5</field>
+                                <field name="COLOUR">#ffa686</field>
                               </shadow>
                             </value>
                             <next>
@@ -150,7 +150,7 @@ Blocks.defaultWorkspace =
                   <block type="knit_changecolorto">
                     <value name="COLOR">
                       <shadow type="colour_picker">
-                        <field name="COLOUR">#bfd7ea</field>
+                        <field name="COLOUR">#f7ed77</field>
                       </shadow>
                     </value>
                     <next>

@@ -11,6 +11,8 @@ import {
 
 import styles from './simulator.css';
 
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -101,63 +103,12 @@ class SimulatorComponent extends React.Component {
 
         pixelctx.save();
 
-        function drawStitch(x, y, size){
-            //
-            // var img = new Image();
-            // img.onload = function() {
-            //   ctx.drawImage(img, x, y);
-            // }
-            // img.src = "./knit-block-icon.svg";
-
-            const scaleFactor = 0.5*size/20
-            const translator = [14, 26];
-
-            pixelctx.scale(scaleFactor, scaleFactor);
-            pixelctx.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
-
-
-            pixelctx.translate(50, 83);
-            pixelctx.rotate(Math.PI/3);
-            pixelctx.translate(-50, -83);
-
-            pixelctx.beginPath();
-            pixelctx.moveTo(25, 75);
-            pixelctx.lineTo(50,75);
-            pixelctx.arc(50,100,25,6*Math.PI/4, 0,false);
-            pixelctx.lineTo(50, 100);
-            pixelctx.arc(50,75,25,Math.PI/2,Math.PI,false);
-            pixelctx.closePath();
-            pixelctx.fill();
-
-            pixelctx.translate(50, 83);
-            pixelctx.rotate(-1*Math.PI/3);
-            pixelctx.translate(-50, -83);
-
-            pixelctx.translate(67, 83);
-            pixelctx.rotate(-1*Math.PI/3);
-            pixelctx.translate(-67, -83);
-
-            pixelctx.moveTo(92,75);
-            pixelctx.lineTo(67,75);
-            pixelctx.arc(67,100,25,6*Math.PI/4, Math.PI, true);
-            pixelctx.lineTo(67,100);
-            pixelctx.arc(67,75,25,Math.PI/2,0,true);
-            pixelctx.fill();
-
-            pixelctx.translate(67, 83);
-            pixelctx.rotate(Math.PI/3);
-            pixelctx.translate(-67, -83);
-
-            pixelctx.setTransform(1, 0, 0, 1, 0, 0);
-        }
-
         let stitchCount = pixelCount * rowCount;
 
         for (let i=0; i<stitchCount; i++) {
-          // draw jawns
           pixelctx.fillStyle = pixelColors[i];
           let currentRow = Math.floor(i/pixelCount);
-          drawStitch(25*(i%pixelCount), 25*currentRow, 20);
+          pixelctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
         }
 
         pixelctx.restore();
@@ -180,6 +131,9 @@ class SimulatorComponent extends React.Component {
         const canvas = this.canvasRef.current;
         const ctx = canvas.getContext('2d');
         ctx.save();
+
+        console.log("width is " + this.width);
+        console.log("height is " + this.height);
 
         // this.pixelCanvas.width = this.props.pixelCount;
         // this.pixelCanvas.height = this.props.rowCount;
@@ -207,122 +161,89 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        const version = "v2.7.21.0"
-        // note pixelCount is a legacy variable from pixelplay,
-        // it refers to the number of columns in the pattern as
-        // as set by the user.
+        // used to outline the container :)
+        // ctx.lineWidth = 5;
+        // ctx.strokeStyle = "#f7ed77"
+        // ctx.strokeRect(0,0,this.width,this.height);
 
-        // console.log(pixelColors);
-
-        function drawStitch(x, y, size, visibility){
-            //
-            // var img = new Image();
-            // img.onload = function() {
-            //   ctx.drawImage(img, x, y);
-            // }
-            // img.src = "./knit-block-icon.svg";
-
-            const scaleFactor = 0.5*size/20
-            const translator = !visibility ? [14, 26] : [55, 100];
-
-            ctx.scale(scaleFactor, scaleFactor);
-            ctx.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
-
-
-            ctx.translate(50, 83);
-            ctx.rotate(Math.PI/3);
-            ctx.translate(-50, -83);
-
-            ctx.beginPath();
-            ctx.moveTo(25, 75);
-            ctx.lineTo(50,75);
-            ctx.arc(50,100,25,6*Math.PI/4, 0,false);
-            ctx.lineTo(50, 100);
-            ctx.arc(50,75,25,Math.PI/2,Math.PI,false);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.translate(50, 83);
-            ctx.rotate(-1*Math.PI/3);
-            ctx.translate(-50, -83);
-
-            ctx.translate(67, 83);
-            ctx.rotate(-1*Math.PI/3);
-            ctx.translate(-67, -83);
-
-            ctx.moveTo(92,75);
-            ctx.lineTo(67,75);
-            ctx.arc(67,100,25,6*Math.PI/4, Math.PI, true);
-            ctx.lineTo(67,100);
-            ctx.arc(67,75,25,Math.PI/2,0,true);
-            ctx.fill();
-
-            ctx.translate(67, 83);
-            ctx.rotate(Math.PI/3);
-            ctx.translate(-67, -83);
-
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-        }
+        const version = "v2.9.21.1"
+        ctx.fillStyle = "#ffffff"
+        ctx.fillText(version, 55, this.height - 10);
 
         const padding = 15;
         const carriageDepth = 25;
 
-        // console.log("current color from simulator: ")
-        // console.log(currentColor);
-        // let currentColorRGB = getRGBfromHex(currentColor);
-
         const stitchCount = pixelCount * rowCount;
 
-        const gridSize = !this.props.fullscreenVisible ? (this.height - padding) / 2 :
-            this.height < this.width ? (this.height - 120) / 2 : (this.width - 120) / 2;
+        const pixelSize = 12;
+        const pixelGap = 5;
 
-        const pixelSize = !this.props.fullscreenVisible ? 12 : 30;
-        const pixelGap = !this.props.fullscreenVisible ? 5 : 5;
+        // draw "carriage," number/grid border thing
+        ctx.fillStyle = "#c2e3f9";
 
+        ctx.beginPath();
+        ctx.moveTo(0, (pixelSize + pixelGap)*2-(2*pixelGap));
+        ctx.lineTo(0, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap)
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap);
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
+        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
+        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), 0);
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), 0);
+        ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap), ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
+        ctx.fill();
+
+        // design prep for text
+        ctx.textAlign = 'center';
+        ctx.font = '10px sans-serif';
+        ctx.fillStyle = '#ffffff';
+
+        // draw column (stitch) count numbers
+        for (let i=0; i<pixelCount; i++){
+          ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2), pixelSize+(pixelGap/2));
+        }
+
+        // draw row count numbers
+        for (let i=0; i<rowCount; i++){
+          ctx.fillText(i+1, pixelSize, (i+2)*(pixelSize+pixelGap));
+        }
+
+        ctx.globalAlpha = 0.3;
+
+        // draw gray and white canvas background grid
         for (let i=0; i<stitchCount; i++){
+
           let currentRow = Math.floor(i/pixelCount);
-
-          let relativeX = (i%pixelCount) * (pixelSize + pixelGap);
-          let relativeY = currentRow * (pixelSize + pixelGap);
-
-          let rowCountX = this.width/2-pixelCount*(pixelSize + pixelGap)/2-pixelSize-pixelGap;
-
-          let currentX = 0;
-          // controls direction of pixel movement
-          // starts left to right, alternates
-          if (currentRow % 2 == 0){
-              currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
-          }
-          else {
-              currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
-          }
-
-          let currentY = relativeY + carriageDepth*1.25 + pixelGap;
 
           let dark = "#d9d9d9"
           let light = "#ffffff"
 
           let gridColor = dark;
-          if (i%2 === 0){
-            gridColor = dark;
+
+          // \/ this took every single one of my braincells, I don't know why
+          if ((i%pixelCount)%2 === 0){
+            if (currentRow%2 === 0)
+              gridColor = dark;
+            else
+              gridColor = light;
           }
-          else{
-            gridColor = light;
+          else {
+            if (currentRow%2 === 0)
+              gridColor = light;
+            else
+              gridColor = dark;
           }
 
+          let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
+          let currentY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
+
           ctx.fillStyle = gridColor;
-          ctx.fillRect(currentX, currentY, pixelSize, pixelSize);
+          ctx.fillRect(currentX, currentY, pixelSize+pixelGap, pixelSize+pixelGap);
 
         }
 
-        // draw the 'carriage' from which the pattern will appear
-        ctx.fillStyle = '#555555'
-        ctx.fillRect(this.width*1/6, 0, this.width*2/3, carriageDepth);
+        ctx.globalAlpha = 1;
 
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.fillText(version, 55, this.height - 10);
-
+        // draw the stitches from the block data :)
         for (let i=0; i<stitchCount; i++){
             let currentRow = Math.floor(i/pixelCount);
 
@@ -331,73 +252,94 @@ class SimulatorComponent extends React.Component {
 
             let rowCountX = this.width/2-pixelCount*(pixelSize + pixelGap)/2-pixelSize-pixelGap;
 
-            let currentX = 0;
+            // let currentX = 0;
+            //
+            // // controls direction of pixel movement
+            // // starts left to right, alternates
+            // // if (currentRow % 2 == 0){
+            // //     currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
+            // // }
+            // // else {
+            // //     currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
+            // // }
+            //
+            // currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
+            //
+            // let currentY = relativeY + carriageDepth*1.25 + pixelGap;
 
-            // controls direction of pixel movement
-            // starts left to right, alternates
-            // if (currentRow % 2 == 0){
-            //     currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
-            // }
-            // else {
-            //     currentX += this.width/2-relativeX+((pixelCount-2)*(pixelSize + pixelGap)/2);
-            // }
-
-            currentX += this.width/2+relativeX-(pixelCount*(pixelSize + pixelGap)/2);
-
-            let currentY = relativeY + carriageDepth*1.25 + pixelGap;
+            let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(pixelGap);
+            let currentY = (pixelSize + pixelGap)*(currentRow+2);
 
             ctx.strokeStyle = '#ffd500'
             ctx.fillStyle = pixelColors[i];
             // ctx.fillRect(currentX, currentY, pixelSize, pixelSize);
             // ctx.strokeRect(currentX, currentY, pixelSize, pixelSize);
 
-            drawStitch(currentX, currentY, pixelSize, this.props.fullscreenVisible);
-
-            if (i<=pixelCount){
-              ctx.fillStyle = '#ffffff';
-              ctx.fillText(i + 1, currentX, carriageDepth/2);
-            }
-
-            if (i%rowCount==0) {
-              ctx.fillStyle = '#ffffff';
-              ctx.fillText(i/rowCount+1, rowCountX, currentY);
-            }
-
-            ctx.fillStyle = '#333333';
-            ctx.textAlign = 'center';
-            if (i<99){
-              ctx.font = '10px sans-serif';
-            }
-            else if (i<999){
-              ctx.font = '9px sans-serif';
-            }
-            else {
-              ctx.font = '7px sans-serif';
-            }
+            ctx.drawStitch(currentX, currentY, pixelSize);
         }
     }
 
     render() {
         return (
-            <canvas
-                className={styles.simulator}
-                ref={this.canvasRef}
-            />
+          // <TransformWrapper
+          //   limitToBounds={false}
+          //   scale={1.5}
+          //   step={1}
+          //   >
+            // <TransformComponent>
+              <canvas
+                  className={styles.simulator}
+                  ref={this.canvasRef}
+              />
+          //   </TransformComponent>
+          // </TransformWrapper>
         );
     }
 }
 
-CanvasRenderingContext2D.prototype.roundedRect = function(x, y, w, h, r) {
-    const halfRadians = (2 * Math.PI) / 2;
-    const quarterRadians = (2 * Math.PI) / 4;
-    this.arc(r+x, r+y, r, -quarterRadians, halfRadians, true);
-    this.lineTo(x, y+h-r);
-    this.arc(r+x, h-r+y, r, halfRadians, quarterRadians, true);
-    this.lineTo(x+w-r, y+h);
-    this.arc(x+w-r, y+h-r, r, quarterRadians, 0, true);
-    this.lineTo(x+w, y+r);
-    this.arc(x+w-r, y+r, r, 0, -quarterRadians, true);
-    this.lineTo(x+r, y);
+CanvasRenderingContext2D.prototype.drawStitch = function(x, y, size) {
+
+    // handles the ctx / svg path mess that draws the stitch shape on the canvas
+    // draws large scale and then scales to fit using an arbitrary scale factor :)
+
+    const scaleFactor = 0.5*size/20
+    const translator = [14, 26];
+    this.scale(scaleFactor, scaleFactor);
+    this.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
+
+    this.translate(50, 83);
+    this.rotate(Math.PI/3);
+    this.translate(-50, -83);
+
+    this.beginPath();
+    this.moveTo(25, 75);
+    this.lineTo(50,75);
+    this.arc(50,100,25,6*Math.PI/4, 0,false);
+    this.lineTo(50, 100);
+    this.arc(50,75,25,Math.PI/2,Math.PI,false);
+    this.closePath();
+    this.fill();
+
+    this.translate(50, 83);
+    this.rotate(-1*Math.PI/3);
+    this.translate(-50, -83);
+
+    this.translate(67, 83);
+    this.rotate(-1*Math.PI/3);
+    this.translate(-67, -83);
+
+    this.moveTo(92,75);
+    this.lineTo(67,75);
+    this.arc(67,100,25,6*Math.PI/4, Math.PI, true);
+    this.lineTo(67,100);
+    this.arc(67,75,25,Math.PI/2,0,true);
+    this.fill();
+
+    this.translate(67, 83);
+    this.rotate(Math.PI/3);
+    this.translate(-67, -83);
+
+    this.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 const mapStateToProps = state => ({
