@@ -736,7 +736,7 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklyFlyoutBackground {',
-    'fill: $colour_flyout;',
+    'fill: #c2e3f9;',
     'fill-opacity: .8;',
   '}',
 
@@ -848,12 +848,12 @@ Blockly.Css.CONTENT = [
 
   /* Category tree in Toolbox. */
   '.blocklyToolboxDiv {',
-    'background-color: $colour_toolbox;',
-    'color: $colour_toolboxText;',
+    'background-color: #a3cef0;',
+    'color: #777777;',
     'overflow-x: visible;',
     'overflow-y: auto;',
     'position: absolute;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    'font-family: Futura, "Trebuchet MS", Arial, sans-serif;',
     'z-index: 40;', /* so blocks go over toolbox when dragging */
     '-webkit-tap-highlight-color: transparent;', /* issue #1345 */
   '}',
@@ -1285,7 +1285,7 @@ Blockly.Css.CONTENT = [
 
   '.scratchCategoryMenu {',
     'width: 60px;',
-    'background: $colour_toolbox;',
+    'background: #7db6db;',
     'color: $colour_toolboxText;',
     'font-size: .7rem;',
     'user-select: none;',
@@ -1325,7 +1325,7 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.scratchCategoryMenuItem.categorySelected {',
-    'background: $colour_toolboxSelected;',
+    'background: #7db6db;',
   '}',
 
   '.scratchCategoryItemBubble {',

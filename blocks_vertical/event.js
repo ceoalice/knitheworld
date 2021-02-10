@@ -131,7 +131,7 @@ Blockly.Blocks['event_whenbroadcastreceived'] = {
   init: function() {
     this.jsonInit({
       "id": "event_whenbroadcastreceived",
-      "message0": Blockly.Msg.EVENT_WHENBROADCASTRECEIVED,
+      "message0": "define function %1",
       "args0": [
         {
           "type": "field_variable",
@@ -249,7 +249,7 @@ Blockly.Blocks['event_broadcastandwait'] = {
    */
   init: function() {
     this.jsonInit({
-      "message0": Blockly.Msg.EVENT_BROADCASTANDWAIT,
+      "message0": "run function %1",
       "args0": [
         {
           "type":"input_value",
