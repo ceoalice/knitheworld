@@ -33,107 +33,34 @@ class SimulatorComponent extends React.Component {
 
     componentDidUpdate () {
       if (this.props.downloadingPixels === true){
-        this.toggleDownload(1);
+        this.toggleDownload();
         console.log("downloading!");
       }
       if (this.props.downloadingStitches === true){
-        this.toggleDownload(2);
+        this.toggleDownload();
         console.log("downloading stitches!");
       }
 
       this.refreshCanvas();
     }
 
-    // type of download: 1 = pixels, 2 = stitches
-    toggleDownload (type) {
-      const {
-          pixelCount,
-          selectedPixel,
-          pixelColors,
-          rowCount,
-          currentColor
-      } = {...this.props};
-
-      if (type === 1) {
-        this.props.toggleDownloadPixels();
-        console.log("toggled to " + this.props.downloadingPixels + "!");
-
-        // make new canvas for downloading here
-
-        const pixelCanvas = document.createElement('canvas');
-        console.log("pixelCanvas is " + pixelCanvas);
-        console.log(pixelCanvas);
-        pixelCanvas.width = pixelCount;
-        pixelCanvas.height = rowCount;
-
-        const pixelctx = pixelCanvas.getContext('2d');
-
-        pixelctx.save();
-
-        let stitchCount = pixelCount * rowCount;
-
-        for (let i=0; i<stitchCount; i++) {
-          pixelctx.fillStyle = pixelColors[i];
-          let currentRow = Math.floor(i/pixelCount);
-          pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
-        }
-
-        pixelctx.restore();
-
-        let a = document.createElement('a');
-        a.setAttribute('download', 'My Pixel Pattern.png');
-        pixelCanvas.toBlob(blob => {
-            let url = URL.createObjectURL(blob);
-            a.setAttribute('href', url);
-            a.click();
-        });
-      }
-
-      else if (type === 2) {
-        this.props.toggleDownloadStitches();
-        console.log("toggled to " + this.props.downloadingStitches + "!");
-
-        const pixelCanvas = document.createElement('canvas');
-        console.log("pixelCanvas is " + pixelCanvas);
-        console.log(pixelCanvas);
-        pixelCanvas.width = 25*pixelCount+10;
-        pixelCanvas.height = 25*rowCount+10;
-
-        const pixelctx = pixelCanvas.getContext('2d');
-
-        pixelctx.save();
-
-        let stitchCount = pixelCount * rowCount;
-
-        for (let i=0; i<stitchCount; i++) {
-          pixelctx.fillStyle = pixelColors[i];
-          let currentRow = Math.floor(i/pixelCount);
-          pixelctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
-        }
-
-        pixelctx.restore();
-
-        let a = document.createElement('a');
-        a.setAttribute('download', 'My Knit Pattern.png');
-        pixelCanvas.toBlob(blob => {
-            let url = URL.createObjectURL(blob);
-            a.setAttribute('href', url);
-            a.click();
-        });
-      }
-    }
-
     refreshCanvas () {
-        this.width = this.canvasRef.current.getBoundingClientRect().width;
-        this.height = this.canvasRef.current.getBoundingClientRect().height;
+        // this.width = this.canvasRef.current.getBoundingClientRect().width;
+        // this.height = this.canvasRef.current.getBoundingClientRect().height;
+
+        this.width = this.canvasRef.current.offsetWidth;
+        this.height = this.canvasRef.current.offsetHeight;
+
         this.canvasRef.current.width = this.width;
         this.canvasRef.current.height = this.height;
         const canvas = this.canvasRef.current;
         const ctx = canvas.getContext('2d');
         ctx.save();
 
-        console.log("width is " + this.width);
-        console.log("height is " + this.height);
+        // console.log("width is " + this.width);
+        // console.log("height is " + this.height);
+
+        // check if size
 
         // this.pixelCanvas.width = this.props.pixelCount;
         // this.pixelCanvas.height = this.props.rowCount;
@@ -152,6 +79,100 @@ class SimulatorComponent extends React.Component {
         ctx.restore();
     }
 
+    // \/ legacy from when two different buttons
+    // type of download: 1 = pixels, 2 = stitches
+    toggleDownload (type) {
+      const {
+          pixelCount,
+          selectedPixel,
+          pixelColors,
+          rowCount,
+          currentColor
+      } = {...this.props};
+
+      // if (type === 1) {
+        // this.props.toggleDownloadPixels();
+        this.props.toggleDownloadStitches();
+        console.log("toggled to " + this.props.downloadingPixels + "!");
+
+        // make new canvas for downloading here
+
+        const pixelCanvas = document.createElement('canvas');
+
+        // we store data about every pixel on the canvas, regardless of whether
+        // it has been knit. this handles the "empty" (transparent) stitches
+        let pixelRows = 0;
+        for (let i=0; i<pixelColors.length; i++){
+          if (!pixelColors[i].includes("rgba(")){
+            pixelRows += 1;
+          }
+        }
+
+        pixelCanvas.width = pixelCount;
+        pixelCanvas.height = Math.ceil(pixelRows/pixelCount);
+
+        const pixelctx = pixelCanvas.getContext('2d');
+
+        pixelctx.save();
+
+        let stitchCount = pixelCount * rowCount;
+
+        for (let i=0; i<pixelColors.length; i++) {
+          pixelctx.fillStyle = pixelColors[i];
+          let currentRow = Math.floor(i/pixelCount);
+          pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
+        }
+
+        pixelctx.restore();
+
+        let a = document.createElement('a');
+        a.setAttribute('download', 'My Pixel Pattern.png');
+        pixelCanvas.toBlob(blob => {
+            let url = URL.createObjectURL(blob);
+            a.setAttribute('href', url);
+            a.click();
+        });
+      // }
+      //
+      // else if (type === 2) {
+        // this.props.toggleDownloadStitches();
+        console.log("toggled to " + this.props.downloadingStitches + "!");
+
+        const stitchCanvas = document.createElement('canvas');
+
+        let stitchRows = 0;
+
+        for (let i=0; i<pixelColors.length; i++){
+          if (!pixelColors[i].includes("rgba(")){
+            stitchRows += 1;
+          }
+        }
+
+        stitchCanvas.width = 25*pixelCount+10;
+        stitchCanvas.height = 25*(Math.ceil(stitchRows/pixelCount))+10;
+
+        const stitchctx = stitchCanvas.getContext('2d');
+
+        stitchctx.save();
+
+        for (let i=0; i<stitchCount; i++) {
+          stitchctx.fillStyle = pixelColors[i];
+          let currentRow = Math.floor(i/pixelCount);
+          stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
+        }
+
+        stitchctx.restore();
+
+        let b = document.createElement('a');
+        b.setAttribute('download', 'My Knit Pattern.png');
+        stitchCanvas.toBlob(blob => {
+            let url = URL.createObjectURL(blob);
+            b.setAttribute('href', url);
+            b.click();
+        });
+      // }
+    }
+
     drawPixelKnit(ctx){
         const {
             pixelCount,
@@ -161,14 +182,11 @@ class SimulatorComponent extends React.Component {
             currentColor
         } = {...this.props};
 
-        // used to outline the container :)
-        // ctx.lineWidth = 5;
-        // ctx.strokeStyle = "#f7ed77"
-        // ctx.strokeRect(0,0,this.width,this.height);
+        const topSpace = 0.1;
+        const leftSpace = 0.1;
 
-        const version = "v2.9.21.1"
-        ctx.fillStyle = "#ffffff"
-        ctx.fillText(version, 55, this.height - 10);
+        const top = 50;
+        const left = 50;
 
         const padding = 15;
         const carriageDepth = 25;
@@ -180,16 +198,15 @@ class SimulatorComponent extends React.Component {
 
         // draw "carriage," number/grid border thing
         ctx.fillStyle = "#c2e3f9";
-
         ctx.beginPath();
-        ctx.moveTo(0, (pixelSize + pixelGap)*2-(2*pixelGap));
-        ctx.lineTo(0, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap)
-        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap);
-        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
-        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
-        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), 0);
-        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), 0);
-        ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap), ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
+        ctx.moveTo(0+left, (pixelSize + pixelGap)*2-(2*pixelGap))+top;
+        ctx.lineTo(0+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top)
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top);
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
+        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
+        ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, 0+top);
+        ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, 0+top);
+        ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top, ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
         ctx.fill();
 
         // design prep for text
@@ -199,12 +216,12 @@ class SimulatorComponent extends React.Component {
 
         // draw column (stitch) count numbers
         for (let i=0; i<pixelCount; i++){
-          ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2), pixelSize+(pixelGap/2));
+          ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2)+left, pixelSize+(pixelGap/2)+top);
         }
 
         // draw row count numbers
         for (let i=0; i<rowCount; i++){
-          ctx.fillText(i+1, pixelSize, (i+2)*(pixelSize+pixelGap));
+          ctx.fillText(i+1, pixelSize+left, (i+2)*(pixelSize+pixelGap)+top);
         }
 
         ctx.globalAlpha = 0.3;
@@ -237,7 +254,7 @@ class SimulatorComponent extends React.Component {
           let currentY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
 
           ctx.fillStyle = gridColor;
-          ctx.fillRect(currentX, currentY, pixelSize+pixelGap, pixelSize+pixelGap);
+          ctx.fillRect(currentX+left, currentY+top, pixelSize+pixelGap, pixelSize+pixelGap);
 
         }
 
@@ -275,18 +292,23 @@ class SimulatorComponent extends React.Component {
             // ctx.fillRect(currentX, currentY, pixelSize, pixelSize);
             // ctx.strokeRect(currentX, currentY, pixelSize, pixelSize);
 
-            ctx.drawStitch(currentX, currentY, pixelSize);
+            ctx.drawStitch(currentX+left, currentY+top, pixelSize);
         }
     }
 
     render() {
         return (
           // <TransformWrapper
-          //   limitToBounds={false}
           //   scale={1.5}
-          //   step={1}
+          //   zoomIn={{step: 500}}
+          //   limitToBounds={false}
+          //   defaultPositionX={0}
+          //   defaultPositionY={0}
+          //   // options={{wrapperClass: styles.transform}}
+          // >
+          //   <TransformComponent
+          //     // options={{wrapperClass: styles.transform}}
           //   >
-            // <TransformComponent>
               <canvas
                   className={styles.simulator}
                   ref={this.canvasRef}

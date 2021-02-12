@@ -8,7 +8,7 @@ import downloadCodeButton from './icon--download.svg';
 import unravelButton from './icon--unravel.svg';
 import downloadStitchButton from './icon--download_stitches.svg';
 import uploadCodeButton from './icon--upload_code.svg'
-// put an upload button image source file here
+import spacer from './icon--spacer.svg';
 
 import styles from './download-button.css';
 
@@ -18,26 +18,19 @@ const DownloadButtonComponent = props => {
             <ImageButtonComponent
                 width={40}
                 height={40}
-                handleClick={props.downloadPixels}
-                src={downloadButton}
+                handleClick={props.downloadStitches}
+                src={downloadStitchButton}
+            />
+            <ImageButtonComponent
+                width={40}
+                height={5}
+                src={spacer}
             />
             <ImageButtonComponent
                 width={40}
                 height={40}
                 handleClick={props.downloadCode}
                 src={downloadCodeButton}
-            />
-            <ImageButtonComponent
-                width={40}
-                height={40}
-                handleClick={props.unravelPixels}
-                src={unravelButton}
-            />
-            <ImageButtonComponent
-                width={40}
-                height={40}
-                handleClick={props.downloadStitches}
-                src={downloadStitchButton}
             />
             <ImageButtonComponent
                 width={40}
@@ -54,6 +47,20 @@ const DownloadButtonComponent = props => {
         </div>
     );
 };
+
+// <ImageButtonComponent
+//     width={40}
+//     height={40}
+//     handleClick={props.downloadPixels}
+//     src={downloadButton}
+// />
+
+// <ImageButtonComponent
+//     width={40}
+//     height={40}
+//     handleClick={props.unravelPixels}
+//     src={unravelButton}
+// />
 
 DownloadButtonComponent.propTypes = {
     downloadPixels: PropTypes.func.isRequired,

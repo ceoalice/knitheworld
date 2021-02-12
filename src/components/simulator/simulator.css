@@ -1,9 +1,14 @@
 .simulator {
-  width: 90%;
-  height: 65%;
+  width: 100vw;
+  height: 100%;
   display: block;
   overflow: scroll;
   position: relative;
-  top: 35%;
-  left: 10%;
+  top: 0%;
+  left: 0%;
+}
+
+.transform {
+  width: 100vw !important;
+  height: 100% !important;
 }

@@ -16,6 +16,7 @@ class StartButton extends React.Component {
         if (this.props.projectRunning) {
             this.props.vm.runtime.stopAll();
         } else {
+            this.props.clearPixels();
             this.props.vm.runtime.startHats('event_whenstarted');
         }
     }
@@ -43,4 +44,11 @@ const mapStateToProps = state => ({
     selectedPixel: state.pixels.selectedPixel
 });
 
-export default connect(mapStateToProps)(StartButton);
+const mapDispatchToProps = dispatch => ({
+  clearPixels: () => dispatch(clearThePixels())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(StartButton);

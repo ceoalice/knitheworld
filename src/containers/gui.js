@@ -7,6 +7,12 @@ import {clearThePixels} from '../reducers/pixels.js';
 
 import GUIComponent from '../components/gui/gui.js';
 
+import {
+    downloadThePixels
+} from '../reducers/pixels.js';
+
+import VMScratchBlocks from '../lib/blocks.js';
+
 class GUI extends React.Component {
     constructor (props) {
         super(props);
@@ -16,8 +22,10 @@ class GUI extends React.Component {
           fieldValues: [],
           startupToggle: false
         };
+        this.fileChooser = React.createRef();
+        this.uploadCode = this.uploadCode.bind(this);
+        this.loadCode = this.loadCode.bind(this);
         this.vm.on('PROJECT_CHANGED', () => {
-
           // https://stackoverflow.com/questions/25469972/getting-the-values-for-a-specific-key-from-all-objects-in-an-array
           let blockParentIDs = Object.values(this.vm.runtime.targets[0].blocks._blocks).map(value => value.parent);
 
@@ -60,10 +68,12 @@ class GUI extends React.Component {
               this.vm.runtime.startHats('event_whenstarted');
             }
           }
-        });
+        }
+      );
     }
 
     componentDidMount () {
+
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
     }
@@ -73,11 +83,46 @@ class GUI extends React.Component {
         this.vm.removeListener('PROJECT_RUN_STOP', this.setProjectStopped);
     }
 
+    downloadCode () {
+        var xml = VMScratchBlocks.getXML();
+        console.log("downloading code");
+        //console.log(VMScratchBlocks.getXML());
+        var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
+        //console.log(xmlFile)
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(xmlFile);
+        a.download = 'My Project' + '.xml';
+        a.click();
+    }
+
+    uploadCode () {
+        //console.log(this.fileChooser);
+        this.fileChooser.current.click();
+    }
+
+    loadCode (event) {
+        var projectName = event.target.files[0].name.split('.xml')[0];
+        if (event.target.files) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // console.log(e.target.result);
+                VMScratchBlocks.loadXML(e.target.result);
+
+                // document.getElementById('project-name-input').value = projectName;
+            }
+            reader.readAsBinaryString(event.target.files[0]);
+        }
+    }
+
     render () {
         const {...componentProps} = this.props;
         return (
             <GUIComponent
               vm={this.vm}
+              downloadCode = {this.downloadCode}
+              uploadCode = {this.uploadCode}
+              fileChooser = {this.fileChooser}
+              loadCode = {this.loadCode}
               {...componentProps}
             />
         );
@@ -93,7 +138,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     setProjectRunning: () => dispatch(setProjectRunState(true)),
     setProjectStopped: () => dispatch(setProjectRunState(false)),
-    clearPixels: () => dispatch(clearThePixels())
+    clearPixels: () => dispatch(clearThePixels()),
+    downloadPixels: () => dispatch(downloadThePixels(true))
 });
 
 export default connect(

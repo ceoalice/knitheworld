@@ -7,6 +7,10 @@ import BlocksComponent from '../components/blocks/blocks.js';
 
 import defaultToolbox from '../lib/default-toolbox.js';
 
+import {connect} from 'react-redux';
+
+import { clearThePixels } from '../reducers/pixels.js';
+
 class Blocks extends React.Component {
     constructor (props) {
         super(props);
@@ -39,6 +43,8 @@ class Blocks extends React.Component {
             // this.workspace.getFlyout().width_ = 0;
             this.attachVM();
         });
+        this.props.clearPixels();
+        console.log("here?");
         this.props.vm.start();
     }
 
@@ -409,4 +415,11 @@ Blocks.propTypes = {
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
-export default Blocks;
+const mapDispatchToProps = dispatch => ({
+    clearPixels: () => dispatch(clearThePixels())
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Blocks);

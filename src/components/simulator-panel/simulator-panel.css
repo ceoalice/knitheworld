@@ -33,6 +33,7 @@
   position: absolute;
   bottom: 65%;
   right: 10%;
+  z-index: 50;
 }
 
 .fileInput {
@@ -48,11 +49,48 @@
   pointer-events: none;
 }
 
-.logo {
-  display: flex;
-  justify-content: center;
+p {
+  color: white;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif; font-size: 10px;
   position: absolute;
-  top: 0%;
-  width: 225px;
-  height: 50px;
+  bottom:0%;
+  right:0%;
+  padding-right: 5px;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  width: 300px;
+  height: auto;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
 }

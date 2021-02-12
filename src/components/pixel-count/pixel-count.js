@@ -6,6 +6,7 @@ import ImageButtonComponent from '../image-button/image-button.js';
 
 import addIcon from './icon--add.svg';
 import removeIcon from './icon--remove.svg';
+import stitchIcon from './icon--stitches.svg';
 
 import {
     addPixelNode,
@@ -17,21 +18,27 @@ import styles from './pixel-count.css';
 const PixelCountComponent = props => {
     return (
         <div className={styles.pixelCountTools}>
-            <ImageButtonComponent
-                width={30}
-                height={30}
-                handleClick={props.removePixel}
-                src={removeIcon}
-            />
-            <div className={styles.pixelCount}>
-                {props.pixelCount}
-            </div>
-            <ImageButtonComponent
-                width={30}
-                height={30}
-                handleClick={props.addPixel}
-                src={addIcon}
-            />
+          <img
+            width={30}
+            height={30}
+            src={stitchIcon}
+            className={styles.icon}
+          />
+          <ImageButtonComponent
+            width={30}
+            height={30}
+            handleClick={props.removePixel}
+            src={removeIcon}
+          />
+          <div className={styles.pixelCount}>
+            {props.pixelCount}
+          </div>
+          <ImageButtonComponent
+            width={30}
+            height={30}
+            handleClick={props.addPixel}
+            src={addIcon}
+          />
         </div>
     );
 };

@@ -6,6 +6,7 @@ import ImageButtonComponent from '../image-button/image-button.js';
 
 import addIcon from './icon--add.svg';
 import removeIcon from './icon--remove.svg';
+import rowIcon from './icon--rows.svg';
 
 import {
     goToNextRow,
@@ -17,21 +18,27 @@ import styles from './row-count.css';
 const RowCountComponent = props => {
     return (
         <div className={styles.rowCountTools}>
-            <ImageButtonComponent
-                width={30}
-                height={30}
-                handleClick={props.removeRow}
-                src={removeIcon}
-            />
-            <div className={styles.rowCount}>
-                {props.rowCount}
-            </div>
-            <ImageButtonComponent
-                width={30}
-                height={30}
-                handleClick={props.addRow}
-                src={addIcon}
-            />
+          <img
+            width={30}
+            height={30}
+            src={rowIcon}
+            className={styles.icon}
+          />
+          <ImageButtonComponent
+            width={30}
+            height={30}
+            handleClick={props.removeRow}
+            src={removeIcon}
+          />
+          <div className={styles.rowCount}>
+            {props.rowCount}
+          </div>
+          <ImageButtonComponent
+            width={30}
+            height={30}
+            handleClick={props.addRow}
+            src={addIcon}
+          />
         </div>
     );
 };

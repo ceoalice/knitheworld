@@ -12,30 +12,38 @@ import knitheworldLogo from './knitheworld-logo.svg';
 
 import ImageButtonComponent from '../image-button/image-button.js';
 
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 const SimulatorPanelComponent = props => {
     return (
         <React.Fragment>
-            <Simulator vm={props.vm} />
+          <img
+            className={styles.logo}
+            src={knitheworldLogo}
+            alt="KnitheWorld Logo"
+            width={225}
+            height={50}
+          />
+          <div>
             <SimulatorTools />
-            <div className={styles.start_button}>
-              <StartButton vm={props.vm}/>
-            </div>
-            <div className={styles.download_buton}>
-              <DownloadButton vm={props.vm}/>
-            </div>
-            <div className={styles.logo}>
-              <ImageButtonComponent
-                  width={225}
-                  height={50}
-                  handleClick={props.addPixel}
-                  src={knitheworldLogo}
-                  alt="KnitheWorld Logo"
-              />
-            </div>
+            <TransformWrapper
+              scale={1}
+              options={{limitToBounds:false, minScale:0.5}}
+              wheel={{step:50}}
+              >
+              <TransformComponent>
+                <Simulator vm={props.vm} />
+              </TransformComponent>
+            </TransformWrapper>
+          </div>
+          <p>
+            v.2.12.21.0
+          </p>
         </React.Fragment>
     );
 };
 
 // can add back <FullscreenButton /> inside the return
+//
 
 export default SimulatorPanelComponent;

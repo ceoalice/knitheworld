@@ -16,14 +16,14 @@ import styles from './simulator-tools.css';
 
 const SimulatorToolsComponent = props => {
     return (
-        <>
+      <div className={styles.countContainers}>
         <div className={styles.rowCountContainer}>
           <RowCountComponent />
         </div>
         <div className={styles.pixelCountContainer}>
           <PixelCountComponent />
         </div>
-        </>
+      </div>
     );
 };
 

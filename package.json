@@ -46,6 +46,8 @@
     "webpack-pwa-manifest": "^4.2.0"
   },
   "dependencies": {
+    "pinch-zoom-pan": "^3.0.0",
+    "react-router": "^5.2.0",
     "react-zoom-pan-pinch": "^1.6.1"
   }
 }

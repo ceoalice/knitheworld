@@ -64,9 +64,9 @@ const randomColorRGB = count => {
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 25,
-    rowCount: 20,
-    pixelColors: grayedSquares(300),
+    pixelCount: 50,
+    rowCount: 35,
+    pixelColors: grayedSquares(1750),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
     downloadingPixels: false,
@@ -263,17 +263,20 @@ const reducer = function (state, action) {
           newColors[select+i] = state.currentColor;
         }
 
-        if (select+toKnit === state.pixelCount*state.rowCount){
+        // uncomment if else if you want to limit the bind off functionality
+        // to the last row of the canvasRef
+
+        // if (select+toKnit === state.pixelCount*state.rowCount){
           // console.log("casting off..." + toKnit + " stitches");
           return Object.assign({}, state, {
             pixelColors: newColors,
             selectedPixel: select+toKnit
           });
-        }
-        else{
-          console.log("can't cast off yet!");
-          return state;
-        }
+        // }
+        // else{
+        //   console.log("can't cast off yet!");
+        //   return state;
+        // }
     }
     case CHANGE_YARN_COLOR: {
         const newColor = "rgb(" + action.value[0] + "," + action.value[1] + "," + action.value[2] + ")";
@@ -300,7 +303,7 @@ const reducer = function (state, action) {
         }
     }
     case CLEAR_PIXELS: {
-        console.log("logged clear pixels!");
+        //console.log("logged clear pixels!");
         let newColors = grayedSquares(state.rowCount * state.pixelCount);
         return Object.assign({}, state, {
             pixelColors: newColors,
