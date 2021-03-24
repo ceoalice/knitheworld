@@ -1,6 +1,6 @@
 .simulator {
-  width: 100vw;
-  height: 100%;
+  width: 200vw; /* temp fix */
+  height: 200vh; /* temp fix */
   display: block;
   overflow: scroll;
   position: relative;
