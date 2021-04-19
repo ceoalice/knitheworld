@@ -1,0 +1,184 @@
+/* @import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css"; */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* z-index: $z-index-modal; */
+    z-index: 510;
+    /* background-color: $ui-modal-overlay; */
+    background-color: hsla(215, 100%, 65%, 0.75);
+}
+
+.modalContent * {
+    box-sizing: border-box;
+}
+
+.modalContent {
+    margin: 100px auto;
+    outline: none;
+    /* border: 4px solid $ui-white-transparent; */
+    border: 4px solid hsla(0, 100%, 100%, 0.25);
+    padding: 0;
+    /* border-radius: $space; */
+    border-radius: 0.5rem;
+    user-select: none;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* color: $text-primary; */
+    color: hsla(225, 15%, 40%, 1);
+    overflow: hidden;
+}
+
+.modalContent.fullScreen {
+    position: absolute;
+
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: 'touch';
+    user-select: none;
+
+    /* background-color: $ui-secondary; */
+    background-color: hsla(215, 75%, 95%, 1);
+
+    /* Default modal resets */
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+
+/*
+    Modal header has 3 items:
+    |filter     title       x|
+
+    Use the same width for both side item containers,
+    so that title remains centered
+*/
+/* $sides: 20rem; */
+
+.header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    /* height: $library-header-height; */
+    height: 3.125rem;
+
+    box-sizing: border-box;
+    width: 100%;
+    /* background-color: $motion-primary; */
+    background-color: hsla(215, 100%, 65%, 1);
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.headerItem {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    text-decoration: none;
+    /* color: $ui-white; */
+    color: white;
+    user-select: none;
+}
+
+[dir="ltr"] .headerImage {
+    margin-right: 0.5rem;
+}
+
+[dir="rtl"] .headerImage {
+    margin-left: 0.5rem;
+}
+
+.headerItemFilter {
+    display: flex;
+    /* flex-basis: $sides; */
+    flex-basis: 20rem; 
+    justify-content: flex-start;
+}
+
+.headerItemTitle {
+    flex-grow: 1;
+    flex-shrink: 0;
+    justify-content: center;
+    user-select: none;
+    letter-spacing: 0.4px;
+    cursor: default;
+}
+
+[dir="ltr"] .headerItemTitle {
+    /* margin: 0 -$sides 0 0; */
+    margin: 0 -20rem 0 0;
+}
+
+[dir="rtl"] .headerItemTitle {
+    /* margin: 0 0 0 -$sides; */
+    margin: 0 0 0 -20rem;
+}
+
+.full-screen [dir="ltr"] .headerItemTitle {
+    margin: 0 0 0 -20rem;
+}
+
+.full-screen [dir="rtl"] .headerItemTitle {
+    /* margin: 0 -$sides 0 0; */
+    margin: 0 -20rem 0 0;
+}
+
+.headerItemClose {
+    /* flex-basis: $sides; */
+    flex-basis: 20rem; 
+    justify-content: flex-end;
+    z-index: 1;
+}
+
+.full-screen .headerItemClose {
+    order: -1;
+    justify-content: flex-start;
+}
+
+.backButton {
+    font-weight: normal;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+[dir="rtl"] .backButton img {
+    transform: scaleX(-1);
+}
+
+.header-item-help {
+    padding: 0;
+    z-index: 1;
+}
+
+[dir="ltr"] .header-item-help {
+    margin-right: -4.75rem;
+}
+
+[dir="rtl"] .header-item-help {
+    margin-left: -4.75rem;
+}
+
+.helpButton {
+    font-weight: normal;
+    font-size: 0.75rem;
+}
+
+[dir="ltr"] .helpButton {
+    padding-right: 0;
+}
+
+[dir="rtl"] .helpButton {
+    padding-left: 0;
+}
