@@ -22,6 +22,7 @@ const DOWNLOAD_PIXELS = 'downloadPixels';
 const DOWNLOAD_CODE = 'downloadCode';
 const CLEAR_PIXELS = 'clearPixels';
 const DOWNLOAD_STITCHES = 'downloadStitches';
+const DOWNLOAD_STITCHES_NAME = 'downloadStitchesName';
 
 const randomInt = max => {
     return Math.floor(Math.random() * Math.floor(max));
@@ -70,7 +71,8 @@ const initialState = {
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
     downloadingPixels: false,
-    downloadingStitches: false
+    downloadingStitches: false,
+    downloadingStitchesName: ""
 };
 // note pixelCount is a legacy variable from pixelplay,
 // it refers to the number of columns in the pattern as
@@ -324,6 +326,12 @@ const reducer = function (state, action) {
             downloadingStitches: action.value
         });
     }
+    case DOWNLOAD_STITCHES_NAME: {
+      console.log("changed name to: ", action.value);
+      return Object.assign({}, state, {
+        downloadingStitchesName: action.value
+      }); 
+    }
     case DOWNLOAD_CODE: {
         console.log("logged download code!");
         return state;
@@ -471,6 +479,13 @@ const downloadTheStitches = function (value) {
     };
 };
 
+const changeDownloadName = function (value) {
+  return {
+    type: DOWNLOAD_STITCHES_NAME,
+    value: value
+  }
+}
+
 const downloadTheCode = function () {
     return {
         type: DOWNLOAD_CODE
@@ -501,5 +516,6 @@ export {
     clearThePixels,
     downloadThePixels,
     downloadTheStitches,
-    downloadTheCode
+    downloadTheCode,
+    changeDownloadName
 };
