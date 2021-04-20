@@ -2,9 +2,13 @@ const OPEN_MODAL = 'OPEN_MODAL';
 const CLOSE_MODAL = 'CLOSE_MODAL';
 
 const MODAL_SIMULATOR = 'fullscreenSimulator';
+const MODAL_IMAGE_IMPORT = 'imageImport';
+const MODAL_IMAGE_EXPORT = 'imageExport';
 
 const initialState = {
-    [MODAL_SIMULATOR]: false
+    [MODAL_SIMULATOR]: false, 
+    [MODAL_IMAGE_IMPORT]: false,
+    [MODAL_IMAGE_EXPORT]: false
 };
 
 const reducer = function (state, action) {
@@ -40,9 +44,28 @@ const openFullscreenSimulator = function () {
 const closeFullscreenSimulator = function () {
     return closeModal(MODAL_SIMULATOR);
 };
+
+const openImageImport = function () {
+  return openModal(MODAL_IMAGE_IMPORT);
+};
+const closeImageImport = function () {
+  return closeModal(MODAL_IMAGE_IMPORT);
+};
+
+const openImageExport = function () {
+  return openModal(MODAL_IMAGE_EXPORT);
+};
+const closeImageExport = function () {
+  return closeModal(MODAL_IMAGE_EXPORT);
+};
+
 export {
     reducer as default,
     initialState as modalsInitialState,
     openFullscreenSimulator,
-    closeFullscreenSimulator
+    closeFullscreenSimulator,
+    openImageImport,
+    closeImageImport,
+    openImageExport,
+    closeImageExport
 };
