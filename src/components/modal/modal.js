@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactModal from 'react-modal';
-import {FormattedMessage} from 'react-intl';
 
+import Box from '../box/box.js';
 import Button from '../button/button.js';
 import CloseButton from '../close-button/close-button.js';
 
@@ -23,7 +23,7 @@ const ModalComponent = props => (
         overlayClassName={styles.modalOverlay}
         onRequestClose={props.onRequestClose}
     >
-        <div
+        <Box
             dir={'ltr'}
             direction="column"
             grow={1}
@@ -41,11 +41,7 @@ const ModalComponent = props => (
                             iconSrc={helpIcon}
                             onClick={props.onHelp}
                         >
-                            <FormattedMessage
-                                defaultMessage="Help"
-                                description="Help button in modal"
-                                id="gui.modal.help"
-                            />
+                            Help
                         </Button>
                     </div>
                 ) : null}
@@ -75,11 +71,7 @@ const ModalComponent = props => (
                             iconSrc={backIcon}
                             onClick={props.onRequestClose}
                         >
-                            <FormattedMessage
-                                defaultMessage="Back"
-                                description="Back button in modal"
-                                id="gui.modal.back"
-                            />
+                            Back
                         </Button>
                     ) : (
                         <CloseButton
@@ -90,7 +82,7 @@ const ModalComponent = props => (
                 </div>
             </div>
             {props.children}
-        </div>
+        </Box>
     </ReactModal>
 );
 
