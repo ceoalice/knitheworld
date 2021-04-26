@@ -4,6 +4,7 @@ import VM from 'scratch-vm';
 
 import {setProjectRunState} from '../reducers/project-state.js';
 import {clearThePixels} from '../reducers/pixels.js';
+import {openImageImport, openImageExport, openSampleProjects, openLocalProjects} from '../reducers/modals.js';
 
 import GUIComponent from '../components/gui/gui.js';
 
@@ -13,6 +14,33 @@ import {
 
 import VMScratchBlocks from '../lib/blocks.js';
 
+import localStore from '../lib/local-storage';
+
+function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
+  let check = true;
+
+  if (a.opcode !== b.opcode) check = false;
+  if (a.parent !== b.parent) check = false;
+  if (a.next !== b.next) check = false;
+
+
+  if (JSON.stringify(a.inputs) !== JSON.stringify(b.inputs)) check = false;
+  if (JSON.stringify(a.fields) !== JSON.stringify(b.fields)) check = false;
+
+  // if(a.opcode == "math_whole_number") {
+  //   console.log(JSON.stringify(a.fields));
+  //   console.log(JSON.stringify(b.fields));
+  // }
+  if (!check) {
+    console.log("BLOCKS DIFFERENT")  
+    // console.log("a: ",a)
+    // console.log("b: ",b)  
+    // console.log("")
+  }
+
+  return check;
+}
+
 class GUI extends React.Component {
     constructor (props) {
         super(props);
@@ -20,60 +48,44 @@ class GUI extends React.Component {
         this.state = {
           blockKeys: [],
           fieldValues: [],
-          startupToggle: false
+          startupToggle : false,
+          prevBlocks :  {}
         };
         this.fileChooser = React.createRef();
         this.uploadCode = this.uploadCode.bind(this);
         this.loadCode = this.loadCode.bind(this);
         this.vm.on('PROJECT_CHANGED', () => {
-          // https://stackoverflow.com/questions/25469972/getting-the-values-for-a-specific-key-from-all-objects-in-an-array
-          let blockParentIDs = Object.values(this.vm.runtime.targets[0].blocks._blocks).map(value => value.parent);
+          // console.log("PROJECT_CHANGED");
 
-          // https://stackoverflow.com/questions/281264/remove-empty-elements-from-an-array-in-javascript
-          var filteredBlockParentIDs = blockParentIDs.filter(function (el) {
-            return el != null;
-          });
-
-
-          let blockFields = Object.values(this.vm.runtime.targets[0].blocks._blocks).map(value => value.fields);
-
-          var blockFieldIDs = []
-
-          for (var i in blockFields){
-            blockFieldIDs.push(Object.values(blockFields[i]).map(value => value.value));
-          }
-
-          var filteredBlockFieldIDs = blockFieldIDs.filter(function (el) {
-            return el.length != 0;
-          });
-
-          // https://www.30secondsofcode.org/blog/s/javascript-array-comparison
-          const equals = (a, b) =>
-            a.length === b.length &&
-            a.every((v, i) => v === b[i]);
-
-          // since we can't init BlockKeys in the constructor with values from the runtime,
-          // we use this toggle to init the value once the comopnent is constructed
-          if (this.state.startupToggle === false) {
-            this.setState({blockKeys: filteredBlockParentIDs});
-            this.setState({fieldValues: filteredBlockFieldIDs});
-            this.setState({startupToggle: true});
-          } else {
-            if (equals(filteredBlockParentIDs,this.state.blockKeys) === false || equals(filteredBlockFieldIDs,this.state.fieldValues) === false){
-
-              console.log("updating canvas...");
-              this.setState({blockKeys: filteredBlockParentIDs});
-              // trigger an update here somehow!
-              this.props.clearPixels();
-              this.vm.runtime.startHats('event_whenstarted');
-            }
+          // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+          let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks));  // snapshot deepcopy
+    
+          if (!this.allBlocksEqual(blocks)) {
+            console.log("updating canvas...");
+            this.setState({prevBlocks: blocks});
+            this.vm.runtime.startHats('event_whenstarted');
           }
         }
       );
     }
 
-    componentDidMount () {
+    allBlocksEqual(blocks) {
+      var newKeys = Object.keys(blocks).sort();
+      var prevKeys = Object.keys(this.state.prevBlocks).sort();
+      let keysEqual =  JSON.stringify(newKeys) === JSON.stringify(prevKeys);
 
+      if (!keysEqual) return false;
+
+      for (let key in blocks) {
+        // console.log("key: ", key)
+        if (!blocksEqual(blocks[key], this.state.prevBlocks[key])) {
+          return false
+        }
+      }
+      return true;
+    }
+
+    componentDidMount () {
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
     }
@@ -81,6 +93,14 @@ class GUI extends React.Component {
     componentWillUnmount () {
         this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.removeListener('PROJECT_RUN_STOP', this.setProjectStopped);
+    }
+
+    newProject() {
+      localStore.newProject()
+    }
+
+    saveProject() {
+      localStore.saveProject();
     }
 
     downloadCode () {
@@ -123,6 +143,9 @@ class GUI extends React.Component {
               uploadCode = {this.uploadCode}
               fileChooser = {this.fileChooser}
               loadCode = {this.loadCode}
+
+              newProject = {this.newProject}
+              saveProject = {this.saveProject}
               {...componentProps}
             />
         );
@@ -130,12 +153,20 @@ class GUI extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    imageImportVisible: state.modals.imageImport,
+    imageExportVisible: state.modals.imageExport,
+    sampleProjectsVisible : state.modals.sampleProjects,
+    localProjectsVisible : state.modals.localProjects,
     fullscreenVisible: state.modals.fullscreenSimulator,
     bluetoothConnected: state.bluetooth.connectionStatus,
     images: state.images
 });
 
 const mapDispatchToProps = dispatch => ({
+    openImageImport : () => dispatch(openImageImport()),
+    openImageExport: () => dispatch(openImageExport()),
+    openLocalProjects: () => dispatch(openLocalProjects()),
+    openSampleProjects: () => dispatch(openSampleProjects()),
     setProjectRunning: () => dispatch(setProjectRunState(true)),
     setProjectStopped: () => dispatch(setProjectRunState(false)),
     clearPixels: () => dispatch(clearThePixels()),
