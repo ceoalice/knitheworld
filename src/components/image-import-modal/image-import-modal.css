@@ -1,0 +1,9 @@
+.body {
+  /* background: $ui-white; */
+  background: #fff;
+  padding: 25px;
+}
+
+.modal-content {
+  width: 500px;
+}
