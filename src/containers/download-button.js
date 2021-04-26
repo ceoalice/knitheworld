@@ -88,6 +88,10 @@ import {
     downloadTheStitches
 } from '../reducers/pixels.js';
 
+import {
+  openImageExport
+} from '../reducers/modals.js'
+
 import VMScratchBlocks from '../lib/blocks.js';
 
 import DownloadButtonComponent from '../components/knit-buttons/download-button.js';
@@ -152,6 +156,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     downloadPixels: () => dispatch(downloadThePixels(true)),
+    openImageExport: () => dispatch(openImageExport()),
     //downloadCode: () => dispatch(downloadTheCode()),
     unravelPixels: () => dispatch(clearThePixels()),
     downloadStitches: () => dispatch(downloadTheStitches(true))
