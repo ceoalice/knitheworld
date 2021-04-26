@@ -108,6 +108,56 @@ class SimulatorComponent extends React.Component {
           }
         }
 
+        let colorCount = {};
+
+        pixelColors.forEach(color => {
+          // ignore colors  that are already black and white
+          if (!color.includes("rgba(") && color !== "rgb(0,0,0)" && color !== "rgb(255,255,255)"){
+            if (color in colorCount) {
+              colorCount[color] = colorCount[color] + 1;
+            } else {
+              colorCount[color] = 1;
+            }
+          }
+        });
+
+
+        console.log(colorCount);
+
+        // console.log("colorMap");
+        // console.log(colorMap);
+
+        let colorMap = {};
+        
+
+        var sortable = [];
+        for (var color in colorCount) {
+            sortable.push([color, colorCount[color]]);
+        }
+
+        sortable.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+
+        // console.log("sortable");
+        // console.log(sortable);
+
+        // let i = 0; 
+        sortable.forEach((mapping, i) => {
+          let color = mapping[0];
+         if (i === 0 ) {
+            colorMap[mapping[0]] = "rgb(255,255,255)";
+          } else if (i === 1 ) {
+            colorMap[mapping[0]] = "rgb(0,0,0)";
+          } else {
+            colorMap[mapping[0]] = mapping[0];
+          }
+        })
+
+        // console.log(colorMap2);
+
+        // colorMap2 = sortable[0][0]
+        
         pixelCanvas.width = pixelCount;
         pixelCanvas.height = Math.ceil(pixelRows/pixelCount);
 
@@ -118,7 +168,12 @@ class SimulatorComponent extends React.Component {
         let stitchCount = pixelCount * rowCount;
 
         for (let i=0; i<pixelColors.length; i++) {
-          pixelctx.fillStyle = pixelColors[i];
+          if (Object.keys(colorMap).includes(pixelColors[i])) {
+            pixelctx.fillStyle = colorMap[pixelColors[i]];
+          } else {
+            pixelctx.fillStyle = pixelColors[i];
+          }
+          
           let currentRow = Math.floor(i/pixelCount);
           pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
         }
@@ -126,7 +181,10 @@ class SimulatorComponent extends React.Component {
         pixelctx.restore();
 
         let a = document.createElement('a');
-        a.setAttribute('download', 'My Pixel Pattern.png');
+        a.setAttribute('download',
+          Boolean(this.props.downloadingStitchesName) 
+          ? `${this.props.downloadingStitchesName}PixelPattern.png`
+          : 'MyProjectPixelPattern.png');
         pixelCanvas.toBlob(blob => {
             let url = URL.createObjectURL(blob);
             a.setAttribute('href', url);
@@ -164,9 +222,13 @@ class SimulatorComponent extends React.Component {
         stitchctx.restore();
 
         let b = document.createElement('a');
-        b.setAttribute('download', 'My Knit Pattern.png');
+        b.setAttribute('download', 
+            Boolean(this.props.downloadingStitchesName) 
+            ? `${this.props.downloadingStitchesName}KnitPattern.png`
+            : 'MyProjectKnitPattern.png');
         stitchCanvas.toBlob(blob => {
             let url = URL.createObjectURL(blob);
+            // console.log(stitchCanvas.toDataURL());
             b.setAttribute('href', url);
             b.click();
         });
@@ -366,7 +428,8 @@ CanvasRenderingContext2D.prototype.drawStitch = function(x, y, size) {
 
 const mapStateToProps = state => ({
     downloadingPixels: state.pixels.downloadingPixels,
-    downloadingStitches: state.pixels.downloadingStitches
+    downloadingStitches: state.pixels.downloadingStitches,
+    downloadingStitchesName: state.pixels.downloadingStitchesName
 });
 
 const mapDispatchToProps = dispatch => ({
