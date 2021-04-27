@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import styles from './close-button.css';
 import closeIcon from './icon--close.svg';
 import closeIconOrange from './icon--close-orange.svg';
+import trashIcon from './icon--trash.svg';
 import backIcon from '../../lib/assets/icon--back.svg';
 
 let closeIcons = {};
@@ -29,6 +30,11 @@ const CloseButton = props => (
             <img
                 className={styles.backIcon}
                 src={backIcon}
+            /> :
+            props.trash ?
+            <img
+                className={styles.backIcon}
+                src={trashIcon}
             /> :
             <img
                 className={classNames(
@@ -63,6 +69,7 @@ CloseButton.propTypes = {
     buttonType: PropTypes.oneOf(['back', 'close']),
     className: PropTypes.string,
     color: PropTypes.string,
+    trash: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     size: PropTypes.oneOf([CloseButton.SIZE_SMALL, CloseButton.SIZE_LARGE])
 };
