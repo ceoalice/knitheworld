@@ -9,6 +9,9 @@ import pixelReducer from './reducers/pixels.js';
 import bluetoothReducer from './reducers/bluetooth.js';
 import projectStateReducer from './reducers/project-state.js';
 
+import {setAppElement} from "react-modal";
+setAppElement('body');
+
 const reducers = combineReducers({
     modals: modalReducer,
     pixels: pixelReducer,
