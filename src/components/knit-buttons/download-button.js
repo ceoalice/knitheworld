@@ -15,17 +15,16 @@ import styles from './download-button.css';
 const DownloadButtonComponent = props => {
     return (
         <div className={styles.pixelStyleTools}>
-            <ImageButtonComponent
-                width={40}
-                height={40}
-                handleClick={props.downloadStitches}
-                src={downloadStitchButton}
-            />
-            <ImageButtonComponent
-                width={40}
-                height={5}
-                src={spacer}
-            />
+              <ImageButtonComponent
+                  width={40}
+                  height={40}
+                  // handleClick={props.downloadStitches}
+                  handleClick={props.openImageExport}
+                  src={downloadStitchButton}
+              />
+   
+            <div style={{paddingTop:18}}></div>
+
             <ImageButtonComponent
                 width={40}
                 height={40}
@@ -48,25 +47,12 @@ const DownloadButtonComponent = props => {
     );
 };
 
-// <ImageButtonComponent
-//     width={40}
-//     height={40}
-//     handleClick={props.downloadPixels}
-//     src={downloadButton}
-// />
-
-// <ImageButtonComponent
-//     width={40}
-//     height={40}
-//     handleClick={props.unravelPixels}
-//     src={unravelButton}
-// />
-
 DownloadButtonComponent.propTypes = {
     downloadPixels: PropTypes.func.isRequired,
     downloadCode: PropTypes.func.isRequired,
     unravelPixels: PropTypes.func.isRequired,
-    downloadStitches: PropTypes.func.isRequired,
+    openImageExport: PropTypes.func.isRequired,
+    // downloadStitches: PropTypes.func.isRequired,
     uploadCode: PropTypes.func.isRequired
 };
 

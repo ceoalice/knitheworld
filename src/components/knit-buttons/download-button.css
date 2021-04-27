@@ -1,6 +1,6 @@
 .buttonContainer {
     position: absolute;
-    left: 50px;
+    /* left: 50px; */
     margin: 5px;
     cursor: pointer;
     user-select: none;
