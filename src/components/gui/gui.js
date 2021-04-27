@@ -84,10 +84,10 @@ const GUIComponent = props => {
                 />
             </div>
 
-            {/* { props.sampleProjectsVisible 
+            { props.sampleProjectsVisible 
               ? <SampleProjectsModal />
               : null
-            } */}
+            }
             { props.localProjectsVisible 
               ? <LocalProjectsModal />
               : null
