@@ -31,7 +31,7 @@ const CloseButton = props => (
                 className={styles.backIcon}
                 src={backIcon}
             /> :
-            props.trash ?
+            props.buttonType === 'trash' ?
             <img
                 className={styles.backIcon}
                 src={trashIcon}
@@ -66,7 +66,7 @@ closeIcons = {
 
 
 CloseButton.propTypes = {
-    buttonType: PropTypes.oneOf(['back', 'close']),
+    buttonType: PropTypes.oneOf(['back', 'close', 'trash']),
     className: PropTypes.string,
     color: PropTypes.string,
     trash: PropTypes.bool,

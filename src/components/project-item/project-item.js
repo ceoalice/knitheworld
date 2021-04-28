@@ -44,7 +44,7 @@ class ProjectItemComponent extends React.PureComponent {
                 
                 <div className={classNames(styles.closeButton)}>
                     <CloseButton
-                        trash={true}
+                        buttonType="trash"
                         size={CloseButton.SIZE_LARGE}
                         onClick={this.props.onClickClose}
                     />
