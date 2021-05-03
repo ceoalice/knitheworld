@@ -2,7 +2,7 @@
   "_args": [
     [
       "google-closure-library@20190301.0.0",
-      "/Users/alexandergreer/Desktop/Software/KnitheWorld/scratch-blocks"
+      "/Users/nsendek/Desktop/UROP/scratch-blocks"
     ]
   ],
   "_development": true,
@@ -27,7 +27,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/google-closure-library/-/google-closure-library-20190301.0.0.tgz",
   "_spec": "20190301.0.0",
-  "_where": "/Users/alexandergreer/Desktop/Software/KnitheWorld/scratch-blocks",
+  "_where": "/Users/nsendek/Desktop/UROP/scratch-blocks",
   "author": {
     "name": "The Closure Library Authors"
   },
