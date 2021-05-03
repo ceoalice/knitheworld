@@ -1,16 +1,34 @@
+:root {
+  --topnav-height: 48px;
+}
+
 .simulatorContainer {
-  width: 49.75%;
-  float: right;
-  height: 97%;
+  width: 50vw;
+  height: 100%;
   justify-content: center;
   align-items: center;
   background-color: #a3cef0;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  overflow: scroll;
+  overflow: hidden;
   position: relative;
 }
+
+/* .topnav {
+  background-color: hsla(215, 100%, 65%, 1);
+  overflow: hidden;
+  height : var(--topnav-height);
+  z-index:45;
+} */
+
+.flexbox { 
+  /* parent container for Simulator and Blocks */
+  height: calc(100vh - var(--topnav-height));
+  display: flex;
+  flex-direction: row;
+}
+
 
 #logo {
   float: left;
@@ -20,26 +38,21 @@
   padding-right:5px;
 }
 
-
-.topnav {
-  background-color: #a3cef0;
-  overflow: hidden;
-  height: 3%;
-  z-index:45;
-}
-
 /* Links inside the navbar */
-.topnav a {
+/* .topnav a {
   float: left;
   font-size: 1vw;
   color: white;
   text-align: center;
-  padding-left: 5px;
-  padding-right: 5px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   padding-top: 1px;
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
   text-decoration: none;
-}
+} */
 
 .dropdown {
   float: left;
@@ -59,9 +72,9 @@
   margin: 0;
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+/* .topnav a:hover, .dropdown:hover .dropbtn {
   background-color: #7db6db;
-}
+} */
 
 .dropdown-content {
   display: none;
@@ -88,10 +101,10 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
+/* 
 .fileInput {
   display: none;
-}
+} */
 
 .canvasIcon {
   background-image: url('./icon--download_stitches.svg');

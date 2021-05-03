@@ -8,13 +8,12 @@ import {openImageImport, openImageExport, openSampleProjects, openLocalProjects}
 
 import GUIComponent from '../components/gui/gui.js';
 
-import {
-    downloadThePixels
-} from '../reducers/pixels.js';
+import {downloadThePixels} from '../reducers/pixels.js';
+import { updateProjectName , toggleProjectSaved} from '../reducers/project-state.js';
+
 
 import VMScratchBlocks from '../lib/blocks.js';
-
-import localStore from '../lib/local-storage';
+import ProjectManager from '../lib/project-manager';
 
 function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
   let check = true;
@@ -32,7 +31,7 @@ function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs
   //   console.log(JSON.stringify(b.fields));
   // }
   if (!check) {
-    console.log("BLOCKS DIFFERENT")  
+    console.log("BLOCKS ARE DIFFERENT")  
     // console.log("a: ",a)
     // console.log("b: ",b)  
     // console.log("")
@@ -46,27 +45,74 @@ class GUI extends React.Component {
         super(props);
         this.vm = new VM();
         this.state = {
-          blockKeys: [],
-          fieldValues: [],
-          startupToggle : false,
+          // blockKeys: [],
+          // fieldValues: [],
+          // startupToggle : false,
           prevBlocks :  {}
         };
-        this.fileChooser = React.createRef();
-        this.uploadCode = this.uploadCode.bind(this);
-        this.loadCode = this.loadCode.bind(this);
-        this.vm.on('PROJECT_CHANGED', () => {
-          // console.log("PROJECT_CHANGED");
+        // this.fileChooser = React.createRef();
+        // this.uploadCode = this.uploadCode.bind(this);
+        // this.loadCode = this.loadCode.bind(this);
+        // this.newProject = this.newProject.bind(this);
+        // this.saveProject = this.saveProject.bind(this);
+        this.checkProjectChanged = this.checkProjectChanged.bind(this);
+       
+        ProjectManager.setVM(this.vm); // WITHOUT THIS ProjectManager CAN'T UPDATE REDUX WHEN THINGS CHANGE
 
-          // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
-          let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks));  // snapshot deepcopy
-    
-          if (!this.allBlocksEqual(blocks)) {
-            console.log("updating canvas...");
-            this.setState({prevBlocks: blocks});
-            this.vm.runtime.startHats('event_whenstarted');
-          }
+        // event passed from ProjectManager
+        this.vm.on('PROJECT_NAME_CHANGED', () => {
+          // console.log("WHATS GOOD: PROJECT_NAME_CHANGED");
+          this.props.updateProjectName(ProjectManager.getCurrentProjectName());
+        })
+
+        this.vm.on('PROJECT_IMAGE_CHANGED', () => {
+          // console.log("WHATS GOOD: PROJECT_IMAGE_CHANGED");
+        })
+
+        this.vm.on('PROJECT_LOADING', () => {
+          // console.log("WHATS GOOD: PROJECT_LOADING");
+          // this.props.toggleProjectLoading(true);
+        })
+
+        // this.vm.on('NIKO_EVENT', (input) => {
+          // console.log("WHATS GOOD: NIKO_EVENT", input);
+          // this.props.toggleProjectLoading(true);
+        // })
+    }
+
+    componentDidMount () {
+        this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
+        this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
+        this.vm.on('PROJECT_CHANGED',this.checkProjectChanged);
+        this.props.updateProjectName(ProjectManager.getCurrentProjectName())
+    }
+
+    componentWillUnmount () {
+        this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
+        this.vm.removeListener('PROJECT_RUN_STOP', this.props.setProjectStopped);
+        this.vm.removeListener('PROJECT_CHANGED',this.checkProjectChanged);
+    }
+
+    checkProjectChanged() {
+      // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+      let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
+      let blocksEqual = this.allBlocksEqual(blocks); 
+
+      if (!blocksEqual) { // && !this.props.projectLoading // CHANGE HAS OCCURED
+        // console.log("updating canvas...");
+        this.setState({prevBlocks: blocks});
+
+        if (ProjectManager.getCurrentProjectID()) {
+          ProjectManager.saveCurrentProject();
         }
-      );
+
+        this.vm.runtime.startHats('event_whenstarted');
+      } 
+      // else if (blocksEqual && this.props.projectLoading) {
+      //   this.setState({prevBlocks: blocks});
+      //   this.vm.runtime.startHats('event_whenstarted');
+      //   this.props.toggleProjectLoading(false);
+      // }
     }
 
     allBlocksEqual(blocks) {
@@ -85,67 +131,61 @@ class GUI extends React.Component {
       return true;
     }
 
-    componentDidMount () {
-        this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
-        this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
-    }
+    // newProject() {
+    //   ProjectManager.newProject();
+    //   this.props.updateProjectName("Unsaved Project");
+    // }
 
-    componentWillUnmount () {
-        this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
-        this.vm.removeListener('PROJECT_RUN_STOP', this.setProjectStopped);
-    }
+    // saveProject() {
+    //   ProjectManager.saveProject(); 
+    //   this.props.updateProjectName(ProjectManager.getCurrentProjectName());
+    //   this.props.toggleProjectSaved(true);
+    // }
 
-    newProject() {
-      localStore.newProject()
-    }
+    // downloadCode () {
+    //     var xml = VMScratchBlocks.getXML();
+    //     console.log("downloading code");
+    //     //console.log(VMScratchBlocks.getXML());
+    //     var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
+    //     //console.log(xmlFile)
+    //     var a = document.createElement('a');
+    //     a.href = URL.createObjectURL(xmlFile);
+    //     a.download = 'My Project' + '.xml';
+    //     a.click();
+    // }
 
-    saveProject() {
-      localStore.saveProject();
-    }
+    // uploadCode () {
+    //     //console.log(this.fileChooser);
+    //     this.fileChooser.current.click();
+    // }
 
-    downloadCode () {
-        var xml = VMScratchBlocks.getXML();
-        console.log("downloading code");
-        //console.log(VMScratchBlocks.getXML());
-        var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
-        //console.log(xmlFile)
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(xmlFile);
-        a.download = 'My Project' + '.xml';
-        a.click();
-    }
-
-    uploadCode () {
-        //console.log(this.fileChooser);
-        this.fileChooser.current.click();
-    }
-
-    loadCode (event) {
-        var projectName = event.target.files[0].name.split('.xml')[0];
-        if (event.target.files) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                // console.log(e.target.result);
-                VMScratchBlocks.loadXML(e.target.result);
-
-                // document.getElementById('project-name-input').value = projectName;
-            }
-            reader.readAsBinaryString(event.target.files[0]);
-        }
-    }
+    // loadCode (event) {
+    //     var projectName = event.target.files[0].name.split('.xml')[0];
+    //     if (event.target.files) {
+    //         var reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             // console.log(e.target.result);
+    //             // VMScratchBlocks.loadXML(e.target.result);
+    //             ProjectManager.newProject(e.target.result);
+    //             this.props.updateProjectName("Unsaved Project");
+    //             // document.getElementById('project-name-input').value = projectName;
+    //         }
+    //         reader.readAsBinaryString(event.target.files[0]);
+    //     }
+    // }
 
     render () {
         const {...componentProps} = this.props;
         return (
             <GUIComponent
               vm={this.vm}
-              downloadCode = {this.downloadCode}
-              uploadCode = {this.uploadCode}
-              fileChooser = {this.fileChooser}
-              loadCode = {this.loadCode}
+              // downloadCode = {this.downloadCode}
+              // uploadCode = {this.uploadCode}
+              // fileChooser = {this.fileChooser}
+              // loadCode = {this.loadCode}
 
-              newProject = {this.newProject}
-              saveProject = {this.saveProject}
+              // newProject = {this.newProject}
+              // saveProject = {this.saveProject}
               {...componentProps}
             />
         );
@@ -163,14 +203,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    openImageImport : () => dispatch(openImageImport()),
-    openImageExport: () => dispatch(openImageExport()),
-    openLocalProjects: () => dispatch(openLocalProjects()),
-    openSampleProjects: () => dispatch(openSampleProjects()),
+    // openImageImport : () => dispatch(openImageImport()),
+    // openImageExport: () => dispatch(openImageExport()),
+    // openLocalProjects: () => dispatch(openLocalProjects()),
+    // openSampleProjects: () => dispatch(openSampleProjects()),
     setProjectRunning: () => dispatch(setProjectRunState(true)),
     setProjectStopped: () => dispatch(setProjectRunState(false)),
     clearPixels: () => dispatch(clearThePixels()),
-    downloadPixels: () => dispatch(downloadThePixels(true))
+    downloadPixels: () => dispatch(downloadThePixels(true)),
+    updateProjectName : (value) => dispatch(updateProjectName(value)),
+    toggleProjectSaved : (value) => dispatch(toggleProjectSaved(value))
 });
 
 export default connect(
