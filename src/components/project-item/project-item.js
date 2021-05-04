@@ -1,27 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
 import CloseButton from '../close-button/close-button.js';
 import styles from './project-item.css';
 import classNames from 'classnames';
 
 
-import {
-  fade,
-  ThemeProvider,
-  withStyles,
-  makeStyles,
-  createMuiTheme,
-} from '@material-ui/core/styles';
-// import InputBase from '@material-ui/core/InputBase';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import TextField from '@material-ui/core/TextField';
+import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 
-// import FormControl from '@material-ui/core/FormControl';
-// import { green } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
 import EditIcon from '@material-ui/icons/Edit';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+
 import Button from '@material-ui/core/Button';
 
 import ProjectManager from "../../lib/project-manager.js"
@@ -33,22 +27,36 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-  paper: {
+  card: {
     position: 'absolute',
-    width: 300,
+    width: 350,
     backgroundColor: "#fff",
-    padding: '50px',
+    padding: '25px',
     borderRadius: "10px",
     outline: 0
   },
-
-  edit: {
+  cardContent: {
+    display: 'flex',
+    flexDirection : "row",
+    alignItems : "center",
+  },
+  icon: {
     '&:hover': {
       backgroundColor: "hsla(0, 0%, 0%, 0.4)",
     },
     backgroundColor: "hsla(0, 0%, 0%, 0.15)",
     borderRadius: '50%',
     padding: '2px',
+    position: 'absolute',
+    margin : '15px 15px',  
+  },
+  edit: {
+    right : 0,
+    bottom: 0,
+  },
+  save: {
+    right : 0,
+    bottom: 30,
   },
   margin: {
     margin: theme.spacing(1),
@@ -60,8 +68,9 @@ function getModalStyle() {
   const left = 50;
 
   return {
+    position: 'absolute',
     display: 'flex',
-    flexDirection : "row",
+    flexDirection : "column",
     alignItems : "center",
     top: `${top}%`,
     left: `${left}%`,
@@ -99,7 +108,6 @@ const ProjectItemComponent = (props) => {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
-
   const handleClick = (e) => {
     setOpen(true);
     e.preventDefault();
@@ -117,82 +125,86 @@ const ProjectItemComponent = (props) => {
   }
 
   const handlesubmit = (e) => {
-    console.log("CHANGED NAME")
+    console.log("CHANGED NAME");
     ProjectManager.changeProjectName(props.id, name);
     handleClose(e);
   }
-
+  
     return (
-        <div
-            className={classNames(
-                styles.libraryItem,
-                styles.featuredItem,
-                // props.extensionId ? styles.libraryItemExtension : null,
-                props.hidden ? styles.hidden : null
-            )}
-            onClick={props.onClick}
+        <div className={
+          classNames(
+            styles.libraryItem,
+            styles.featuredItem,
+            props.hidden ? styles.hidden : null
+          )}
+          onClick={props.onClick}
         >
-            <div className={styles.featuredImageContainer}>
-                <img
-                    className={styles.featuredImage}
-                    src={props.iconURL}
+          <div className={styles.featuredImageContainer}>
+              <img
+                  className={styles.featuredImage}
+                  src={props.iconURL}
+              />
+          </div>
+
+          {/* {props.insetIconURL ? (
+              <div className={styles.libraryItemInsetImageContainer}>
+                  <img
+                      className={styles.libraryItemInsetImage}
+                      src={props.insetIconURL}
+                  />
+              </div>
+          ) : null} */}
+          
+          <SaveAltIcon 
+            onClick={handleClick}
+            style={{ color: "white" }}
+            className={classNames(classes.icon,classes.save)} 
+          /> 
+
+          <EditIcon 
+            onClick={handleClick}
+            style={{ color: "white" }}
+            className={classNames(classes.icon,classes.edit)} 
+          /> 
+
+          <div className={classNames(styles.closeButton)}>
+            <CloseButton
+              buttonType="trash"
+              size={CloseButton.SIZE_LARGE}
+              onClick={props.onClickClose}
+            />
+          </div>
+
+          <div className={styles.featuredText}>
+            <span className={styles.libraryItemName}>{props.name}</span> 
+            <br />
+            <span className={styles.featuredDescription}>{props.description}</span>
+          </div>
+          
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            <Card style={modalStyle} className={classes.card} onClick={(ev)=> ev.stopPropagation()}>
+              <CardHeader
+                title="Edit Project"
+              />
+              <CardContent className={classes.cardContent}>
+                <CssTextField
+                  fullWidth
+                  className={classes.margin}
+                  defaultValue={props.name}
+                  onChange={onChange}
+                  id="custom-css-outlined-input"
                 />
-            </div>
-
-            {/* {props.insetIconURL ? (
-                <div className={styles.libraryItemInsetImageContainer}>
-                    <img
-                        className={styles.libraryItemInsetImage}
-                        src={props.insetIconURL}
-                    />
-                </div>
-            ) : null} */}
-            
-            <div
-                className={styles.featuredText}
-            >
-                <div className={styles.projectTitle}>
-                  <span className={styles.libraryItemName}>{props.name}</span> 
-                  <EditIcon 
-                    onClick={handleClick}
-                    style={{ color: "white" }}
-                    className={classes.edit} 
-                    fontSize="small"/> 
-                </div>
-
-                <br />
-                <span className={styles.featuredDescription}>{props.description}</span>
-            </div>
-            
-            <div className={classNames(styles.closeButton)}>
-                <CloseButton
-                    buttonType="trash"
-                    size={CloseButton.SIZE_LARGE}
-                    onClick={props.onClickClose}
-                />
-            </div>
-
- 
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >
-                <div style={modalStyle} className={classes.paper} onClick={(ev)=> ev.stopPropagation()}>
-                  <CssTextField
-                      fullWidth
-                      className={classes.margin}
-                      defaultValue={props.name}
-                      onChange={onChange}
-                      variant="outlined"
-                      id="custom-css-outlined-input"
-                    />
-                  <Button onClick={handlesubmit} variant="contained" color="primary">
-                    Update
-                  </Button>
-                </div>
-            </Modal>
+                <Button onClick={handlesubmit} variant="contained" color="primary">
+                  Update
+                </Button>
+              </CardContent>  
+            </Card>
+          </Modal>
         </div>
     )
 

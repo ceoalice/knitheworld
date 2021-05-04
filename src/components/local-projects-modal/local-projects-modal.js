@@ -48,7 +48,7 @@ const LocalProjectModalComponent = props => (
                     name={dataItem.name}
                     description={`Last Modified ${lastModified(dataItem.timestamp)}`}
                     id={dataItem.id}
-
+                    iconURL={dataItem.imgData}
                     onSelect={()=> props.openProject(dataItem.id)}
                     onDelete={()=> props.deleteProject(dataItem.id)}
                   />

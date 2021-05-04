@@ -49,8 +49,9 @@ class ProjectManager {
     let xml = localStorage.getItem(`${id}_${PROJECT_XML}`);
     let name = localStorage.getItem(`${id}_${PROJECT_NAME}`);
     let timestamp = localStorage.getItem(`${id}_${PROJECT_TIMESTAMP}`); 
+    let imgData = localStorage.getItem(`${id}_${PROJECT_IMAGE_DATA}`); 
     
-    return {id, xml, name, timestamp};
+    return {id, xml, name, timestamp, imgData};
   }
 
   getProjects() {
@@ -84,9 +85,10 @@ class ProjectManager {
     localStorage.setItem(AUTOINCREMENT_ID, newID + 1); //autoincrement
 
     localStorage.setItem(`${newID}_${PROJECT_XML}`, vmScratchBlocks.getXML());
-    localStorage.setItem(`${newID}_${PROJECT_NAME}`, `Project ${newID}`);
+    localStorage.setItem(`${newID}_${PROJECT_NAME}`, projectName ? projectName : `Project ${newID}`);
     localStorage.setItem(`${newID}_${PROJECT_TIMESTAMP}`, new Date());
-    // localStorage.setItem(`${newID}_${PROJECT_IMAGE_DATA}`, imgData);
+
+    if (imgData) localStorage.setItem(`${newID}_${PROJECT_IMAGE_DATA}`, imgData);
 
     this.vm.emit("PROJECT_NAME_CHANGED"); // no longer unsaved
   }
@@ -96,6 +98,12 @@ class ProjectManager {
 
     localStorage.setItem(`${currentID}_${PROJECT_XML}`, vmScratchBlocks.getXML());
     localStorage.setItem(`${currentID}_${PROJECT_TIMESTAMP}`, new Date());
+
+    if (projectName) {
+      localStorage.setItem(`${currentID}_${PROJECT_NAME}`, projectName);
+      this.vm.emit("PROJECT_NAME_CHANGED");
+    }
+    if (imgData) localStorage.setItem(`${currentID}_${PROJECT_IMAGE_DATA}`, imgData);
   }
 
   newProject(xml = null) { 

@@ -29,16 +29,16 @@ class ProjectItem extends React.PureComponent {
     }
     render () {
         // const iconMd5 = this.curIconMd5();
-        const iconURL = this.props.iconRawURL;
+        // const iconURL = this.props.iconRawURL;
         return (
             <ProjectItemComponent
                 description={this.props.description}
                 // disabled={this.props.disabled}
                 hidden={this.props.hidden}
-                iconURL={iconURL}
-                icons={this.props.icons}
+                iconURL={this.props.iconURL}
+                // icons={this.props.icons}
                 id={this.props.id}
-                insetIconURL={this.props.insetIconURL}
+                // insetIconURL={this.props.insetIconURL}
                 name={this.props.name}
                 onClick={this.handleClick}
                 onClickClose={this.handleClickClose}
@@ -55,15 +55,15 @@ ProjectItem.propTypes = {
     ]),
 
     hidden: PropTypes.bool,
-    iconRawURL: PropTypes.string,
-    icons: PropTypes.arrayOf(
-        PropTypes.shape({
-            baseLayerMD5: PropTypes.string, // 2.0 library format, TODO GH-5084
-            md5ext: PropTypes.string // 3.0 library format
-        })
-    ),
+    iconURL: PropTypes.string,
+    // icons: PropTypes.arrayOf(
+    //     PropTypes.shape({
+    //         baseLayerMD5: PropTypes.string, // 2.0 library format, TODO GH-5084
+    //         md5ext: PropTypes.string // 3.0 library format
+    //     })
+    // ),
     id: PropTypes.number.isRequired,
-    insetIconURL: PropTypes.string,
+    // insetIconURL: PropTypes.string,
     name: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
