@@ -7,6 +7,9 @@ import styles from './image-importer.css';
 import VMScratchBlocks from '../../lib/blocks.js';
 import Button from '../button/button.js';
 
+import {connect} from 'react-redux';
+import { updateProjectName , toggleProjectSaved} from '../../reducers/project-state.js';
+import ProjectManager from '../../lib/project-manager';
 
 const BASE_CANVAS_WIDTH = 400;
 
@@ -139,7 +142,7 @@ class ImageImporterComponent extends React.Component {
       let xmlString = blocksToXML(blocks);
 
 
-      VMScratchBlocks.loadWorkspace(xmlString);
+      ProjectManager.newProject(xmlString);
 
       this.props.closeModal();
     }
@@ -214,4 +217,12 @@ class ImageImporterComponent extends React.Component {
     }
 }
 
-export default ImageImporterComponent;
+const mapDispatchToProps = dispatch => ({
+  updateProjectName : (value) => dispatch(updateProjectName(value)),
+});
+
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ImageImporterComponent);
