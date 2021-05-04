@@ -1,6 +1,12 @@
 /* @import "../../css/colors.css";
 @import "../../css/units.css"; */
 
+.project-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
 .close-button {
   display: flex;
@@ -129,7 +135,8 @@
 }
 
 .library-item-name {
-    width: 80%;
+    width: auto;
+    padding-right: 15px;
     margin: 0.25rem 0;
     text-align: center;
 
