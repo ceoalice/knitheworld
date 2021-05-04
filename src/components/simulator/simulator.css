@@ -2,13 +2,7 @@
   width: 200vw; /* temp fix */
   height: 200vh; /* temp fix */
   display: block;
-  overflow: scroll;
   position: relative;
   top: 0%;
   left: 0%;
-}
-
-.transform {
-  width: 100vw !important;
-  height: 100% !important;
 }

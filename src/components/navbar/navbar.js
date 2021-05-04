@@ -1,25 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Toolbar from '@material-ui/core/Toolbar';
 import styles from './navbar.css';
 
-
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-
-
-const splitPaneStyles = {
-  background: '#999',
-  width: '10px',
-  cursor: 'col-resize',
-  margin: '0 0px',
-  height: '100%',
-  "zIndex" : '1000'
-};
-
 const NavBarComponent = props => {
-    // const classes = useStyles();
-    const {...componentProps} = props;
     return (
         <React.Fragment>
             <Toolbar variant="dense" className={styles.topnav}>

@@ -360,23 +360,12 @@ class SimulatorComponent extends React.Component {
 
     render() {
         return (
-          // <TransformWrapper
-          //   scale={1.5}
-          //   zoomIn={{step: 500}}
-          //   limitToBounds={false}
-          //   defaultPositionX={0}
-          //   defaultPositionY={0}
-          //   // options={{wrapperClass: styles.transform}}
-          // >
-          //   <TransformComponent
-          //     // options={{wrapperClass: styles.transform}}
-          //   >
-              <canvas
-                  className={styles.simulator}
-                  ref={this.canvasRef}
-              />
-          //   </TransformComponent>
-          // </TransformWrapper>
+          <div>
+            <canvas
+                className={styles.simulator}
+                ref={this.canvasRef}
+            />
+          </div>
         );
     }
 }
