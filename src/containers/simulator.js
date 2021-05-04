@@ -19,7 +19,8 @@ import {
     removeLastRow,
     downloadThePixels,
     downloadTheStitches,
-    downloadTheCode
+    downloadTheCode,
+    clearThePixels
 } from '../reducers/pixels.js';
 
 import SimulatorComponent from '../components/simulator/simulator.js'
@@ -40,7 +41,11 @@ class Simulator extends React.Component {
     }
 
     dispatchPixelCommand (data) {
-        switch (data.type) {
+      // console.log(data)
+      switch (data.type) {
+        case 'clearPixels':
+          this.props.clearPixels();
+          break;
         case 'nextPixel':
             this.props.nextPixel();
             break;
@@ -126,6 +131,7 @@ const mapDispatchToProps = dispatch => ({
     nextPixel: () => dispatch(moveNextPixel()),
     previousPixel: () => dispatch(movePreviousPixel()),
     changePixel: value => dispatch(changePixelColor(value)),
+    clearPixels: ()=> dispatch(clearThePixels()),
     setPixel: value => dispatch(setPixelColor(value)),
     forwardPixel: value => dispatch(moveForwardPixels(value)),
     backPixel: value => dispatch(moveBackPixels(value)),
