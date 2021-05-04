@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import VMScratchBlocks from '../lib/blocks.js';
+import ProjectManager from '../lib/project-manager.js';
 import VM from 'scratch-vm';
 import BlocksComponent from '../components/blocks/blocks.js';
 
@@ -10,6 +11,7 @@ import defaultToolbox from '../lib/default-toolbox.js';
 import {connect} from 'react-redux';
 
 import { clearThePixels } from '../reducers/pixels.js';
+
 
 class Blocks extends React.Component {
     constructor (props) {
@@ -36,7 +38,9 @@ class Blocks extends React.Component {
                 // ...Blocks.defaultOptions,
                 // ...{toolbox: defaultToolbox}
             // });
-            VMScratchBlocks.loadWorkspace(Blocks.defaultWorkspace);
+            // VMScratchBlocks.loadWorkspace(Blocks.defaultWorkspace);
+            ProjectManager.loadCurrentProject();
+
             // const xml = this.ScratchBlocks.Xml.textToDom(Blocks.defaultWorkspace);
             // this.ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
             // this.workspace.getFlyout().autoClose = true;
@@ -91,12 +95,34 @@ class Blocks extends React.Component {
     }
 
     render () {
+        const {
+          currentProjectName,
+          clearPixels,
+          projectSaved,
+          ...otherProps
+        } = this.props;
+
         return (
             <React.Fragment>
+              <div style={{
+                  position : "absolute" , 
+                  right: "0",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  zIndex: 100,
+                  // backgroundColor: "#fff",
+                  // borderRadius: "0.5rem",
+                  padding: "3px",
+                  minWidth: "100px"
+                  // color: "#fff"
+                  }}> {`${currentProjectName}`} </div>
                 <BlocksComponent
                     containerRef={this.setBlocks}
-                    {...this.props}
-                />
+                    {...otherProps}
+                /> 
+                
+                {/* </BlocksComponent> */}
             </React.Fragment>
         );
     }
@@ -412,14 +438,20 @@ Blocks.defaultOptions = {
 };
 
 Blocks.propTypes = {
-    vm: PropTypes.instanceOf(VM).isRequired
+    vm: PropTypes.instanceOf(VM).isRequired,
+    // currentProjectName: PropTypes.string.isRequired
 };
+
+const mapStateToProps = state => ({
+  currentProjectName: state.projectState.currentProjectName,
+  projectSaved: state.projectState.projectSaved
+});
 
 const mapDispatchToProps = dispatch => ({
     clearPixels: () => dispatch(clearThePixels())
 });
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Blocks);
