@@ -5,7 +5,7 @@ import ImageButtonComponent from '../image-button/image-button.js';
 import PixelCountComponent from '../pixel-count/pixel-count.js';
 import RowCountComponent from '../row-count/row-count.js';
 
-import StartButton from '../../containers/start-button.js';
+// import StartButton from '../../containers/start-button.js';
 
 import ringIcon from './icon--ring.svg';
 import stripIcon from './icon--strip.svg';

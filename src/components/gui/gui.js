@@ -26,9 +26,9 @@ import SplitPane from 'react-split-pane';
 
 const splitPaneStyles = {
   background: '#999',
-  width: '10px',
+  width: '25px',
   cursor: 'col-resize',
-  margin: '0 0px',
+  // margin: '0 0px',
   height: '100%',
   "zIndex" : '1000'
 };
@@ -46,7 +46,7 @@ const GUIComponent = props => {
               : null
             }
             { props.localProjectsVisible 
-              ? <LocalProjectsModal />
+              ? <LocalProjectsModal vm={props.vm} />
               : null
             }
             { props.imageImportVisible 
@@ -59,21 +59,22 @@ const GUIComponent = props => {
             }
 
             <div 
+              className={styles.flexbox}
               // resizerStyle={splitPaneStyles}
-              // className={styles.flexbox}
-              style={{
-                height: 'calc(100vh - var(--topnav-height))',
-                width: "100vw",
-                display: 'flex',
-                flexDirection: 'row'
-              }}
-              // minSize={100}
+              // defaultSize="50%"
+              // minSize={400}
+              // maxSize={"calc(100% - 300px)"}
               // split="vertical"
             >
-              <Blocks vm={props.vm} />
+              <div className={styles.blocksContainer}>
+                <Blocks vm={props.vm} />
+              </div>
               <div className={styles.simulatorContainer}>
                 <SimulatorPanelComponent vm={props.vm} />
               </div>
+
+              {/* <div className={styles.redPanel}></div>
+              <div className={styles.bluePanel}></div> */}
             </div>
 
             <DownloadButton vm={props.vm}/>

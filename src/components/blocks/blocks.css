@@ -1,7 +1,9 @@
 .blocks {
-  width: 50%;
-  height: 97%;
-  float: left;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  /* margin-right: 25px; */
+  /* float: left; */
 }
 
 .blocks :global(.blocklyScrollbarHandle) {

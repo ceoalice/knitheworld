@@ -1,10 +1,10 @@
 import React from 'react';
 
-import FullscreenButton from '../../containers/fullscreen-button.js';
+// import FullscreenButton from '../../containers/fullscreen-button.js';
 import Simulator from '../../containers/simulator.js';
 import SimulatorTools from '../../containers/simulator-tools.js';
-import StartButton from '../../containers/start-button.js';
-import DownloadButton from '../../containers/download-button.js'
+// import StartButton from '../../containers/start-button.js';
+// import DownloadButton from '../../containers/download-button.js'
 
 import styles from './simulator-panel.css';
 
@@ -17,15 +17,14 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const SimulatorPanelComponent = props => {
     return (
         <React.Fragment>
+          <SimulatorTools />
           <img
             className={styles.logo}
             src={knitheworldLogo}
             alt="KnitheWorld Logo"
-            width={225}
-            height={50}
-          />
-          <div>
-            <SimulatorTools />
+          /> 
+
+          <div className={styles.transformContainer}>
             <TransformWrapper
               scale={1}
               options={{limitToBounds:false, minScale:0.5}}
@@ -36,7 +35,8 @@ const SimulatorPanelComponent = props => {
               </TransformComponent>
             </TransformWrapper>
           </div>
-          <p>
+
+          <p style={{ margin: "5px", right: 0, bottom: 0, zIndex : 1000, position:"absolute"}}>
             v.2.12.21.0
           </p>
         </React.Fragment>
