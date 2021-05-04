@@ -32,12 +32,10 @@ class NavBar extends React.Component {
 
     newProject() {
       ProjectManager.newProject();
-      this.props.updateProjectName("Unsaved Project");
     }
 
     saveProject() {
       ProjectManager.saveProject(); 
-      this.props.updateProjectName(ProjectManager.getCurrentProjectName());
       this.props.toggleProjectSaved(true);
     }
 
@@ -66,7 +64,6 @@ class NavBar extends React.Component {
                 // console.log(e.target.result);
                 // VMScratchBlocks.loadXML(e.target.result);
                 ProjectManager.newProject(e.target.result);
-                this.props.updateProjectName("Unsaved Project");
                 // document.getElementById('project-name-input').value = projectName;
             }
             reader.readAsBinaryString(event.target.files[0]);
