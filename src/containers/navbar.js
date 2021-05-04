@@ -1,7 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {openImageImport, openImageExport, openSampleProjects, openLocalProjects} from '../reducers/modals.js';
+import {
+  openImageImport, 
+  openImageExport, 
+  openSampleProjects,
+  openLocalProjects,
+  openSaveAs,
+} from '../reducers/modals.js';
 
 import NavBarComponent from '../components/navbar/navbar.js';
 
@@ -27,16 +33,10 @@ class NavBar extends React.Component {
         this.uploadCode = this.uploadCode.bind(this);
         this.loadCode = this.loadCode.bind(this);
         this.newProject = this.newProject.bind(this);
-        this.saveProject = this.saveProject.bind(this);
     }
 
     newProject() {
       ProjectManager.newProject();
-    }
-
-    saveProject() {
-      ProjectManager.saveProject(); 
-      this.props.toggleProjectSaved(true);
     }
 
     downloadCode () {
@@ -79,7 +79,7 @@ class NavBar extends React.Component {
               fileChooser = {this.fileChooser}
               loadCode = {this.loadCode}
               newProject = {this.newProject}
-              saveProject = {this.saveProject}
+              // saveProject = {this.saveProject}
               {...componentProps}
             />
         );
@@ -101,6 +101,7 @@ const mapDispatchToProps = dispatch => ({
     openImageExport: () => dispatch(openImageExport()),
     openLocalProjects: () => dispatch(openLocalProjects()),
     openSampleProjects: () => dispatch(openSampleProjects()),
+    openSaveAs: () => dispatch(openSaveAs()),
     // setProjectRunning: () => dispatch(setProjectRunState(true)),
     // setProjectStopped: () => dispatch(setProjectRunState(false)),
     // clearPixels: () => dispatch(clearThePixels()),

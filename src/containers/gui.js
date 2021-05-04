@@ -220,6 +220,7 @@ const mapStateToProps = state => ({
     imageExportVisible: state.modals.imageExport,
     sampleProjectsVisible : state.modals.sampleProjects,
     localProjectsVisible : state.modals.localProjects,
+    saveAsVisible : state.modals.saveAs,
     projectLoading : state.projectState.projectLoading,
     fullscreenVisible: state.modals.fullscreenSimulator,
     bluetoothConnected: state.bluetooth.connectionStatus,

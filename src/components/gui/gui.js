@@ -4,16 +4,13 @@ import PropTypes from 'prop-types';
 import VM from 'scratch-vm';
 
 import Blocks from '../../containers/blocks.js';
-// import SimulatorModal from '../../containers/simulator-modal.js';
-// import WebBTButton from '../../containers/webbt-button.js';
 import DownloadButton from '../../containers/download-button.js';
-
-// import StartButton from '../../containers/start-button.js';
 
 import ImageImportModal from "../../containers/image-import-modal.js";
 import ImageExportModal from "../../containers/image-export-modal.js";
 import LocalProjectsModal from "../../containers/local-projects-modal.js";
 import SampleProjectsModal from "../../containers/sample-projects-modal.js";
+import SaveAsModal from "../../containers/save-as-modal.js";
 
 import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
 
@@ -57,6 +54,11 @@ const GUIComponent = props => {
               ? <ImageExportModal />
               : null
             }
+            {
+              props.saveAsVisible
+              ? <SaveAsModal />
+              : null
+            }
 
             <div 
               className={styles.flexbox}
@@ -90,8 +92,9 @@ GUIComponent.propTypes = {
     bluetoothConnected: PropTypes.bool.isRequired,
     imageImportVisible: PropTypes.bool.isRequired,
     imageExportVisible: PropTypes.bool.isRequired,
-    sampleProjectsVisible : PropTypes.bool.isRequired,
-    localProjectsVisible : PropTypes.bool.isRequired,
+    sampleProjectsVisible: PropTypes.bool.isRequired,
+    localProjectsVisible: PropTypes.bool.isRequired,
+    saveAsVisible: PropTypes.bool.isRequired,
     fullscreenVisible: PropTypes.bool.isRequired,
     
     // openImageImport : PropTypes.func.isRequired,

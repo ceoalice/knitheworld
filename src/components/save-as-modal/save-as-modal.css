@@ -1,0 +1,21 @@
+.body {
+  /* background: $ui-white; */
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  padding: 25px;
+}
+
+.modal-content {
+  width: 300px;
+}
+
+.submit-button {
+  color: white;
+  padding: 10px;
+  background: hsla(215, 100%, 65%, 0.9);
+}
+
+.fileInput {
+  display: none;
+}

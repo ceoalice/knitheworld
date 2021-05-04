@@ -10,7 +10,7 @@ const NavBarComponent = props => {
                 <a href="#" onClick={props.newProject}>
                     New
                   </a>
-                  <a href="#" onClick={props.saveProject}>
+                  <a role="button" style={{cursor:'pointer'}} onClick={props.openSaveAs}>
                     Save
                   </a>
                   <a href="#" onClick={props.uploadCode}>
@@ -40,7 +40,8 @@ NavBarComponent.propTypes = {
 
     downloadCode: PropTypes.func.isRequired,
     uploadCode: PropTypes.func.isRequired,
-    saveProject: PropTypes.func.isRequired,
+    // saveProject: PropTypes.func,
+    openSaveAs: PropTypes.func.isRequired,
     newProject: PropTypes.func.isRequired,
     openImageImport : PropTypes.func.isRequired,
     openImageExport: PropTypes.func.isRequired,
