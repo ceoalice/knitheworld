@@ -9,7 +9,7 @@ import {openImageImport, openImageExport, openSampleProjects, openLocalProjects}
 import GUIComponent from '../components/gui/gui.js';
 
 import {downloadThePixels} from '../reducers/pixels.js';
-import { updateProjectName , toggleProjectSaved} from '../reducers/project-state.js';
+import { updateProjectName , toggleProjectSaved, toggleProjectLoading} from '../reducers/project-state.js';
 
 
 import VMScratchBlocks from '../lib/blocks.js';
@@ -48,7 +48,9 @@ class GUI extends React.Component {
           // blockKeys: [],
           // fieldValues: [],
           // startupToggle : false,
-          prevBlocks :  {}
+          prevBlocks :  null,
+          totalStacks : 1,
+          stacksLoaded : 1
         };
         // this.fileChooser = React.createRef();
         // this.uploadCode = this.uploadCode.bind(this);
@@ -56,66 +58,87 @@ class GUI extends React.Component {
         // this.newProject = this.newProject.bind(this);
         // this.saveProject = this.saveProject.bind(this);
         this.checkProjectChanged = this.checkProjectChanged.bind(this);
+        this.handleProjectLoading = this.handleProjectLoading.bind(this);
+        this.handleProjectName = this.handleProjectName.bind(this);
        
         ProjectManager.setVM(this.vm); // WITHOUT THIS ProjectManager CAN'T UPDATE REDUX WHEN THINGS CHANGE
 
         // event passed from ProjectManager
-        this.vm.on('PROJECT_NAME_CHANGED', () => {
-          // console.log("WHATS GOOD: PROJECT_NAME_CHANGED");
-          this.props.updateProjectName(ProjectManager.getCurrentProjectName());
-        })
 
         this.vm.on('PROJECT_IMAGE_CHANGED', () => {
           // console.log("WHATS GOOD: PROJECT_IMAGE_CHANGED");
         })
 
-        this.vm.on('PROJECT_LOADING', () => {
-          // console.log("WHATS GOOD: PROJECT_LOADING");
-          // this.props.toggleProjectLoading(true);
-        })
-
-        // this.vm.on('NIKO_EVENT', (input) => {
-          // console.log("WHATS GOOD: NIKO_EVENT", input);
-          // this.props.toggleProjectLoading(true);
-        // })
     }
 
     componentDidMount () {
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
+
         this.vm.on('PROJECT_CHANGED',this.checkProjectChanged);
-        this.props.updateProjectName(ProjectManager.getCurrentProjectName())
+        this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectName);
+        this.vm.on('PROJECT_LOADING', this.handleProjectLoading);
     }
+
+
 
     componentWillUnmount () {
         this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.removeListener('PROJECT_RUN_STOP', this.props.setProjectStopped);
+
         this.vm.removeListener('PROJECT_CHANGED',this.checkProjectChanged);
+        this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectName);
+        this.vm.removeListener('PROJECT_LOADING', this.handleProjectLoading);
+    }
+
+    handleProjectName() { 
+      this.props.updateProjectName(ProjectManager.getCurrentProjectName());
+    }
+
+
+    handleProjectLoading(stacks) {
+      console.log("TOTAL STACKS: ", stacks.length);
+      this.props.startProjectLoading();
+      this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
     }
 
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
       let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
-      let blocksEqual = this.allBlocksEqual(blocks); 
+      
+      // blank workspace loaded need to wait for more blocks or bug occured
+      if (Object.keys(blocks).length == 0) return;
 
-      if (!blocksEqual) { // && !this.props.projectLoading // CHANGE HAS OCCURED
+      let blocksEqual = this.allBlocksEqual(blocks);
+
+      console.log(Object.keys(blocks).length, blocksEqual);
+
+      if (!blocksEqual && !this.props.projectLoading) { // CHANGE HAS OCCURED & PROJECT NOT LOADING
         // console.log("updating canvas...");
-        this.setState({prevBlocks: blocks});
-
         if (ProjectManager.getCurrentProjectID()) {
           ProjectManager.saveCurrentProject();
         }
 
         this.vm.runtime.startHats('event_whenstarted');
-      } 
-      // else if (blocksEqual && this.props.projectLoading) {
-      //   this.setState({prevBlocks: blocks});
-      //   this.vm.runtime.startHats('event_whenstarted');
-      //   this.props.toggleProjectLoading(false);
-      // }
+      }
+      else if (blocksEqual && this.props.projectLoading) {
+        // console.log("STACK LOADED");
+        if (this.state.totalStacks <= this.state.stacksLoaded) {
+          // console.log("ALL STACKS LOADED")
+          this.vm.runtime.startHats('event_whenstarted');
+          this.props.stopProjectLoading();
+        } else {
+          this.setState({ stacksLoaded : this.state.stacksLoaded + 1});
+        }
+      }
+
+      this.setState({prevBlocks: blocks});
     }
 
     allBlocksEqual(blocks) {
+      if (this.state.prevBlocks === null) return false;
+      // if (Object.keys(blocks).length == 0 && Object.keys(this.state.prevBlocks).length == 0) return false;
+
       var newKeys = Object.keys(blocks).sort();
       var prevKeys = Object.keys(this.state.prevBlocks).sort();
       let keysEqual =  JSON.stringify(newKeys) === JSON.stringify(prevKeys);
@@ -197,6 +220,7 @@ const mapStateToProps = state => ({
     imageExportVisible: state.modals.imageExport,
     sampleProjectsVisible : state.modals.sampleProjects,
     localProjectsVisible : state.modals.localProjects,
+    projectLoading : state.projectState.projectLoading,
     fullscreenVisible: state.modals.fullscreenSimulator,
     bluetoothConnected: state.bluetooth.connectionStatus,
     images: state.images
@@ -207,12 +231,15 @@ const mapDispatchToProps = dispatch => ({
     // openImageExport: () => dispatch(openImageExport()),
     // openLocalProjects: () => dispatch(openLocalProjects()),
     // openSampleProjects: () => dispatch(openSampleProjects()),
+    
     setProjectRunning: () => dispatch(setProjectRunState(true)),
     setProjectStopped: () => dispatch(setProjectRunState(false)),
     clearPixels: () => dispatch(clearThePixels()),
     downloadPixels: () => dispatch(downloadThePixels(true)),
     updateProjectName : (value) => dispatch(updateProjectName(value)),
-    toggleProjectSaved : (value) => dispatch(toggleProjectSaved(value))
+    // toggleProjectSaved : (value) => dispatch(toggleProjectSaved(value)),
+    startProjectLoading: () => dispatch(toggleProjectLoading(true)),
+    stopProjectLoading: () => dispatch(toggleProjectLoading(false)), 
 });
 
 export default connect(

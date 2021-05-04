@@ -14,19 +14,32 @@ class LocalProjectsModal extends React.Component {
         this.state = {
           projects : []
         } 
+        this.vm = props.vm;
         this.openProject = this.openProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
+        this.handleProjectsUpdate = this.handleProjectsUpdate.bind(this);
     }
 
     componentDidMount() {
       // console.log(ProjectManager.getProjectIDs());
-      let ids = ProjectManager.getProjectIDs();
       let projects = ProjectManager.getProjects();
 
       projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
+      
+      // console.log("projects: ", projects)
+      this.setState({projects});
 
-      console.log("IDs: ", ids);
-      console.log("projects: ", projects)
+      this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+    }
+
+    componentWillUnmount() {
+      this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+    }
+
+    handleProjectsUpdate() {
+      // console.log("GOT HERE: handleProjectsUpdate");
+      let projects = ProjectManager.getProjects();
+      projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
       this.setState({projects});
     }
 
