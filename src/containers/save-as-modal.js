@@ -72,6 +72,7 @@ class SaveAsModal extends React.Component {
                 onCancel={this.props.closeModal}
                 value={this.state.projectName}
                 prevProjectName={this.state.prevProjectName}
+                imgDataGiven={Boolean(this.state.imgData)}
                 handleInputChange={this.handleInputChange}
                 handleSubmit={this.handleSubmit}
                 uploadImage = {this.uploadImage}

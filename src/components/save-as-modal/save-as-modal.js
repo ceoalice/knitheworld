@@ -3,7 +3,9 @@ import React from 'react';
 
 import Modal from '../../containers/modal';
 import styles from './save-as-modal.css';
-import Button from "../button/button.js"
+import Button from "../button/button.js";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 
 const SaveAsModalComponent = props => (
     <Modal
@@ -39,6 +41,12 @@ const SaveAsModalComponent = props => (
 
           <div className={styles.body}>
             <Button className={styles.submitButton} onClick={props.uploadImage}> Upload Thumbnail </Button>
+
+            {
+              props.imgDataGiven
+              ? <CheckCircleIcon className={styles.check} fontSize="large" />
+              : null
+            }
           </div>
         </div>
     </Modal>
@@ -48,7 +56,8 @@ SaveAsModalComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     handleInputChange : PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    onHelp: PropTypes.func
+    onHelp: PropTypes.func,
+    imgDataGiven : PropTypes.bool
 };
 
 export {
