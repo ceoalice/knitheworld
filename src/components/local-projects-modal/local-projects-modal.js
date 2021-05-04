@@ -45,7 +45,7 @@ const LocalProjectModalComponent = props => (
                 props.projects.map((dataItem, index) => (
                   <ProjectItem
                     key={index}
-                    name={`Project ${dataItem.id}`}
+                    name={dataItem.name}
                     description={`Last Modified ${lastModified(dataItem.timestamp)}`}
                     id={dataItem.id}
 
@@ -62,7 +62,7 @@ LocalProjectModalComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     openProject: PropTypes.func.isRequired,
     deleteProject: PropTypes.func.isRequired,
-    projects: PropTypes.array,
+    projects: PropTypes.array
 };
 
 export {
