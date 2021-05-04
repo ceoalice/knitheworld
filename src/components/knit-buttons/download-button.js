@@ -12,31 +12,47 @@ import spacer from './icon--spacer.svg';
 
 import styles from './download-button.css';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 const DownloadButtonComponent = props => {
     return (
         <div className={styles.pixelStyleTools}>
+          <Tooltip title="Download Images" placement="right">
+
+            <div>
+              <ImageButtonComponent
+                      width={40}
+                      height={40}
+                      // handleClick={props.downloadStitches}
+                      handleClick={props.openImageExport}
+                      src={downloadStitchButton}
+                  />
+            </div>
+          </Tooltip>
+
+          <div style={{paddingTop:18}}></div>
+
+          <Tooltip title="Download File" placement="right">
+            <div>
               <ImageButtonComponent
                   width={40}
                   height={40}
-                  // handleClick={props.downloadStitches}
-                  handleClick={props.openImageExport}
-                  src={downloadStitchButton}
+                  handleClick={props.downloadCode}
+                  src={downloadCodeButton}
               />
+            </div>
+          </Tooltip>
    
-            <div style={{paddingTop:18}}></div>
-
-            <ImageButtonComponent
-                width={40}
-                height={40}
-                handleClick={props.downloadCode}
-                src={downloadCodeButton}
-            />
-            <ImageButtonComponent
-                width={40}
-                height={40}
-                handleClick={props.uploadCode}
-                src={uploadCodeButton}
-            />
+          <Tooltip title="Upload File" placement="right">
+            <div> 
+              <ImageButtonComponent
+                  width={40}
+                  height={40}
+                  handleClick={props.uploadCode}
+                  src={uploadCodeButton}
+              />
+            </div>
+          </Tooltip>
             <input
                 type="file"
                 className={styles.fileInput}
