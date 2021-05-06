@@ -1,5 +1,9 @@
 .pixelCountTools {
   display: flex;
+  flex-direction: row;
+
+  justify-content: center; 
+  align-items: center;
   user-select: none;
 }
 
@@ -7,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 35px;
+  /* height: 35px; */
   padding: 0px;
   color: white;
   font: 15px sans-serif;
@@ -15,6 +19,13 @@
 }
 
 .icon {
+  padding: 0px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* .icon {
   padding: 5px;
   display: block;
   margin-left: auto;
@@ -23,4 +34,4 @@
   paddint-bottom:5px;
   padding-left:0px;
   padding-right:0px;
-}
+} */

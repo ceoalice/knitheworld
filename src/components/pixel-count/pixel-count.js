@@ -20,13 +20,13 @@ const PixelCountComponent = props => {
         <div className={styles.pixelCountTools}>
           <img
             width={30}
-            height={30}
+            // height={30}
             src={stitchIcon}
             className={styles.icon}
           />
           <ImageButtonComponent
             width={30}
-            height={30}
+            // height={30}
             handleClick={props.removePixel}
             src={removeIcon}
           />
@@ -35,7 +35,7 @@ const PixelCountComponent = props => {
           </div>
           <ImageButtonComponent
             width={30}
-            height={30}
+            // height={30}
             handleClick={props.addPixel}
             src={addIcon}
           />

@@ -3,9 +3,7 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
+  margin : 0px 10px;
 }
 
 .rowCountContainer {
@@ -13,15 +11,22 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
+  margin : 0px 10px;
 }
 
 .countContainers {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justiy-content: flex-start;
   user-select: none;
-  vertical-align: middle;
-  position: absolute;
-  margin: 5px;
+
+  /* REQUIRED FOR SPLITPANE TO WORK  */
+  overflow: visible;
+  width: 0px;
+  /*  */
+
+  margin-top: 10px;
+  filter: invert(0.25);
+
+  position: relative;
 }
