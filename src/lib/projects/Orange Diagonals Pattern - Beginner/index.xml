@@ -1,0 +1,59 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="event_whenstarted" id="A![rFh]o1wC(mc(}[TK9" deletable="false" x="34" y="86">
+    <next>
+      <block type="control_repeat" id="0xTiN(MqSgb?{[Og.4s}">
+        <value name="TIMES">
+          <shadow type="math_whole_number" id="AwqZb;0l4:y{N{m].qSC">
+            <field name="NUM">15</field>
+          </shadow>
+        </value>
+        <statement name="SUBSTACK">
+          <block type="control_repeat" id="E:5JSJ$=mKgJrmWEdf{9">
+            <value name="TIMES">
+              <shadow type="math_whole_number" id="nP|v`QS8mh#1PU|dXHeE">
+                <field name="NUM">40</field>
+              </shadow>
+            </value>
+            <statement name="SUBSTACK">
+              <block type="knit_changecolorto" id="chQD{:#xawy#dV)FTTKz">
+                <value name="COLOR">
+                  <shadow type="colour_picker" id="UlfyWTg@)`-S_x?wLQ?V">
+                    <field name="COLOUR">#fff198</field>
+                  </shadow>
+                </value>
+                <next>
+                  <block type="knit_knitstitches" id="h9/|)L!wVNzlDM?l4)J{">
+                    <value name="VALUE">
+                      <shadow type="math_positive_number" id="M8I${dc_cI}$Kpc{4xT4">
+                        <field name="NUM">2</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="knit_changecolorto" id="G5Y6By19-wr^@-2;XE?F">
+                        <value name="COLOR">
+                          <shadow type="colour_picker" id="x~m:o6x{jpHy*#2]^=}p">
+                            <field name="COLOUR">#fb885a</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="knit_knitstitches" id="e07j7oJcUXpe)Tm{k8T(">
+                            <value name="VALUE">
+                              <shadow type="math_positive_number" id="ZlMQk!8/#]8Dle`;$N:a">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+</xml>
