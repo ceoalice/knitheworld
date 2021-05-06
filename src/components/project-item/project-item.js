@@ -6,7 +6,10 @@ import classNames from 'classnames';
 
 
 import {withStyles, makeStyles} from '@material-ui/core/styles';
+
 import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import Modal from '@material-ui/core/Modal';
 import EditIcon from '@material-ui/icons/Edit';
@@ -48,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '50%',
     padding: '2px',
     position: 'absolute',
-    margin : '15px 15px',  
+    margin : '10px 15px',  
   },
   edit: {
     right : 0,
@@ -124,7 +127,7 @@ const ProjectItemComponent = (props) => {
     setName(e.target.value);
   }
 
-  const handlesubmit = (e) => {
+  const handleSubmit = (e) => {
     console.log("CHANGED NAME");
     ProjectManager.changeProjectName(props.id, name);
     handleClose(e);
@@ -146,14 +149,14 @@ const ProjectItemComponent = (props) => {
               />
           </div>
 
-          {/* {props.insetIconURL ? (
+          {props.insetIconURL ? (
               <div className={styles.libraryItemInsetImageContainer}>
                   <img
                       className={styles.libraryItemInsetImage}
                       src={props.insetIconURL}
                   />
               </div>
-          ) : null} */}
+          ) : null}
           
           <SaveAltIcon 
             onClick={handleClick}
@@ -161,19 +164,31 @@ const ProjectItemComponent = (props) => {
             className={classNames(classes.icon,classes.save)} 
           /> 
 
-          <EditIcon 
-            onClick={handleClick}
-            style={{ color: "white" }}
-            className={classNames(classes.icon,classes.edit)} 
-          /> 
+          {
+            !props.isExample 
+              ? (
+                <EditIcon 
+                onClick={handleClick}
+                style={{ color: "white" }}
+                className={classNames(classes.icon,classes.edit)} 
+                /> 
+              ) 
+              : null
+          }
 
-          <div className={classNames(styles.closeButton)}>
-            <CloseButton
-              buttonType="trash"
-              size={CloseButton.SIZE_LARGE}
-              onClick={props.onClickClose}
-            />
-          </div>
+          {
+            !props.isExample 
+              ? (
+                <div className={classNames(styles.closeButton)}>
+                  <CloseButton
+                    buttonType="trash"
+                    size={CloseButton.SIZE_LARGE}
+                    onClick={props.onClickClose}
+                  />
+                </div>
+              ) 
+              : null
+          }
 
           <div className={styles.featuredText}>
             <span className={styles.libraryItemName}>{props.name}</span> 
@@ -192,14 +207,16 @@ const ProjectItemComponent = (props) => {
                 title="Edit Project"
               />
               <CardContent className={classes.cardContent}>
-                <CssTextField
-                  fullWidth
-                  className={classes.margin}
-                  defaultValue={props.name}
-                  onChange={onChange}
-                  id="custom-css-outlined-input"
-                />
-                <Button onClick={handlesubmit} variant="contained" color="primary">
+                <FormControl className={classes.margin}>
+                  <InputLabel htmlFor="component-simple">Project Name</InputLabel>
+                  <CssTextField
+                    fullWidth
+                    defaultValue={props.name}
+                    onChange={onChange}
+                    id="custom-css-outlined-input"
+                  />
+                </FormControl>
+                <Button onClick={handleSubmit} variant="contained" color="primary">
                   Update
                 </Button>
               </CardContent>  
@@ -229,14 +246,14 @@ ProjectItemComponent.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
-
+    isExample : PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     onClickClose: PropTypes.func.isRequired,
-    onNameUpdate: PropTypes.func
 };
 
 ProjectItemComponent.defaultProps = {
     disabled: false,
+    isExample: false,
     showPlayButton: false
 };
 

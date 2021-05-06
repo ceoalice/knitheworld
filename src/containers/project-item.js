@@ -25,23 +25,21 @@ class ProjectItem extends React.PureComponent {
         this.props.onDelete(this.props.id);
       }
       e.preventDefault();
-      e.stopPropagation(); // prevent this.handleClick from firing
+      e.stopPropagation(); // prevent handleClick from firing
     }
     render () {
-        // const iconMd5 = this.curIconMd5();
-        // const iconURL = this.props.iconRawURL;
         return (
             <ProjectItemComponent
                 description={this.props.description}
                 // disabled={this.props.disabled}
+                // isExample={this.props.isExample}
                 hidden={this.props.hidden}
                 iconURL={this.props.iconURL}
-                // icons={this.props.icons}
                 id={this.props.id}
-                // insetIconURL={this.props.insetIconURL}
                 name={this.props.name}
                 onClick={this.handleClick}
                 onClickClose={this.handleClickClose}
+                {...this.props}
             />
         );
     }
@@ -56,18 +54,12 @@ ProjectItem.propTypes = {
 
     hidden: PropTypes.bool,
     iconURL: PropTypes.string,
-    // icons: PropTypes.arrayOf(
-    //     PropTypes.shape({
-    //         baseLayerMD5: PropTypes.string, // 2.0 library format, TODO GH-5084
-    //         md5ext: PropTypes.string // 3.0 library format
-    //     })
-    // ),
     id: PropTypes.number.isRequired,
-    // insetIconURL: PropTypes.string,
     name: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
     ]),
+    isExample: PropTypes.bool,
     onDelete: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
 };

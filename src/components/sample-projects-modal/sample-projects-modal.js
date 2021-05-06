@@ -22,15 +22,14 @@ const SampleProjectModalComponent = props => (
             className={classNames(styles.libraryScrollGrid)}
         >
               {
-                [1,2,3,4,5].map((dataItem, index) => (
+                props.projects.map((dataItem, index) => (
                   <ProjectItem
+                    isExample
                     key={index}
-                    name={`Project ${index}`}
-                    description
-                    description={`sample project`}
-                    id={index}
-
-                    onSelect={()=> {}}
+                    name={dataItem.name}  
+                    id={dataItem.id}
+                    iconURL={dataItem.imgData}
+                    onSelect={()=> props.openProject(dataItem.xml)}
                     onDelete={()=> {}}
                   />
                 ))
@@ -42,8 +41,7 @@ const SampleProjectModalComponent = props => (
 SampleProjectModalComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     openProject: PropTypes.func.isRequired,
-    deleteProject: PropTypes.func.isRequired,
-    projects: PropTypes.array,
+    projects: PropTypes.array.isRequired,
 };
 
 export {
