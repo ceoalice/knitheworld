@@ -23,10 +23,10 @@ class NavBar extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-          blockKeys: [],
-          fieldValues: [],
-          startupToggle : false,
-          prevBlocks :  {}
+          // blockKeys: [],
+          // fieldValues: [],
+          // startupToggle : false,
+          // prevBlocks :  {}
         };
 
         this.fileChooser = React.createRef();

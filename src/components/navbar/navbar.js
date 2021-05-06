@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import styles from './navbar.css';
 
+import knitheworldLogo from './knitheworld-logo.svg';
+
 const NavBarComponent = props => {
     return (
         <React.Fragment>
             <Toolbar variant="dense" className={styles.topnav}>
-                <a href="#" onClick={props.newProject}>
+              <div>
+                  <a href="#" onClick={props.newProject}>
                     New
                   </a>
                   <a role="button" style={{cursor:'pointer'}} onClick={props.openSaveAs}>
@@ -31,6 +34,17 @@ const NavBarComponent = props => {
                       onInput={props.loadCode}
                       ref={props.fileChooser}
                   />
+              </div>
+
+              <div>
+                <img
+                  className={styles.logo}
+                  src={knitheworldLogo}
+                  alt="KnitheWorld Logo"
+                /> 
+              </div>
+
+
               </Toolbar>
         </React.Fragment>
     );

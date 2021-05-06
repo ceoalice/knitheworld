@@ -8,21 +8,25 @@ import SimulatorTools from '../../containers/simulator-tools.js';
 
 import styles from './simulator-panel.css';
 
-import knitheworldLogo from './knitheworld-logo.svg';
+// import knitheworldLogo from './knitheworld-logo.svg';
 
-import ImageButtonComponent from '../image-button/image-button.js';
+// import ImageButtonComponent from '../image-button/image-button.js';
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const SimulatorPanelComponent = props => {
     return (
         <React.Fragment>
-          <SimulatorTools />
-          <img
+
+          <div>
+           <SimulatorTools />
+          </div>
+          
+          {/* <img
             className={styles.logo}
             src={knitheworldLogo}
             alt="KnitheWorld Logo"
-          /> 
+          />  */}
 
           <div className={styles.transformContainer}>
             <TransformWrapper
@@ -37,7 +41,7 @@ const SimulatorPanelComponent = props => {
           </div>
 
           <p style={{ margin: "5px", right: 0, bottom: 0, zIndex : 1000, position:"absolute"}}>
-            v.2.12.21.0
+            v.3.1.1.0
           </p>
         </React.Fragment>
     );
