@@ -10,7 +10,8 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #a3cef0;
+  background-color:#a3cef0;
+  /* background-image: linear-gradient(#eee, #a3cef0);  */
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -21,29 +22,16 @@
 .blocksContainer {
   /* width: 50vw;
   height: 100%; */
-  /* background-color: blue; */
   width: 100%;
   height: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #a3cef0;
+  background-color: #f4f4f4;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   /* overflow: hidden; */
   position: relative;
-}
-
-.redPanel {
-  background-color: red;
-  width: 100%;
-  height: 100%;
-}
-
-.bluePanel {
-  background-color: blue;
-  width: 100%;
-  height: 100%;
 }
 
 /* .topnav {
@@ -55,11 +43,26 @@
 
 .flexbox { 
   /* parent container for Simulator and Blocks */
-  height: calc(100vh - var(--topnav-height));
+  height: calc(100vh - var(--topnav-height)) !important;
   display: flex;
   flex-direction: row;
 }
+.flexbox > span {
+  width: 7px ;
+  background: #fff;
+  z-index: 500;
+  cursor: col-resize;
 
+  /* display: inline-block;
+  color: black;
+  overflow: visible; 
+  font-size : 25px;
+  content: 'HELLO'; */
+}
+
+.flexbox > span:hover {
+  background: #ddd;
+}
 
 #logo {
   float: left;

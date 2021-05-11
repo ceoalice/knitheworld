@@ -5,35 +5,20 @@ import VM from 'scratch-vm';
 
 import Blocks from '../../containers/blocks.js';
 import DownloadButton from '../../containers/download-button.js';
+import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
+import NavBar from "../../containers/navbar.js"
+import GUIPanes from "./gui-panes.js"
 
+// modals
 import ImageImportModal from "../../containers/image-import-modal.js";
 import ImageExportModal from "../../containers/image-export-modal.js";
 import LocalProjectsModal from "../../containers/local-projects-modal.js";
 import SampleProjectsModal from "../../containers/sample-projects-modal.js";
 import SaveAsModal from "../../containers/save-as-modal.js";
 
-import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
-
-import NavBar from "../../containers/navbar.js"
-
 import styles from './gui.css';
 
-import SplitPane from 'react-split-pane';
-
-
-const splitPaneStyles = {
-  background: '#999',
-  width: '25px',
-  cursor: 'col-resize',
-  // margin: '0 0px',
-  height: '100%',
-  "zIndex" : '1000'
-};
-
 const GUIComponent = props => {
-
-    // const classes = useStyles();
-    const {...componentProps} = props;
     return (
         <React.Fragment>
             <NavBar />
@@ -60,24 +45,14 @@ const GUIComponent = props => {
               : null
             }
 
-            <div 
-              className={styles.flexbox}
-              // resizerStyle={splitPaneStyles}
-              // defaultSize="50%"
-              // minSize={400}
-              // maxSize={"calc(100% - 300px)"}
-              // split="vertical"
-            >
+            <GUIPanes>
               <div className={styles.blocksContainer}>
                 <Blocks vm={props.vm} />
               </div>
               <div className={styles.simulatorContainer}>
                 <SimulatorPanelComponent vm={props.vm} />
               </div>
-
-              {/* <div className={styles.redPanel}></div>
-              <div className={styles.bluePanel}></div> */}
-            </div>
+            </GUIPanes>            
 
             <DownloadButton vm={props.vm}/>
         </React.Fragment>
