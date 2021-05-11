@@ -8,7 +8,6 @@ import downloadCodeButton from './icon--download.svg';
 import unravelButton from './icon--unravel.svg';
 import downloadStitchButton from './icon--download_stitches.svg';
 import uploadCodeButton from './icon--upload_code.svg'
-import spacer from './icon--spacer.svg';
 
 import styles from './download-button.css';
 
