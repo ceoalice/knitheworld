@@ -4,29 +4,22 @@ import PropTypes from 'prop-types';
 
 import ImageButtonComponent from '../image-button/image-button.js';
 
-import addIcon from './icon--add.svg';
-import removeIcon from './icon--remove.svg';
+import addIcon from '../../lib/assets/icon--add.svg';
+import removeIcon from '../../lib/assets/icon--remove.svg';
 import stitchIcon from './icon--stitches.svg';
 
-import {
-    addPixelNode,
-    removePixelNode
-} from '../../reducers/pixels.js';
+import {addPixelNode, removePixelNode} from '../../reducers/pixels.js';
 
 import styles from './pixel-count.css';
 
 const PixelCountComponent = props => {
     return (
         <div className={styles.pixelCountTools}>
-          <img
-            width={30}
-            // height={30}
-            src={stitchIcon}
-            className={styles.icon}
-          />
+          <div className={styles.pixelCount}>
+            Columns: 
+          </div>
           <ImageButtonComponent
             width={30}
-            // height={30}
             handleClick={props.removePixel}
             src={removeIcon}
           />
@@ -35,7 +28,6 @@ const PixelCountComponent = props => {
           </div>
           <ImageButtonComponent
             width={30}
-            // height={30}
             handleClick={props.addPixel}
             src={addIcon}
           />

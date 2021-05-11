@@ -4,26 +4,20 @@ import PropTypes from 'prop-types';
 
 import ImageButtonComponent from '../image-button/image-button.js';
 
-import addIcon from './icon--add.svg';
-import removeIcon from './icon--remove.svg';
+import addIcon from '../../lib/assets/icon--add.svg';
+import removeIcon from '../../lib/assets/icon--remove.svg';
 import rowIcon from './icon--rows.svg';
 
-import {
-    goToNextRow,
-    removeLastRow
-} from '../../reducers/pixels.js';
+import {goToNextRow,removeLastRow} from '../../reducers/pixels.js';
 
 import styles from './row-count.css';
 
 const RowCountComponent = props => {
     return (
         <div className={styles.rowCountTools}>
-          <img
-            width={30}
-            height={30}
-            src={rowIcon}
-            className={styles.icon}
-          />
+          <div className={styles.rowCount}>
+            Rows: 
+          </div>
           <ImageButtonComponent
             width={30}
             height={30}
