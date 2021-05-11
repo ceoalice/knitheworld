@@ -2,15 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ImageButtonComponent from '../image-button/image-button.js';
-
-import addIcon from '../../lib/assets/icon--add.svg';
-import removeIcon from '../../lib/assets/icon--remove.svg';
+import {ReactComponent as AddIcon} from '../../lib/assets/icon--add.svg';
+import {ReactComponent as RemoveIcon} from '../../lib/assets/icon--remove.svg';
 import stitchIcon from './icon--stitches.svg';
 
 import {addPixelNode, removePixelNode} from '../../reducers/pixels.js';
 
 import styles from './pixel-count.css';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const PixelCountComponent = props => {
     return (
@@ -18,19 +18,16 @@ const PixelCountComponent = props => {
           <div className={styles.pixelCount}>
             Columns: 
           </div>
-          <ImageButtonComponent
-            width={30}
-            handleClick={props.removePixel}
-            src={removeIcon}
-          />
+          <IconButton size="small" onClick={props.removePixel}>
+            <SvgIcon viewBox="0 0 50 50" component={RemoveIcon} /> 
+          </IconButton>
+          
           <div className={styles.pixelCount}>
             {props.pixelCount}
           </div>
-          <ImageButtonComponent
-            width={30}
-            handleClick={props.addPixel}
-            src={addIcon}
-          />
+          <IconButton size="small" onClick={props.addPixel}>
+            <SvgIcon viewBox="0 0 50 50" component={AddIcon} /> 
+          </IconButton>
         </div>
     );
 };

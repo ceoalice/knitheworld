@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ImageButtonComponent from '../image-button/image-button.js';
 import PixelCountComponent from '../pixel-count/pixel-count.js';
 import RowCountComponent from '../row-count/row-count.js';
 

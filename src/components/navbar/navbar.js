@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import styles from './navbar.css';
 
-import knitheworldLogo from './knitheworld-logo.svg';
+import { ReactComponent as KnitheworldLogo} from './knitheworld-logo.svg';
 
 const NavBarComponent = props => {
     return (
         <React.Fragment>
             <Toolbar variant="dense" className={styles.topnav}>
+              <div>
+                <KnitheworldLogo className={styles.logo} />
+              </div>
               <div>
                   <a href="#" onClick={props.newProject}>
                     New
@@ -35,16 +38,6 @@ const NavBarComponent = props => {
                       ref={props.fileChooser}
                   />
               </div>
-
-              <div>
-                <img
-                  className={styles.logo}
-                  src={knitheworldLogo}
-                  alt="KnitheWorld Logo"
-                /> 
-              </div>
-
-
               </Toolbar>
         </React.Fragment>
     );

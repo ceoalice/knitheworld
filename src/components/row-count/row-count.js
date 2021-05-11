@@ -2,15 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ImageButtonComponent from '../image-button/image-button.js';
-
-import addIcon from '../../lib/assets/icon--add.svg';
-import removeIcon from '../../lib/assets/icon--remove.svg';
+import {ReactComponent as AddIcon} from '../../lib/assets/icon--add.svg';
+import {ReactComponent as RemoveIcon} from '../../lib/assets/icon--remove.svg';
 import rowIcon from './icon--rows.svg';
 
 import {goToNextRow,removeLastRow} from '../../reducers/pixels.js';
 
 import styles from './row-count.css';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const RowCountComponent = props => {
     return (
@@ -18,21 +18,15 @@ const RowCountComponent = props => {
           <div className={styles.rowCount}>
             Rows: 
           </div>
-          <ImageButtonComponent
-            width={30}
-            height={30}
-            handleClick={props.removeRow}
-            src={removeIcon}
-          />
+          <IconButton size="small" onClick={props.removeRow}>
+            <SvgIcon viewBox="0 0 50 50" component={RemoveIcon} /> 
+          </IconButton>
           <div className={styles.rowCount}>
             {props.rowCount}
           </div>
-          <ImageButtonComponent
-            width={30}
-            height={30}
-            handleClick={props.addRow}
-            src={addIcon}
-          />
+          <IconButton size="small" onClick={props.addRow}>
+            <SvgIcon viewBox="0 0 50 50" component={AddIcon} /> 
+          </IconButton>
         </div>
     );
 };
