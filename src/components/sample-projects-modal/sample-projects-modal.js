@@ -25,6 +25,7 @@ const SampleProjectModalComponent = props => (
                 props.projects.map((dataItem, index) => (
                   <ProjectItem
                     isExample
+                    xml={dataItem.xml}
                     key={index}
                     name={dataItem.name}  
                     id={dataItem.id}

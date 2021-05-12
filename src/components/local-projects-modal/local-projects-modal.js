@@ -31,7 +31,7 @@ const LocalProjectModalComponent = props => (
     <Modal
         fullScreen
         // className={styles.modalContent}
-        contentLabel={"Locally Stored Project"}
+        contentLabel={"Locally Stored Projects"}
         // headerClassName={styles.header}
         // headerImage={props.connectionSmallIconURL}
         id="localProjectsModal"
@@ -46,6 +46,7 @@ const LocalProjectModalComponent = props => (
                   <ProjectItem
                     key={index}
                     name={dataItem.name}
+                    size={dataItem.size}
                     description={`Last Modified ${lastModified(dataItem.timestamp)}`}
                     id={dataItem.id}
                     iconURL={dataItem.imgData}
