@@ -65,9 +65,9 @@ const randomColorRGB = count => {
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 50,
-    rowCount: 35,
-    pixelColors: grayedSquares(1750),
+    pixelCount: 40,
+    rowCount: 40,
+    pixelColors: grayedSquares(1600),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
     downloadingPixels: false,
@@ -86,6 +86,7 @@ const reducer = function (state, action) {
             selectedPixel: action.selectedPixel
         });
     case NEXT_PIXEL: {
+      console.log("NEXT_PIXEL called?");
         let select = state.selectedPixel+1;
         if (select >= state.pixelCount*state.rowCount) select = 0;
 //        console.log("currently selected pixel is" + select);
@@ -111,6 +112,7 @@ const reducer = function (state, action) {
         });
     }
     case SET_PIXEL_COLOR: {
+      console.log("SET_PIXEL_COLOR called?");
         const newColors = [...state.pixelColors];
         newColors[state.selectedPixel] = action.value;
         return Object.assign({}, state, {
@@ -118,6 +120,7 @@ const reducer = function (state, action) {
         });
     }
     case SET_ALL_PIXEL_COLOR: {
+        console.log("SET_ALL_PIXEL_COLOR called?");
         const newColors = [];
         const color = action.value % 100;
         for (let i=0; i<(state.pixelCount*state.rowCount); i++) {
@@ -127,45 +130,13 @@ const reducer = function (state, action) {
             pixelColors: newColors
         });
     }
-    case ADD_PIXEL: {
-        const newColors = [...state.pixelColors];
-        for (let i=0; i<state.rowCount; i++){
-            newColors.push('rgba(255,255,255,0)');
-        }
-        // if (state.pixelCount < 25){
-          // console.log("adding column...");
-          return Object.assign({}, state, {
-              pixelCount: state.pixelCount+1,
-              pixelColors: newColors
-          });
-        // }
-        // else {
-        //   console.log("max stitch width reached!");
-        //   return state;
-        // }
-    }
-    case REMOVE_PIXEL: {
-        if (state.pixelCount === 1) return;
-        const newColors = [...state.pixelColors];
-        newColors.pop();
-
-        if (state.pixelCount > 1){
-          return Object.assign({}, state, {
-              pixelCount: state.pixelCount-1,
-              pixelColors: newColors
-
-          });
-        } else {
-          console.log("min stitch width reached!");
-          return state;
-        }
-    }
     case SET_PIXEL_TYPE: {
         return Object.assign({}, state, {
             pixelType: action.value
         });
     }
     case FORWARD_PIXEL: {
+      console.log("FORWARD_PIXEL called?");
         let select = (state.selectedPixel + action.value) % (state.pixelCount*state.rowCount);
         console.log(select);
         return Object.assign({}, state, {
@@ -183,21 +154,89 @@ const reducer = function (state, action) {
     case NEXT_ROW: {
         // console.log("logged next row!");
         const newColors = [...state.pixelColors];
-        for (let i=0; i<state.pixelCount; i++){
-            newColors.push('rgba(255,255,255,0)');
+        for (let j=0; j < action.value; j++) {
+          for (let i=0; i<state.pixelCount; i++){
+              newColors.push('rgba(255,255,255,0)');
+          }
         }
+
         // if (state.rowCount < 12){
           // console.log("adding row...");
-          return Object.assign({}, state, {
-              rowCount: state.rowCount+1,
-              pixelColors: newColors
-          });
+        let newRowCount = state.rowCount+action.value; 
+        return Object.assign({}, state, {
+            rowCount: newRowCount,
+            pixelColors: newColors
+        });
         // }
         // else{
         //   console.log("max row limit reached!");
         //   return state;
         // }
     }
+    case REMOVE_ROW: {
+      // console.log("logged remove row!");
+      const newColors = [...state.pixelColors];
+      let newRowCount = state.rowCount-action.value; 
+
+      if ((newRowCount) > 0) {
+        for (let j=0; j < action.value; j++) {
+          for (let i=0; i<state.pixelCount; i++){
+            newColors.pop();
+          }
+        }
+        
+        return Object.assign({}, state, {
+            rowCount: newRowCount,
+            pixelColors: newColors
+        });
+      } else {
+        console.log("min row count reached!");
+        return state;
+      }
+    }
+    case ADD_PIXEL: {
+      const newColors = [...state.pixelColors];
+      for (let j=0; j < action.value; j++) {
+        for (let i=0; i<state.rowCount; i++){
+            newColors.push('rgba(255,255,255,0)');
+        }
+      }
+      // if (state.pixelCount < 25){
+        // console.log("adding column...");
+        let newPixelCount = state.pixelCount+action.value;
+        return Object.assign({}, state, {
+            pixelCount: newPixelCount,
+            pixelColors: newColors
+        });
+      // }
+      // else {
+      //   console.log("max stitch width reached!");
+      //   return state;
+      // }
+    }
+    case REMOVE_PIXEL: {
+        if (state.pixelCount === 1) return;
+        const newColors = [...state.pixelColors];
+
+        let newPixelCount = state.pixelCount-action.value;
+
+        if (newPixelCount > 0){
+          for (let j=0; j < action.value; j++) {
+            for (let i=0; i<state.rowCount; i++){
+              newColors.pop();
+            }
+          }
+
+          return Object.assign({}, state, {
+              pixelCount: newPixelCount,
+              pixelColors: newColors
+          });
+        } else {
+          console.log("min stitch width reached!");
+          return state;
+        }
+    }
+
     case KNIT_STITCHES: {
         // console.log("logged knit stitches!");
         let select = state.selectedPixel
@@ -287,23 +326,6 @@ const reducer = function (state, action) {
             currentColor: newColor
         });
     }
-    case REMOVE_ROW: {
-        // console.log("logged remove row!");
-        const newColors = [...state.pixelColors];
-        for (let i=0; i<state.pixelCount; i++){
-            newColors.pop();
-        }
-
-        if (state.rowCount > 1) {
-          return Object.assign({}, state, {
-              rowCount: state.rowCount-1,
-              pixelColors: newColors
-          });
-        } else {
-          console.log("min row count reached!");
-          return state;
-        }
-    }
     case CLEAR_PIXELS: {
         //console.log("logged clear pixels!");
         let newColors = grayedSquares(state.rowCount * state.pixelCount);
@@ -381,18 +403,6 @@ const setAllPixelColor = function (value) {
     };
 };
 
-const addPixelNode = function () {
-    return {
-        type: ADD_PIXEL
-    };
-};
-
-const removePixelNode = function () {
-    return {
-        type: REMOVE_PIXEL
-    };
-};
-
 const setPixelType = function (type) {
     return {
         type: SET_PIXEL_TYPE,
@@ -414,11 +424,33 @@ const moveBackPixels = function (value) {
     };
 };
 
-const goToNextRow = function () {
+const goToNextRow = function (value) {
     return {
-        type: NEXT_ROW
+        type: NEXT_ROW,
+        value
     };
 }
+
+const removeLastRow = function (value) {
+  return {
+      type: REMOVE_ROW,
+      value
+  };
+}
+
+const addPixelNode = function (value) {
+  return {
+      type: ADD_PIXEL,
+      value
+  };
+};
+
+const removePixelNode = function (value) {
+  return {
+      type: REMOVE_PIXEL,
+      value
+  };
+};
 
 const knitXStitches = function (value) {
     return {
@@ -450,12 +482,6 @@ const changeYarnColor = function (value) {
     return {
         type: CHANGE_YARN_COLOR,
         value: value
-    };
-}
-
-const removeLastRow = function () {
-    return {
-        type: REMOVE_ROW
     };
 }
 
@@ -500,19 +526,19 @@ export {
     movePreviousPixel,
     changePixelColor,
     setPixelColor,
-    addPixelNode,
-    removePixelNode,
     setPixelType,
     moveForwardPixels,
     moveBackPixels,
     setAllPixelColor,
     goToNextRow,
+    removeLastRow,
+    addPixelNode,
+    removePixelNode,
     knitXStitches,
     knitUntilEndOfTheRow,
     castOnXStitches,
     castOffXStitches,
     changeYarnColor,
-    removeLastRow,
     clearThePixels,
     downloadThePixels,
     downloadTheStitches,
