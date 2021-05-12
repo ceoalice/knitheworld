@@ -18,6 +18,7 @@ class SaveAsModal extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.saveProject = this.saveProject.bind(this);
+        this.getDefaultImageData = this.getDefaultImageData.bind(this);
 
         this.uploadImage = this.uploadImage.bind(this);
         this.loadImage = this.loadImage.bind(this);
@@ -27,6 +28,10 @@ class SaveAsModal extends React.Component {
       this.setState({prevProjectName : ProjectManager.getCurrentProjectName()})
     }
 
+    componentDidUpdate() {
+      // console.log(this.state)
+    }
+
     handleInputChange(event) {
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -34,24 +39,39 @@ class SaveAsModal extends React.Component {
     }
 
     handleSubmit(event) {
-      // console.log("SAVED AS");
-
       this.saveProject();
       this.props.closeModal();
       event.preventDefault();
     }
 
     saveProject() {
-      ProjectManager.saveProject(this.state.projectName, this.state.imgData); 
+      let imgData = (this.state.imgData == "") ? this.getDefaultImageData() : this.state.imgData;
+      ProjectManager.saveProject(this.state.projectName, imgData); 
     }
 
     uploadImage () {
-      //console.log(this.fileChooser);
       this.fileChooser.current.click();
     }
 
-    componentDidUpdate() {
-      console.log(this.state)
+    getDefaultImageData() {
+      const {pixelCount, pixelColors, rowCount} = {...this.props};
+      const stitchCanvas = document.createElement('canvas');
+      let stitchCount = pixelCount * rowCount;
+
+      let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
+
+      stitchCanvas.width = 25*pixelCount+10;
+      stitchCanvas.height = 25*(Math.ceil(totalStitches/pixelCount))+10;
+
+      const stitchctx = stitchCanvas.getContext('2d');
+
+      for (let i=0; i<stitchCount; i++) {
+        stitchctx.fillStyle = pixelColors[i];
+        let currentRow = Math.floor(i/pixelCount);
+        stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
+      }
+
+      return stitchCanvas.toDataURL();
     }
 
 
@@ -84,15 +104,17 @@ class SaveAsModal extends React.Component {
     }
 }
 
-// const mapStateToProps = state => ({
-//   downloadName : state.pixels.downloadingStitchesName
-// })
+const mapStateToProps = state => ({
+  pixelCount: state.pixels.pixelCount,
+  pixelColors: state.pixels.pixelColors,
+  rowCount: state.pixels.rowCount,
+});
 
 const mapDispatchToProps = dispatch => ({
     closeModal: () => dispatch(closeSaveAs()),
 });
 
 export default connect(
-    null,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(SaveAsModal);
