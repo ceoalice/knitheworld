@@ -24,7 +24,7 @@ const DownloadButtonComponent = props => {
             <div>
             <IconButton size="small" onClick={props.openImageExport}>
               <SvgIcon
-                fontSize="large"
+                className={styles.button}
                 component={downloadStitchButton}
                 viewBox="0 0 40 40"
               />
@@ -38,37 +38,23 @@ const DownloadButtonComponent = props => {
             <div>
             <IconButton size="small" onClick={props.downloadCode}>
               <SvgIcon
-                fontSize="large"
+                className={styles.button}
                 component={downloadCodeButton}
                 viewBox="0 0 40 40"
               />
             </IconButton>
-
-              {/* <ImageButtonComponent
-                  width={40}
-                  height={40}
-                  handleClick={props.downloadCode}
-                  src={downloadCodeButton}
-              /> */}
             </div>
           </Tooltip>
    
           <Tooltip title="Upload File" placement="right">
             <div> 
-
             <IconButton size="small" onClick={props.uploadCode}>
               <SvgIcon
-                fontSize="large"
+                className={styles.button}
                 component={uploadCodeButton}
                 viewBox="0 0 40 40"
               />
             </IconButton>
-              {/* <ImageButtonComponent
-                  width={40}
-                  height={40}
-                  handleClick={props.uploadCode}
-                  src={uploadCodeButton}
-              /> */}
             </div>
           </Tooltip>
             <input

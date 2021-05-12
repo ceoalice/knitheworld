@@ -21,7 +21,6 @@ class LocalProjectsModal extends React.Component {
     }
 
     componentDidMount() {
-      // console.log(ProjectManager.getProjectIDs());
       let projects = ProjectManager.getProjects();
 
       projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
@@ -44,7 +43,6 @@ class LocalProjectsModal extends React.Component {
     }
 
     openProject(id) {
-      console.log("GOT HERE: openProject")
       ProjectManager.loadProject(id);
       this.props.updateProjectName(ProjectManager.getCurrentProjectName());
       this.props.onCancel();
@@ -52,7 +50,6 @@ class LocalProjectsModal extends React.Component {
 
 
     deleteProject(id) {
-      console.log("GOT HERE: deleteProject")
       ProjectManager.deleteProject(id);
       let projects = ProjectManager.getProjects();
       projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));

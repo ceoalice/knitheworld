@@ -23,10 +23,6 @@ class NavBar extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-          // blockKeys: [],
-          // fieldValues: [],
-          // startupToggle : false,
-          // prevBlocks :  {}
         };
 
         this.fileChooser = React.createRef();
@@ -57,7 +53,6 @@ class NavBar extends React.Component {
     }
 
     loadCode (event) {
-        var projectName = event.target.files[0].name.split('.xml')[0];
         if (event.target.files) {
             var reader = new FileReader();
             reader.onload = (e) => {
@@ -86,26 +81,12 @@ class NavBar extends React.Component {
     }
 }
 
-// const mapStateToProps = state => ({
-//     imageImportVisible: state.modals.imageImport,
-//     imageExportVisible: state.modals.imageExport,
-//     sampleProjectsVisible : state.modals.sampleProjects,
-//     localProjectsVisible : state.modals.localProjects,
-//     fullscreenVisible: state.modals.fullscreenSimulator,
-//     bluetoothConnected: state.bluetooth.connectionStatus,
-//     images: state.images
-// });
-
 const mapDispatchToProps = dispatch => ({
     openImageImport: () => dispatch(openImageImport()),
     openImageExport: () => dispatch(openImageExport()),
     openLocalProjects: () => dispatch(openLocalProjects()),
     openSampleProjects: () => dispatch(openSampleProjects()),
     openSaveAs: () => dispatch(openSaveAs()),
-    // setProjectRunning: () => dispatch(setProjectRunState(true)),
-    // setProjectStopped: () => dispatch(setProjectRunState(false)),
-    // clearPixels: () => dispatch(clearThePixels()),
-    // downloadPixels: () => dispatch(downloadThePixels(true)),
     updateProjectName : (value) => dispatch(updateProjectName(value)),
     toggleProjectSaved : (value) => dispatch(toggleProjectSaved(value))
 });
