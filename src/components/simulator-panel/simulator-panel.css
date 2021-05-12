@@ -1,103 +1,17 @@
-/* .start_button {
-  position: absolute;
-  bottom: 70%;
-  right: 10%;
-  margin: 10px;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: none;
-}
-
-.buttonContainer {
-    position: absolute;
-    left: 50px;
-    margin: 5px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    padding: 5px;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: none;
-}
-
-.button {
-  pointer-events: none;
-}
-
-.pixelStyleTools {
-  display: flex;
-  position: absolute;
-  bottom: 65%;
-  right: 10%;
-  z-index: 50;
-}
-
-.fileInput {
-  display: none;
-}
-
-
-.fullscreen {
-  filter: brightness(0.15);
-}
-
-.image {
-  pointer-events: none;
-}
-*/
-
-p {
-  color: white;
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif; font-size: 12px;
-  position: absolute;
-  bottom:0%;
-  right:0%;
-  padding-right: 5px;
-} 
-
-.logo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  width: 300px;
-  padding: 5px;
-  height: auto;
-}
-
 .transformContainer {
   width: 0;
   height: 100%;
 }
 
-/* Add a black background color to the top navigation */
-/* .topnav {
-  background-color: #333;
-  overflow: hidden;
-} */
+.simToolsContainer {
+  position: absolute;
+  z-index: 500;
+}
 
-/* Style the links inside the navigation bar */
-/* .topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-} */
-
-/* Change the color of links on hover */
-/* .topnav a:hover {
-  background-color: #ddd;
-  color: black;
-} */
-
-/* Add a color to the active/current link */
-/* .topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-} */
+.version {
+  margin: 5px;
+  right: 0 ;
+  bottom: 0 ;
+  zIndex : 500; 
+  position: absolute;
+}
