@@ -1,6 +1,7 @@
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {connect} from 'react-redux';
 
 import ProjectItemComponent from '../components/project-item/project-item.js';
 
@@ -30,13 +31,6 @@ class ProjectItem extends React.PureComponent {
     render () {
         return (
             <ProjectItemComponent
-                description={this.props.description}
-                // disabled={this.props.disabled}
-                // isExample={this.props.isExample}
-                hidden={this.props.hidden}
-                iconURL={this.props.iconURL}
-                id={this.props.id}
-                name={this.props.name}
                 onClick={this.handleClick}
                 onClickClose={this.handleClickClose}
                 {...this.props}
@@ -51,7 +45,7 @@ ProjectItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
-
+    size : PropTypes.number,
     hidden: PropTypes.bool,
     iconURL: PropTypes.string,
     id: PropTypes.number.isRequired,
@@ -64,4 +58,14 @@ ProjectItem.propTypes = {
     onSelect: PropTypes.func.isRequired,
 };
 
-export default ProjectItem
+
+const mapStateToProps = state => ({
+  pixelCount: state.pixels.pixelCount,
+  pixelColors: state.pixels.pixelColors,
+  rowCount: state.pixels.rowCount
+});
+
+
+export default connect(
+  mapStateToProps
+)(ProjectItem);
