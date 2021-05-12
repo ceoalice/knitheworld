@@ -32,18 +32,9 @@ function recursiveXMLWrite(i, blocks) {
   let block =  blocks[i];
   switch(block) {
     case "END_ROW": // set color to #FFF and knit until row ends
-    return `<block type="knit_changecolorto">
-      <value name="COLOR">
-        <shadow type="colour_picker">
-          <field name="COLOUR">#ffffff</field>
-        </shadow>
-      </value>
+    return `<block type="knit_knituntilendofrow">
       <next>
-        <block type="knit_knituntilendofrow">
-          <next>
-            ${recursiveXMLWrite(i+1, blocks)}
-          </next>
-        </block>
+        ${recursiveXMLWrite(i+1, blocks)}
       </next>
     </block>`
     default:  // set color to block[0] and stick the next block[1] stiches
