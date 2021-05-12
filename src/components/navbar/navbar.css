@@ -1,12 +1,12 @@
 .topnav {
   
-  background-color: #a3cef0;
+  background-color: #73a2c7;
   overflow: hidden;
-  height : var(--topnav-height);
+  min-height :  var(--topnav-height) !important;
   z-index:45;
   display:flex;
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 
 .topnav a {
