@@ -15,6 +15,7 @@ class Scratch3MicroworldBlocks {
      */
     getPrimitives () {
         return {
+            event_whenstarted: this.clearPixels,
             looks_nextpixel: this.nextPixel,
             looks_previouspixel: this.previousPixel,
             looks_changecolor: this.changeColor,
@@ -40,6 +41,15 @@ class Scratch3MicroworldBlocks {
             }
         };
     }
+
+
+    clearPixels () {
+        this.runtime.emit('PIXEL_EVENT', {
+            type: 'clearPixels'
+        });
+        return true;
+    }
+
 
     nextPixel () {
         this.runtime.emit('PIXEL_EVENT', {

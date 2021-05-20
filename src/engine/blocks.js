@@ -311,6 +311,7 @@ class Blocks {
         // UI event: clicked scripts toggle in the runtime.
         if (e.element === 'stackclick') {
             this.runtime.toggleScript(e.blockId, {stackClick: true});
+            this.runtime.emit('PIXEL_EVENT', {type: 'clearPixels'});
             return;
         }
 
@@ -322,6 +323,7 @@ class Blocks {
             for (let i = 0; i < newBlocks.length; i++) {
                 this.createBlock(newBlocks[i]);
             }
+            this.emitProjectChanged();
             break;
         }
         case 'change':
@@ -366,6 +368,7 @@ class Blocks {
                 this.runtime.quietGlow(e.blockId);
             }
             this.deleteBlock(e.blockId);
+            this.emitProjectChanged();
             break;
         case 'var_create':
             // Check if the variable being created is global or local
@@ -552,7 +555,7 @@ class Blocks {
 
         // A new block was actually added to the block container,
         // emit a project changed event
-        this.emitProjectChanged();
+        // this.emitProjectChanged();
     }
 
     /**
@@ -828,7 +831,7 @@ class Blocks {
         delete this._blocks[blockId];
 
         this.resetCache();
-        this.emitProjectChanged();
+        // this.emitProjectChanged();
     }
 
     /**
