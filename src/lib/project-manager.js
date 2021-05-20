@@ -36,6 +36,60 @@ class ProjectManager {
       });
       console.log("Document found with ID: ", userID);
     }
+    this.loadSampleProjects();
+  }
+
+  async loadSampleProjects() {
+    let paths = this.getPaths();
+    let id = 1;
+    let promises = []
+    for (const projectName in paths) {
+      let xmlPath, imgPath;
+      let isXML = paths[projectName][0].indexOf('xml') > -1;
+
+      if (isXML) [xmlPath, imgPath] = paths[projectName];
+      else [imgPath, xmlPath] = paths[projectName]; 
+
+      promises.push(this.loadSampleProject(xmlPath, imgPath, projectName, `sampleProject${id}`));
+      id ++;
+    }
+
+    Promise.all(promises).then(sampleProjects => {
+      this.cache_ = {sampleProjects, ...this.cache_ };
+      console.log(this.cache_);
+    })
+  }
+
+  async loadSampleProject(xmlPath, imgPath, name, id) {
+    return {
+      xml: (await import(`./projects${xmlPath}`)).default, 
+      imgData: (await import(`./projects${imgPath}`)).default,
+      name, 
+      id
+    }
+  }
+
+  getSampleProjects() {
+    return this.cache_.sampleProjects;
+  }
+
+  getPaths() {
+    // https://stackoverflow.com/questions/29421409/how-to-load-all-files-in-a-directory-using-webpack-without-require-statements
+    // https://stackoverflow.com/questions/34895800/javascript-restructure-an-array-of-strings-based-on-prefix
+    let ref = require.context('./projects', true, /\.(png|xml)$/);
+    let files = ref.keys();
+    let paths = {};
+
+    for (var i = 0; i < files.length; i++) {
+      let s = files[i].split('/'); // "./Blue zig zag/index.xml" => [".", "Blue zig zag", "index.xml"]
+      if (s.length != 3) continue;
+      
+      let projectName = s[1];
+      if (!paths[projectName]) paths[projectName] = [];
+      paths[projectName].push(files[i].substring(1));
+    }
+
+    return paths;
   }
 
   setVM (vm) {
