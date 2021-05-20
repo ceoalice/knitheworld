@@ -1,18 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-
-import {downloadThePixels, downloadTheStitches} from '../../reducers/pixels.js';
-
 import styles from './simulator.css';
-
-
 
 class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          top: 75,
+          top: 60,
           left: 50,
           pixelSize: 12,
           pixelGap: 5
@@ -20,9 +15,9 @@ class SimulatorComponent extends React.Component {
         this.stitchRef = React.createRef();
         this.gridRef = React.createRef();
 
-        this.toggleDownload = this.toggleDownload.bind(this);
         this.refreshCanvas = this.refreshCanvas.bind(this);
         this.handleResize = this.handleResize.bind(this);
+
         window.download = this.toggleDownload;
     }
 
@@ -36,24 +31,15 @@ class SimulatorComponent extends React.Component {
       this.stitchRef.current.width = this.width;
       this.stitchRef.current.height = this.height;
 
-      // window.addEventListener('resize', this.handleResize);
+      window.addEventListener('resize', this.handleResize);
       this.refreshCanvas();
     }
 
     componentWillUnmount () {
-      // window.removeEventListener('resize', this.handleResize);
+      window.removeEventListener('resize', this.handleResize);
     }
 
     componentDidUpdate (prevProps, prevState) {
-      if (this.props.downloadingPixels === true){
-        this.toggleDownload();
-        console.log("downloading!");
-      }
-      if (this.props.downloadingStitches === true){
-        this.toggleDownload();
-        console.log("downloading stitches!");
-      }
-
       if (this.props.rowCount != prevProps.rowCount || this.props.pixelCount != prevProps.pixelCount) {
         this.refreshCanvas();
       }
@@ -62,7 +48,16 @@ class SimulatorComponent extends React.Component {
     }
 
     handleResize() {
-      this.refreshCanvas();
+      // this.width = this.gridRef.current.offsetWidth;
+      // this.height = this.gridRef.current.offsetHeight;
+
+      // this.gridRef.current.width = this.width;
+      // this.gridRef.current.height = this.height;
+
+      // this.stitchRef.current.width = this.width;
+      // this.stitchRef.current.height = this.height;
+
+      // this.refreshCanvas();
     }
 
     refreshCanvas() {
@@ -70,297 +65,6 @@ class SimulatorComponent extends React.Component {
       this.redrawGrid();
       this.redrawStitches([], true);
     }
-
-    // refreshCanvas () {
-    //     
-   
-
-    //     const canvas = this.gridRef.current;
-    //     const ctx = canvas.getContext('2d');
-    //     ctx.save();
-
-    //     // console.log("width is " + this.width);
-    //     // console.log("height is " + this.height);
-
-    //     // check if size
-
-    //     // this.pixelCanvas.width = this.props.pixelCount;
-    //     // this.pixelCanvas.height = this.props.rowCount;
-
-    //     //Draw background
-    //     ctx.clearRect(0, 0, this.width, this.height);
-
-        
-    //     this.drawPixelKnit(ctx);
-
-    //     ctx.restore();
-    // }
-
-    // \/ legacy from when two different buttons
-    // type of download: 1 = pixels, 2 = stitches
-    toggleDownload (type) {
-      const {
-          pixelCount,
-          selectedPixel,
-          pixelColors,
-          rowCount,
-          currentColor
-      } = {...this.props};
-
-      // if (type === 1) {
-        // this.props.toggleDownloadPixels();
-        this.props.toggleDownloadStitches();
-        console.log("toggled to " + this.props.downloadingPixels + "!");
-
-        // make new canvas for downloading here
-
-        const pixelCanvas = document.createElement('canvas');
-
-        // we store data about every pixel on the canvas, regardless of whether
-        // it has been knit. this handles the "empty" (transparent) stitches
-        let pixelRows = 0;
-        for (let i=0; i<pixelColors.length; i++){
-          if (!pixelColors[i].includes("rgba(")){
-            pixelRows += 1;
-          }
-        }
-
-        let colorCount = {};
-
-        pixelColors.forEach(color => {
-          // ignore colors  that are already black and white
-          if (!color.includes("rgba(") && color !== "rgb(0,0,0)" && color !== "rgb(255,255,255)"){
-            if (color in colorCount) {
-              colorCount[color] = colorCount[color] + 1;
-            } else {
-              colorCount[color] = 1;
-            }
-          }
-        });
-
-
-        console.log(colorCount);
-
-        // console.log("colorMap");
-        // console.log(colorMap);
-
-        let colorMap = {};
-        
-
-        var sortable = [];
-        for (var color in colorCount) {
-            sortable.push([color, colorCount[color]]);
-        }
-
-        sortable.sort(function(a, b) {
-            return b[1] - a[1];
-        });
-
-        // console.log("sortable");
-        // console.log(sortable);
-
-        // let i = 0; 
-        sortable.forEach((mapping, i) => {
-          let color = mapping[0];
-         if (i === 0 ) {
-            colorMap[mapping[0]] = "rgb(255,255,255)";
-          } else if (i === 1 ) {
-            colorMap[mapping[0]] = "rgb(0,0,0)";
-          } else {
-            colorMap[mapping[0]] = mapping[0];
-          }
-        })
-
-        // console.log(colorMap2);
-
-        // colorMap2 = sortable[0][0]
-        
-        pixelCanvas.width = pixelCount;
-        pixelCanvas.height = Math.ceil(pixelRows/pixelCount);
-
-        const pixelctx = pixelCanvas.getContext('2d');
-
-        pixelctx.save();
-
-        let stitchCount = pixelCount * rowCount;
-
-        for (let i=0; i<pixelColors.length; i++) {
-          if (Object.keys(colorMap).includes(pixelColors[i])) {
-            pixelctx.fillStyle = colorMap[pixelColors[i]];
-          } else {
-            pixelctx.fillStyle = pixelColors[i];
-          }
-          
-          let currentRow = Math.floor(i/pixelCount);
-          pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
-        }
-
-        pixelctx.restore();
-
-        let a = document.createElement('a');
-        a.setAttribute('download',
-          Boolean(this.props.downloadingStitchesName) 
-          ? `${this.props.downloadingStitchesName}PixelPattern.png`
-          : 'MyProjectPixelPattern.png');
-        pixelCanvas.toBlob(blob => {
-            let url = URL.createObjectURL(blob);
-            a.setAttribute('href', url);
-            a.click();
-        });
-      // }
-      //
-      // else if (type === 2) {
-        // this.props.toggleDownloadStitches();
-        console.log("toggled to " + this.props.downloadingStitches + "!");
-
-        const stitchCanvas = document.createElement('canvas');
-
-        let stitchRows = 0;
-
-        for (let i=0; i<pixelColors.length; i++){
-          if (!pixelColors[i].includes("rgba(")){
-            stitchRows += 1;
-          }
-        }
-
-        stitchCanvas.width = 25*pixelCount+10;
-        stitchCanvas.height = 25*(Math.ceil(stitchRows/pixelCount))+10;
-
-        const stitchctx = stitchCanvas.getContext('2d');
-
-        stitchctx.save();
-
-        for (let i=0; i<stitchCount; i++) {
-          stitchctx.fillStyle = pixelColors[i];
-          let currentRow = Math.floor(i/pixelCount);
-          stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
-        }
-
-        stitchctx.restore();
-
-        let b = document.createElement('a');
-        b.setAttribute('download', 
-            Boolean(this.props.downloadingStitchesName) 
-            ? `${this.props.downloadingStitchesName}KnitPattern.png`
-            : 'MyProjectKnitPattern.png');
-        stitchCanvas.toBlob(blob => {
-            let url = URL.createObjectURL(blob);
-            // console.log(stitchCanvas.toDataURL());
-            b.setAttribute('href', url);
-            b.click();
-        });
-      // }
-    }
-
-    // drawPixelKnit(ctx){
-    //     const {
-    //         pixelCount,
-    //         selectedPixel,
-    //         pixelColors,
-    //         rowCount,
-    //         currentColor
-    //     } = {...this.props};
-
-    //     const topSpace = 0.1;
-    //     const leftSpace = 0.1;
-
-    //     const top = 50;
-    //     const left = 50;
-
-    //     const padding = 15;
-    //     const carriageDepth = 25;
-
-    //     const stitchCount = pixelCount * rowCount;
-
-    //     const pixelSize = 12;
-    //     const pixelGap = 5;
-
-    //     // draw "carriage," number/grid border thing
-    //     ctx.fillStyle = "#c2e3f9";
-    //     ctx.beginPath();
-    //     ctx.moveTo(0+left, (pixelSize + pixelGap)*2-(2*pixelGap))+top;
-    //     ctx.lineTo(0+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top)
-    //     ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top);
-    //     ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
-    //     ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
-    //     ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, 0+top);
-    //     ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, 0+top);
-    //     ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top, ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
-    //     ctx.fill();
-
-    //     // design prep for text
-    //     ctx.textAlign = 'center';
-    //     ctx.font = '10px sans-serif';
-    //     ctx.fillStyle = '#ffffff';
-
-    //     // draw column (stitch) count numbers
-    //     for (let i=0; i<pixelCount; i++){
-    //       ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2)+left, pixelSize+(pixelGap/2)+top);
-    //     }
-
-    //     // draw row count numbers
-    //     for (let i=0; i<rowCount; i++){
-    //       ctx.fillText(i+1, pixelSize+left, (i+2)*(pixelSize+pixelGap)+top);
-    //     }
-
-    //     ctx.globalAlpha = 0.5;
-
-    //     // draw gray and white canvas background grid
-    //     for (let i=0; i<stitchCount; i++){
-
-    //       let currentRow = Math.floor(i/pixelCount);
-
-    //       let dark = "#d9d9d9";
-    //       let light = "#ffffff";
-
-    //       let gridColor = dark;
-
-    //       // \/ this took every single one of my braincells, I don't know why
-    //       if ((i%pixelCount)%2 === 0){
-    //         if (currentRow%2 === 0) gridColor = dark;
-    //         else gridColor = light;
-    //       } else {
-    //         if (currentRow%2 === 0) gridColor = light;
-    //         else gridColor = dark;
-    //       }
-
-    //       let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
-    //       let currentY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
-
-    //       ctx.fillStyle = gridColor;
-    //       ctx.fillRect(currentX+left, currentY+top, pixelSize+pixelGap, pixelSize+pixelGap);
-
-    //     }
-
-    //     ctx.globalAlpha = 1;
-
-    //     // draw the stitches from the block data :)
-    //     for (let i=0; i<stitchCount; i++){
-    //         let currentRow = Math.floor(i/pixelCount);
-    //         // if (i%2) ctx.globalCompositeOperation = 'destination-out';
-    //         // else ctx.globalCompositeOperation = 'source-over';
-    //         let relativeX = (i%pixelCount) * (pixelSize + pixelGap);
-    //         let relativeY = currentRow * (pixelSize + pixelGap);
-
-    //         let rowCountX = this.width/2-pixelCount*(pixelSize + pixelGap)/2-pixelSize-pixelGap;
-
-    //         let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(pixelGap);
-    //         let currentY = (pixelSize + pixelGap)*(currentRow+2);
-
-    //         ctx.strokeStyle = '#ffd500'
-    //         ctx.fillStyle = pixelColors[i];
-    //         // ctx.fillRect(currentX, currentY, pixelSize, pixelSize);
-    //         // ctx.strokeRect(currentX, currentY, pixelSize, pixelSize);
-    //         let currentX2 = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
-    //         let currentY2 = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
-
-
-    //         ctx.drawStitch(currentX+left, currentY+top, pixelSize);
-
-    //         // if (i%2) ctx.clearRect(currentX2+left, currentY2+top, pixelSize+pixelGap, pixelSize+pixelGap);
-    //         // else ctx.drawStitch(currentX+left, currentY+top, pixelSize);
-    //     }
-    // }
 
     redrawGrid() {
       const ctx = this.gridRef.current.getContext('2d');
@@ -372,18 +76,19 @@ class SimulatorComponent extends React.Component {
       ctx.save();
 
       ctx.clearRect(0, 0, this.width, this.height);
+      ctx.translate(left, top);
 
       // draw "carriage," number/grid border thing
       ctx.fillStyle = "#c2e3f9";
       ctx.beginPath();
-      ctx.moveTo(0+left, (pixelSize + pixelGap)*2-(2*pixelGap))+top;
-      ctx.lineTo(0+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top)
-      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap+top);
-      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
-      ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top);
-      ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap)+left, 0+top);
-      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, 0+top);
-      ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap)+left, ((pixelSize+pixelGap)*2)-(2*pixelGap)+top, ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
+      ctx.moveTo(0, (pixelSize + pixelGap)*2-(2*pixelGap));
+      ctx.lineTo(0, ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap)
+      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*(rowCount+1))+pixelSize-pixelGap);
+      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
+      ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap));
+      ctx.lineTo(((pixelSize+pixelGap)*(pixelCount+1)+pixelSize-pixelGap), 0);
+      ctx.lineTo(((pixelSize + pixelGap)*2)-(2*pixelGap), 0);
+      ctx.arc(((pixelSize + pixelGap)*2)-(2*pixelGap), ((pixelSize+pixelGap)*2)-(2*pixelGap), ((pixelSize + pixelGap)*2)-(2*pixelGap), 3*Math.PI/2, Math.PI, true);
       ctx.fill();
 
       // design prep for text
@@ -393,15 +98,15 @@ class SimulatorComponent extends React.Component {
 
       // draw column (stitch) count numbers
       for (let i=0; i<pixelCount; i++){
-        ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2)+left, pixelSize+(pixelGap/2)+top);
+        ctx.fillText(i + 1, (i+2)*(pixelSize+pixelGap)-(pixelGap/2), pixelSize+(pixelGap/2));
       }
 
       // draw row count numbers
       for (let i=0; i<rowCount; i++){
-        ctx.fillText(i+1, pixelSize+left, (i+2)*(pixelSize+pixelGap)+top);
+        ctx.fillText(i+1, pixelSize, (i+2)*(pixelSize+pixelGap));
       }
 
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.3;
 
       // draw gray and white canvas background grid
       for (let i=0; i<stitchCount; i++){
@@ -412,18 +117,17 @@ class SimulatorComponent extends React.Component {
 
         let gridColor;
 
-        // \/ this took every single one of my braincells, I don't know why
-        if ((i%pixelCount)%2 === 0){
-          gridColor = (currentRow%2 === 0) ? dark : light;
+        if ((i%pixelCount)%2){
+          gridColor = (currentRow%2) ? dark : light;
         } else {
-          gridColor = (currentRow%2 === 0) ? light : dark;
+          gridColor = (currentRow%2) ? light : dark;
         }
 
         let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
         let currentY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
 
         ctx.fillStyle = gridColor;
-        ctx.fillRect(currentX+left, currentY+top, pixelSize+pixelGap, pixelSize+pixelGap);
+        ctx.fillRect(currentX, currentY, pixelSize+pixelGap, pixelSize+pixelGap);
       }
 
       ctx.restore();
@@ -437,6 +141,7 @@ class SimulatorComponent extends React.Component {
       const stitchCount = pixelCount * rowCount;
 
       ctx.save();
+      ctx.translate(left, top);
 
       ctx.globalAlpha = 1;
 
@@ -453,15 +158,15 @@ class SimulatorComponent extends React.Component {
           ctx.fillStyle = pixelColors[i];
 
           if (all) { // drawing all stitches regardless of diff from previous state
-            ctx.drawStitch(currentX+left, currentY+top, pixelSize);
+            ctx.drawStitch(currentX, currentY, pixelSize);
             continue;
           } else {
             // do comparison between previous pixelColors and update if different
             let clearRectX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
             let clearRectY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
             if (pixelColors[i] != prevPixels[i]) { // color changed
-              ctx.clearRect(clearRectX+left, clearRectY+top, pixelSize+pixelGap, pixelSize+pixelGap+5);
-              ctx.drawStitch(currentX+left, currentY+top, pixelSize);
+              ctx.clearRect(clearRectX, clearRectY, pixelSize+pixelGap, pixelSize+pixelGap+5);
+              ctx.drawStitch(currentX, currentY, pixelSize);
             }
           }
       }
@@ -491,6 +196,7 @@ CanvasRenderingContext2D.prototype.drawStitch = function(x, y, size) {
 
     const scaleFactor = 0.5*size/20
     const translator = [14, 26];
+    this.save();
     this.scale(scaleFactor, scaleFactor);
     this.translate((x-translator[0])/scaleFactor, (y-translator[1])/scaleFactor);
 
@@ -526,18 +232,14 @@ CanvasRenderingContext2D.prototype.drawStitch = function(x, y, size) {
     this.rotate(Math.PI/3);
     this.translate(-67, -83);
 
-    this.setTransform(1, 0, 0, 1, 0, 0);
+    this.restore();
 }
 
 const mapStateToProps = state => ({
-    downloadingPixels: state.pixels.downloadingPixels,
-    downloadingStitches: state.pixels.downloadingStitches,
     downloadingStitchesName: state.pixels.downloadingStitchesName
 });
 
 const mapDispatchToProps = dispatch => ({
-    toggleDownloadPixels: () => dispatch(downloadThePixels(false)),
-    toggleDownloadStitches: () => dispatch(downloadTheStitches(false)),
     downloadCode: () => dispatch(downloadTheCode()),
     unravelPixels: () => dispatch(clearThePixels())
 });
