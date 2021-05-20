@@ -53,7 +53,7 @@ class ProjectCache {
   }
 
   getSampleProjects() {
-    // return Object.values(this.sampleProjects);
+    return Object.values(this.sampleProjects);
   }
 
   getProjects() {
