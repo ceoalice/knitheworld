@@ -11,7 +11,7 @@ class SampleProjectsModal extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-          projects : []
+          projects : null
         } 
         this.openProject = this.openProject.bind(this);
     }

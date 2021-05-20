@@ -80,8 +80,6 @@ const closeLocalProjects = function () {
 };
 
 const openSaveAs = function() {
-
-  console.log("GOT HERE")
   return openModal(MODAL_SAVE_AS);
 }
 const closeSaveAs = function() {

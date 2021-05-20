@@ -18,31 +18,30 @@ const SampleProjectModalComponent = props => (
         onRequestClose={props.onCancel}
         isRtl={false}
     >
-        <div
-            className={classNames(styles.libraryScrollGrid)}
-        >
-              {
-                props.projects.map((dataItem, index) => (
-                  <ProjectItem
-                    isExample
-                    xml={dataItem.xml}
-                    key={index}
-                    name={dataItem.name}  
-                    id={dataItem.id}
-                    iconURL={dataItem.imgData}
-                    onSelect={()=> props.openProject(dataItem.xml)}
-                    onDelete={()=> {}}
-                  />
-                ))
-              }
-        </div>
+      {props.projects
+        ? <div className={classNames(styles.libraryScrollGrid)}>
+            {props.projects.map((dataItem, index) => (
+                <ProjectItem
+                  isExample
+                  xml={dataItem.xml}
+                  key={index}
+                  name={dataItem.name}  
+                  id={dataItem.id}
+                  iconURL={dataItem.imgData}
+                  onSelect={()=> props.openProject(dataItem.xml)}
+                  onDelete={()=> {}}
+                />
+              ))}
+          </div>
+        : null
+      }
     </Modal>
 );
 
 SampleProjectModalComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     openProject: PropTypes.func.isRequired,
-    projects: PropTypes.array.isRequired,
+    projects: PropTypes.array,
 };
 
 export {

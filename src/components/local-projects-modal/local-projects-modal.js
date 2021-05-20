@@ -7,8 +7,8 @@ import styles from './local-projects-modal.css';
 
 import ProjectItem from '../../containers/project-item.js';
 
-function lastModified(timestamp) {
-  let created = new Date(timestamp);
+function lastModified(timestamp) { 
+  let created = new Date(timestamp*1000); // convert seconds to milliseconds
   let diff = (new Date()) - created; // milliseconds
   if (diff > 3.154e+10) {
     let month = created.toLocaleString('default', { month: 'short'});
@@ -28,35 +28,35 @@ function lastModified(timestamp) {
 }
 
 const LocalProjectModalComponent = props => (
-    <Modal
-        fullScreen
-        // className={styles.modalContent}
-        contentLabel={"Locally Stored Projects"}
-        // headerClassName={styles.header}
-        // headerImage={props.connectionSmallIconURL}
-        id="localProjectsModal"
-        onRequestClose={props.onCancel}
-        isRtl={false}
-    >
-        <div
-            className={classNames(styles.libraryScrollGrid)}
-        >
-              {
-                props.projects.map((dataItem, index) => (
-                  <ProjectItem
-                    key={index}
-                    name={dataItem.name}
-                    size={dataItem.size}
-                    description={`Last Modified ${lastModified(dataItem.timestamp)}`}
-                    id={dataItem.id}
-                    iconURL={dataItem.imgData}
-                    onSelect={()=> props.openProject(dataItem.id)}
-                    onDelete={()=> props.deleteProject(dataItem.id)}
-                  />
-                ))
-              }
+  <Modal
+      fullScreen
+      // className={styles.modalContent}
+      contentLabel={"Locally Stored Projects"}
+      // headerClassName={styles.header}
+      // headerImage={props.connectionSmallIconURL}
+      id="localProjectsModal"
+      onRequestClose={props.onCancel}
+      isRtl={false}
+  >
+    {props.projects
+      ? <div className={classNames(styles.libraryScrollGrid)} >
+          {props.projects.map((dataItem, index) => (
+              <ProjectItem
+                key={index}
+                name={dataItem.name}
+                xml={dataItem.xml}
+                size={dataItem.size}
+                description={`Last Edited ${lastModified(dataItem.timestamp.seconds)}`}
+                id={dataItem.id}
+                iconURL={dataItem.imgData}
+                onSelect={()=> props.openProject(dataItem.id)}
+                onDelete={()=> props.deleteProject(dataItem.id)}
+              />
+            ))}
         </div>
-    </Modal>
+      : null
+    }
+  </Modal>
 );
 
 LocalProjectModalComponent.propTypes = {

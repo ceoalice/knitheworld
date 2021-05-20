@@ -12,22 +12,17 @@ class LocalProjectsModal extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-          projects : []
+          projects : null
         } 
         this.vm = props.vm;
         this.openProject = this.openProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
         this.handleProjectsUpdate = this.handleProjectsUpdate.bind(this);
+        // this.closeModal = this.closeModal.bind(this);
     }
 
-    componentDidMount() {
-      let projects = ProjectManager.getProjects();
-
-      projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
-      
-      // console.log("projects: ", projects)
-      this.setState({projects});
-
+    async componentDidMount() {
+      this.handleProjectsUpdate();
       this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
     }
 
@@ -35,25 +30,22 @@ class LocalProjectsModal extends React.Component {
       this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
     }
 
-    handleProjectsUpdate() {
-      // console.log("GOT HERE: handleProjectsUpdate");
-      let projects = ProjectManager.getProjects();
-      projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
+    async handleProjectsUpdate() {
+      let projects = await ProjectManager.getProjects();
+      projects.sort((a,b) => (new Date(b.timestamp.seconds)) - (new Date(a.timestamp.seconds)));
       this.setState({projects});
     }
 
     openProject(id) {
-      ProjectManager.loadProject(id);
-      this.props.updateProjectName(ProjectManager.getCurrentProjectName());
-      this.props.onCancel();
+      ProjectManager.loadProject(id).then(()=> {
+        this.props.onCancel();
+      });
     }
 
-
     deleteProject(id) {
-      ProjectManager.deleteProject(id);
-      let projects = ProjectManager.getProjects();
-      projects.sort((a,b) => (new Date(b.timestamp)) - (new Date(a.timestamp)));
-      this.setState({projects});
+      ProjectManager.deleteProject(id).then(()=> {
+        this.handleProjectsUpdate();
+      });
     }
 
     render () {

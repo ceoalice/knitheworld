@@ -12,6 +12,9 @@ import helpIcon from '../../lib/assets/icon--help.svg';
 
 import styles from './modal.css';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
 const ModalComponent = props => (
     <ReactModal
         isOpen
@@ -81,7 +84,10 @@ const ModalComponent = props => (
                     )}
                 </div>
             </div>
-            {props.children}
+            {props.children
+              ? props.children
+              : <div className={styles.loadIcon}> <CircularProgress /> </div>
+            }
         </Box>
     </ReactModal>
 );
