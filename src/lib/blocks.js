@@ -20,11 +20,11 @@ class VMScratchBlocks {
     loadWorkspace (workspace) {
         this.workspace.clear();
         const xml = ScratchBlocks.Xml.textToDom(workspace);
-        return ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
+        ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
     }
 
     getXML () {
-        return ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(this.workspace));
+        return ScratchBlocks.Xml.domToText(ScratchBlocks.Xml.workspaceToDom(this.workspace));
     }
 
     loadXML (xml) {

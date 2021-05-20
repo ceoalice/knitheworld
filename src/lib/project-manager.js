@@ -117,7 +117,7 @@ class ProjectManager {
   }
 
   getXML() {
-    return vmScratchBlocks.getXML().replace(/(\s\s|\t|\n)/g, "");
+    return vmScratchBlocks.getXML();
   }
 
   getSampleProjects() {
