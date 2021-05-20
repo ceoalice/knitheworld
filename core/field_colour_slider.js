@@ -33,6 +33,7 @@ goog.require('goog.events');
 goog.require('goog.style');
 goog.require('goog.color');
 goog.require('goog.ui.Slider');
+goog.require('goog.ui.LabelInput');
 
 /**
  * Class for a slider-based colour input field.
@@ -235,6 +236,26 @@ Blockly.FieldColourSlider.prototype.createLabelDom_ = function(labelText) {
 };
 
 /**
+ * Returns even listener that has access to "this".
+ * validates hex in text input and changes sliders
+ * @returns {function} listener - updates sliders if valid hex
+ */
+Blockly.FieldColourSlider.prototype.handleValueChange = function() {
+  var thisField = this;
+  return function(event) {
+    var potentialColor = event.target.value;
+
+    if (potentialColor.match(/^#([a-fA-F0-9]{6})$/g)) {
+      var hsv = goog.color.hexToHsv(potentialColor);
+      thisField.hue_ = hsv[0];
+      thisField.saturation_ = hsv[1];
+      thisField.brightness_ = hsv[2];
+      thisField.setValue(potentialColor);
+    }
+  };
+};
+
+/**
  * Factory for creating the different slider callbacks
  * @param {string} channel - One of "hue", "saturation" or "brightness"
  * @return {function} the callback for slider update
@@ -263,6 +284,7 @@ Blockly.FieldColourSlider.prototype.sliderCallbackFactory_ = function(channel) {
     }
     if (colour !== null) {
       thisField.setValue(colour, true);
+      thisField.valueInput_.setValue(colour);
     }
   };
 };
@@ -344,6 +366,18 @@ Blockly.FieldColourSlider.prototype.showEditor_ = function() {
             this.activateEyedropperInternal_);
   }
 
+
+  this.valueInput_ = new goog.ui.LabelInput();
+  this.valueInput_.setLabel("Hex Value");
+  this.valueInput_.render(div);
+  this.valueInput_.setValue(this.getValue());
+
+  // window.console.log(this.valueInput_);
+  // window.console.log(this.valueInput_.getElement());
+
+  this.valueInput_.getElement().addEventListener('input', this.handleValueChange());
+  this.valueInput_.getElement().setAttribute('class', 'scratchColourPickerInput');
+
   Blockly.DropDownDiv.setColour('#ffffff', '#dddddd');
   Blockly.DropDownDiv.setCategory(this.sourceBlock_.parentBlock_.getCategory());
   Blockly.DropDownDiv.showPositionedByBlock(this, this.sourceBlock_);
@@ -378,6 +412,9 @@ Blockly.FieldColourSlider.prototype.dispose = function() {
   }
   if (Blockly.FieldColourSlider.eyedropperEventData_) {
     Blockly.unbindEvent_(Blockly.FieldColourSlider.eyedropperEventData_);
+  }
+  if (this.valueInput_) {
+    this.valueInput_.getElement().removeEventListener('input', this.handleValueChange());
   }
   Blockly.Events.setGroup(false);
   Blockly.FieldColourSlider.superClass_.dispose.call(this);

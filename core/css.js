@@ -252,6 +252,8 @@ Blockly.Css.CONTENT = [
   '.blocklyDropDownContent {',
     'max-height: 300px;', // @todo: spec for maximum height.
     'overflow: auto;',
+    'display: flex;',
+    'flex-direction: column;',
   '}',
 
   '.blocklyDropDownArrow {',
@@ -460,7 +462,7 @@ Blockly.Css.CONTENT = [
 
   '.blocklyText {',
     'fill: #777;',
-    'font-family: Futura, "Trebuchet MS", Arial, sans-serif;',
+    'font-family: "Courier", monospace;',
     'font-size: 12pt;',
     'font-weight: normal;',
   '}',
@@ -964,7 +966,7 @@ Blockly.Css.CONTENT = [
     'position: relative;',
     'outline: none;',
     'border-radius: 11px;',
-    'margin-bottom: 20px;',
+    'margin-bottom: 10px;',
   '}',
 
   '.blocklyDropDownDiv .goog-slider-horizontal .goog-slider-thumb {',
@@ -993,8 +995,9 @@ Blockly.Css.CONTENT = [
   '.scratchColourPickerLabel {',
     'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 0.65rem;',
-    'color: $colour_toolboxText;',
+    'color: grey;',
     'margin: 8px;',
+    'margin-bottom: 0px;',
   '}',
 
   '.scratchColourPickerLabelText {',
@@ -1003,6 +1006,11 @@ Blockly.Css.CONTENT = [
 
   '.scratchColourPickerReadout {',
     'margin-left: 10px;',
+  '}',
+
+  '.scratchColourPickerInput {',
+  'margin: 8px;',
+  'font-family: "Courier", monospace;',
   '}',
 
   '.scratchMatrixButtonDiv {',
