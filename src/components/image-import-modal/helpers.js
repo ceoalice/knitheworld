@@ -18,45 +18,45 @@ function RGBToHex(r,g,b) {
  */
 function blocksToXML(blocks) {
   return `<xml xmlns="http://www.w3.org/1999/xhtml">
-    <variables></variables>
-    <block type="event_whenstarted" deletable="false" x="90" y="206">
-      <next>
-        ${recursiveXMLWrite(0,blocks)}
-      </next>
-    </block>
-    </xml>`
+		<variables></variables>
+		<block type="event_whenstarted" deletable="false" x="90" y="206">
+			<next>
+				${recursiveXMLWrite(blocks)}
+			</next>
+		</block>
+		</xml>`
 }
 
-function recursiveXMLWrite(i, blocks) {
+function recursiveXMLWrite(blocks, i=0) {
   if (i === blocks.length) return "";
   let block =  blocks[i];
   switch(block) {
     case "END_ROW": // set color to #FFF and knit until row ends
     return `<block type="knit_knituntilendofrow">
-      <next>
-        ${recursiveXMLWrite(i+1, blocks)}
-      </next>
-    </block>`
+			<next>
+				${recursiveXMLWrite(blocks, i+1)}
+			</next>
+		</block>`
     default:  // set color to block[0] and stick the next block[1] stiches
       return `<block type="knit_changecolorto">
-        <value name="COLOR">
-          <shadow type="colour_picker">
-            <field name="COLOUR">${block[0]}</field>
-          </shadow>
-        </value>
-        <next>
-          <block type="knit_knitstitches">
-            <value name="VALUE">
-              <shadow type="math_positive_number">
-                <field name="NUM">${block[1]}</field>
-              </shadow>
-            </value>
-            <next>
-              ${recursiveXMLWrite(i+1, blocks)}
-            </next>
-          </block>
-        </next>
-      </block>`
+				<value name="COLOR">
+					<shadow type="colour_picker">
+						<field name="COLOUR">${block[0]}</field>
+					</shadow>
+				</value>
+				<next>
+					<block type="knit_knitstitches">
+						<value name="VALUE">
+							<shadow type="math_positive_number">
+								<field name="NUM">${block[1]}</field>
+							</shadow>
+						</value>
+						<next>
+							${recursiveXMLWrite(blocks, i+1)}
+						</next>
+						</block>
+					</next>
+				</block>`
   }
 }
 

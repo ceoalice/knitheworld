@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import downloadButton from './icon--pattern_download.svg';
 import unravelButton from './icon--unravel.svg';
 
-import {ReactComponent as downloadStitchButton} from './icon--download_stitches.svg';
 import {ReactComponent as downloadCodeButton} from './icon--download.svg';
 import {ReactComponent as uploadCodeButton} from './icon--upload_code.svg';
 
@@ -19,20 +18,6 @@ import IconButton from '@material-ui/core/IconButton';
 const DownloadButtonComponent = props => {
     return (
         <div className={styles.pixelStyleTools}>
-          <Tooltip title="Download Images" placement="right">
-
-            <div>
-            <IconButton size="small" onClick={props.openImageExport}>
-              <SvgIcon
-                className={styles.button}
-                component={downloadStitchButton}
-                viewBox="0 0 40 40"
-              />
-            </IconButton>  
-            </div>
-          </Tooltip>
-
-          <div style={{paddingTop:18}}></div>
 
           <Tooltip title="Download File" placement="right">
             <div>

@@ -4,7 +4,6 @@ import {blocksToXML, RGBToHex} from "./helpers.js";
 
 import styles from './image-importer.css';
 
-import VMScratchBlocks from '../../lib/blocks.js';
 import Button from '../button/button.js';
 
 import {connect} from 'react-redux';

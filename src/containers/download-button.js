@@ -12,7 +12,7 @@ import {
   openImageExport
 } from '../reducers/modals.js'
 
-import VMScratchBlocks from '../lib/blocks.js';
+// import VMScratchBlocks from '../lib/blocks.js';
 import ProjectManager from '../lib/project-manager.js'
 
 import DownloadButtonComponent from '../components/knit-buttons/download-button.js';
@@ -41,19 +41,15 @@ class DownloadButton extends React.Component {
     }
 
     uploadCode () {
-        console.log(this.fileChooser);
+        // console.log(this.fileChooser);
         this.fileChooser.current.click();
     }
 
     loadCode (event) {
-        var projectName = event.target.files[0].name.split('.xml')[0];
         if (event.target.files) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                console.log(e.target.result);
-                VMScratchBlocks.loadXML(e.target.result);
-
-                // document.getElementById('project-name-input').value = projectName;
+                ProjectManager.newProject(e.target.result);
             }
             reader.readAsBinaryString(event.target.files[0]);
         }

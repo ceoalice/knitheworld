@@ -48,7 +48,6 @@ const updateProjectName = function (value) {
     type: UPDATE_PROJECT_NAME,
     value: value
   }
-
 }
 
 // toggles boolean determining if project needs to be saved or not
@@ -61,7 +60,6 @@ const toggleProjectSaved = function (value) {
 };
 
 const toggleProjectLoading = function (value) {
-  console.log("PROJECT LOADING: ", value ? "started" : "ended");
   return {
       type: PROJECT_LOADING,
       value: value
