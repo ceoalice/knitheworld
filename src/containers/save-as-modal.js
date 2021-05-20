@@ -24,8 +24,9 @@ class SaveAsModal extends React.Component {
         this.loadImage = this.loadImage.bind(this);
     }
 
-    componentDidMount() {
-      this.setState({prevProjectName : ProjectManager.getCurrentProjectName()})
+    async componentDidMount() {
+      let projectName = String(await ProjectManager.getCurrentProjectName());
+      this.setState({ projectName, prevProjectName : projectName})
     }
 
     componentDidUpdate() {
