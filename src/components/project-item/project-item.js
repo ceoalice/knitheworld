@@ -9,7 +9,11 @@ import {withStyles, makeStyles} from '@material-ui/core/styles';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import Modal from '@material-ui/core/Modal';
 import EditIcon from '@material-ui/icons/Edit';
@@ -22,6 +26,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 
 import ProjectManager from "../../lib/project-manager.js"
+
+import JSZip from "jszip";
+import { saveAs } from 'file-saver';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,9 +45,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     outline: 0
   },
-  cardContent: {
+  editContent: {
     display: 'flex',
     flexDirection : "row",
+    alignItems : "center",
+  },
+  downloadContent: {
+    display: 'flex',
+    flexDirection : "column",
     alignItems : "center",
   },
   icon: {
@@ -103,7 +115,15 @@ const CssTextField = withStyles({
   },
 })(Input);
 
-
+function projectSize(bytes) {
+  if (bytes > 1e+6) {
+    return `${Math.floor(Number(bytes/1e+6))} GB`
+  } else if (bytes > 1e+3) {
+    return `${Math.floor(Number(bytes/1e+3))} MB`
+  } else {
+    return `${Number(bytes)} KB`
+  }
+}
 
 /* eslint-disable react/prefer-stateless-function */
 const ProjectItemComponent = (props) => {  
@@ -111,6 +131,57 @@ const ProjectItemComponent = (props) => {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
+
+  const [state, setState] = React.useState({
+    thumbnail: false,
+    xml: false,
+  });
+
+  const [openDownload, setOpenDownload] = React.useState(false);
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+
+  const handleClickDownload = (e) => {
+    setOpenDownload(true);
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const handleCloseDownload = (e) => {
+    setOpenDownload(false);
+    e.preventDefault();
+    e.stopPropagation();
+  }
+ 
+  const handleSubmitDownload = (e) => {
+    let zip = new JSZip();
+    console.log(props.xml);
+    if (state.xml) { 
+      zip.file(`${props.name}.xml`, props.xml);
+    }
+
+    if (state.thumbnail) { // && !props.isExample
+      zip.file(
+        `thumbnail.png`, 
+        props.iconURL.replace(/^data:image\/(png|jpg);base64,/, ""), 
+        {base64: true}
+      );
+    }
+
+    if (state.xml || state.thumbnail) {
+      zip.generateAsync({type:"blob"})
+        .then(function(content) {
+            // see FileSaver.js
+            saveAs(content, `${props.name}.zip`);
+        });
+    }
+
+    handleCloseDownload(e);
+  }
+
   const handleClick = (e) => {
     setOpen(true);
     e.preventDefault();
@@ -132,6 +203,8 @@ const ProjectItemComponent = (props) => {
     ProjectManager.changeProjectName(props.id, name);
     handleClose(e);
   }
+
+  const { thumbnail, xml } = state;
   
     return (
         <div className={
@@ -143,10 +216,23 @@ const ProjectItemComponent = (props) => {
           onClick={props.onClick}
         >
           <div className={styles.featuredImageContainer}>
-              <img
+              {
+                props.lateUrl
+                ? 
+                <img
+                className={styles.featuredImage}
+                src={props.lateUrl}
+                />
+                :
+                !props.expectingPromise
+                  ?
+                  <img
                   className={styles.featuredImage}
                   src={props.iconURL}
-              />
+                  />
+                  :
+                  null
+              }
           </div>
 
           {props.insetIconURL ? (
@@ -157,9 +243,20 @@ const ProjectItemComponent = (props) => {
                   />
               </div>
           ) : null}
+
+          <div className={styles.featuredText}>
+            {
+              !props.isExample 
+              ? <span className={styles.projectSize}> {projectSize(props.size)} </span>
+              : null
+            }
+            <span className={styles.libraryItemName}>{props.name}</span> 
+            <br />
+            <span className={styles.featuredDescription}>{props.description}</span>
+          </div>
           
           <SaveAltIcon 
-            onClick={handleClick}
+            onClick={handleClickDownload}
             style={{ color: "white" }}
             className={classNames(classes.icon,classes.save)} 
           /> 
@@ -189,12 +286,6 @@ const ProjectItemComponent = (props) => {
               ) 
               : null
           }
-
-          <div className={styles.featuredText}>
-            <span className={styles.libraryItemName}>{props.name}</span> 
-            <br />
-            <span className={styles.featuredDescription}>{props.description}</span>
-          </div>
           
           <Modal
             open={open}
@@ -206,7 +297,7 @@ const ProjectItemComponent = (props) => {
               <CardHeader
                 title="Edit Project"
               />
-              <CardContent className={classes.cardContent}>
+              <CardContent className={classes.editContent}>
                 <FormControl className={classes.margin}>
                   <InputLabel htmlFor="component-simple">Project Name</InputLabel>
                   <CssTextField
@@ -218,6 +309,38 @@ const ProjectItemComponent = (props) => {
                 </FormControl>
                 <Button onClick={handleSubmit} variant="contained" color="primary">
                   Update
+                </Button>
+              </CardContent>  
+            </Card>
+          </Modal>
+
+
+          <Modal
+            open={openDownload}
+            onClose={handleCloseDownload}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            <Card style={modalStyle} className={classes.card} onClick={(ev)=> ev.stopPropagation()}>
+              <CardHeader
+                title="Download Project"
+              />
+              <CardContent className={classes.downloadContent}>
+                <FormControl className={classes.margin}>
+                  <FormLabel component="legend">Select Files to Download</FormLabel>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox color= "default" checked={thumbnail} onChange={handleChange} name="thumbnail" />}
+                      label="Thumbnail"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox color= "default" checked={xml} onChange={handleChange} name="xml" />}
+                      label="XML file"
+                    />
+                  </FormGroup>
+                </FormControl>
+                <Button onClick={handleSubmitDownload} variant="contained" color="primary">
+                  Download
                 </Button>
               </CardContent>  
             </Card>
@@ -234,12 +357,15 @@ ProjectItemComponent.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
-
+    size : PropTypes.number,
     disabled: PropTypes.bool,
     extensionId: PropTypes.string,
     featured: PropTypes.bool,
     hidden: PropTypes.bool,
-    iconURL: PropTypes.string,
+    iconURL: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Promise)
+    ]),
     insetIconURL: PropTypes.string,
 
     name: PropTypes.oneOfType([

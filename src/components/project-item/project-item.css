@@ -8,6 +8,16 @@
   justify-content: center;
 }
 
+.project-size {
+  position: absolute;
+  /* color: black; */
+  
+  bottom: 0;
+  left: 0;
+  margin: 3px 6px;
+  font-size: 10px;
+}
+
 .close-button {
   display: flex;
   align-items: center;
@@ -176,6 +186,7 @@ img.featured-image {
 .featured-text {
     font-weight: bold;
     padding: 10px;
+    position: relative;
     /* height: 140px; */
     width: 300px;
 }
