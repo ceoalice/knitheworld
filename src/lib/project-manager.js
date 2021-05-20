@@ -1,21 +1,7 @@
-/**
- * Projects are saved in 
- * 
- * projects = [0,1,2,3, ... n] 
- * projectID = { name?, id, xml, base64? }
- * serial = 0 -> n
- */
 import vmScratchBlocks from "./blocks";
 import firebase from "./firebase.js";
 
-const PROJECT_IDS = "projectIDs";
 const CURRENT_PROJECT_ID = "currentID";
-const AUTOINCREMENT_ID = "autoincrementID";
-
-const PROJECT_XML = "projectXml";
-const PROJECT_NAME = "projectName"
-const PROJECT_TIMESTAMP = "projectTimestamp";
-const PROJECT_IMAGE_DATA = "projectImgData";
 const USER_ID = "userID";
 
 const blankWorkSpace =`<xml>
@@ -26,15 +12,14 @@ const blankWorkSpace =`<xml>
 const byteSize = str => Number(new Blob([str]).size);
 
 class ProjectManager {
-  constructor () {
-    console.log("GOT HERE")
-    // if storage is empty initialize it
-    if (localStorage.getItem(AUTOINCREMENT_ID) === null) {
-      localStorage.setItem(AUTOINCREMENT_ID, 1);
-    }
-    if (localStorage.getItem(USER_ID) === null) {
-      var db = firebase.firestore();
+  constructor () { 
+    // cache variable
+    this.cache_ = {needUpdate : true};
 
+    let db = firebase.firestore();
+    let userID = this.getUserID(); 
+
+    if (userID === null) {
       db.collection("users").add({
         joined : new Date(),
       })
@@ -46,7 +31,10 @@ class ProjectManager {
           console.error("Error adding document: ", error);
       });
     } else {
-      console.log("Document found with ID: ", localStorage.getItem(USER_ID));
+      db.collection("users").doc(userID).update({
+        lastOnline : new Date(),
+      });
+      console.log("Document found with ID: ", userID);
     }
   }
 
@@ -54,184 +42,181 @@ class ProjectManager {
     this.vm = vm;
   }
 
-  getCurrentProjectID() {
+  getCurrentID() {
     return localStorage.getItem(CURRENT_PROJECT_ID);
   }
 
-  getProjectIDs() {
-    let projectIDs = localStorage.getItem(PROJECT_IDS);
-    if (projectIDs === null) return [];
-    
-    let out = JSON.parse(`[${projectIDs}]`);
-    return out;
-  }
-
-  reduceSize(str) {
-    return str.replace(/(\s\s|\t|\n)/g, "");
+  getUserID() {
+    return localStorage.getItem(USER_ID);
   }
 
   getXML() {
     return vmScratchBlocks.getXML().replace(/(\s\s|\t|\n)/g, "");
   }
 
-  getProject(id) {
-    let xml = localStorage.getItem(`${id}_${PROJECT_XML}`);
-    let name = localStorage.getItem(`${id}_${PROJECT_NAME}`);
-    let timestamp = localStorage.getItem(`${id}_${PROJECT_TIMESTAMP}`); 
-    let imgData = localStorage.getItem(`${id}_${PROJECT_IMAGE_DATA}`); 
+  async getProject(id) {
+    let db = firebase.firestore();
+    let doc = await db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects").doc(id).get();
+
+    let {xml, name, timestamp, imgData} = doc.data();
     let size = byteSize(xml + imgData + timestamp + name);
-    
-    return {id, xml, name, timestamp, imgData, size};
+    return {id : doc.id, xml, name, timestamp, imgData, size};
   }
 
-  getProjects() {
-    let out = [];
-    this.getProjectIDs().forEach(id => {
-      out.push(this.getProject(id));
-    });
-    return out;
+  async getProjects() {
+    let db = firebase.firestore();
+    let snapshot = await db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects").get();
+
+    let projects = snapshot.docs.map(doc => {
+      let {xml, name, timestamp, imgData} = doc.data();
+      let size = byteSize(xml + imgData + timestamp + name);
+      return {id : doc.id, xml, name, timestamp, imgData, size};
+    })
+
+    return projects;
   }
 
   saveProject(projectName = null, imgData = null) {
-    // console.log("GOT HERE: saveProject");
-    if (localStorage.getItem(CURRENT_PROJECT_ID) === null) { 
+    if (this.getCurrentID() === null) { 
       // saving new project
       this.saveNewProject(projectName, imgData);
     } else { 
       // resaving current project
       this.saveCurrentProject(projectName, imgData);
     }
-    this.addProjectToFirestore();
   }
 
-  saveNewProject(projectName = null, imgData = null) {
-    let newID = Number(localStorage.getItem(AUTOINCREMENT_ID));
-    let projectIDs = this.getProjectIDs();
+  async saveNewProject(projectName = null, imgData = null) {
+    let db = firebase.firestore();
 
-    projectIDs.push(newID);
-
-    localStorage.setItem(CURRENT_PROJECT_ID, newID); // update current
-    localStorage.setItem(PROJECT_IDS, projectIDs); // new IDs
-    localStorage.setItem(AUTOINCREMENT_ID, newID + 1); //autoincrement
-
-    localStorage.setItem(`${newID}_${PROJECT_XML}`, this.getXML());
-    localStorage.setItem(`${newID}_${PROJECT_TIMESTAMP}`, new Date());
-
-    localStorage.setItem(`${newID}_${PROJECT_NAME}`, projectName ? projectName : `Project ${newID}`);
-    this.vm.emit("PROJECT_NAME_CHANGED"); // no longer unsaved
-
-    if (imgData) localStorage.setItem(`${newID}_${PROJECT_IMAGE_DATA}`, imgData);
+    await db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects")
+      .add({
+        xml: this.getXML(), 
+        name: projectName ? projectName : `Project ${newID}`, 
+        timestamp : new Date(), 
+        imgData
+      })
+      .then(doc => {
+        console.log("saveNewProject update: ", doc);
+        localStorage.setItem(CURRENT_PROJECT_ID, doc.id);
+        this.vm.emit("PROJECT_NAME_CHANGED");
+      })
+      .catch(error => {
+        console.error("Error in saveNewProject: ", error);
+      });
   }
 
-  saveCurrentProject(projectName = null, imgData = null) {
+  async saveCurrentProject(projectName = null, imgData = null) {
     // ADD A XML CHECK TO SEE IF XML LOOKS DIFFERENT????? 
-    let currentID = Number(localStorage.getItem(CURRENT_PROJECT_ID));
+    let currentID = this.getCurrentID();
+    let db = firebase.firestore();
 
-    localStorage.setItem(`${currentID}_${PROJECT_XML}`, this.getXML());
-    localStorage.setItem(`${currentID}_${PROJECT_TIMESTAMP}`, new Date());
-
-    if (projectName) {
-      localStorage.setItem(`${currentID}_${PROJECT_NAME}`, projectName);
-      this.vm.emit("PROJECT_NAME_CHANGED");
+    let newData = {
+      xml: this.getXML(), 
+      timestamp : new Date()
     }
-    if (imgData) localStorage.setItem(`${currentID}_${PROJECT_IMAGE_DATA}`, imgData);
+
+    if (projectName) newData.name = projectName ? projectName : `Project ${newID}`;
+    if (imgData) newData.imgData = imgData;
+
+    await db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects")
+      .doc(currentID)
+      .update(newData)
+      .then((doc) => {
+        console.log(doc)
+        console.log("saveCurrentProject update: ", doc);
+        this.vm.emit("PROJECT_NAME_CHANGED");
+      })
+      .catch(error => {
+        console.error("Error in saveCurrentProject: ", error);
+      });
   }
 
-  addProjectToFirestore() {
-    let currentID = Number(localStorage.getItem(CURRENT_PROJECT_ID));
-    let userID = localStorage.getItem(USER_ID);
-    var db = firebase.firestore();
-
-    let project = Object.assign({}, this.getProject(currentID), {userID});
-
-    db.collection("projects").add(project).then((docRef) => {
-      console.log("saved doc in firestore");
-    });
-  }
-
-  newProject(xml = null) { 
+  newProject(xml = null) {
     // will clear blocks in current project & remove currentID
     if (xml === null) {
       vmScratchBlocks.loadWorkspace(blankWorkSpace);
     } else {
-      // enter state where project is loading blocks one at a time 
-      // (don't need to update each time)
-      this.vm.emit("PROJECT_LOADING", 
-        vmScratchBlocks.loadWorkspace(xml)
-      ); // enter state where project is loading blocks one at a time
-      
+      vmScratchBlocks.loadWorkspace(xml);
     }
     
-    localStorage.removeItem(CURRENT_PROJECT_ID); // new project started, not saved yet
+    localStorage.removeItem(CURRENT_PROJECT_ID);
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
   
-  loadProject(id) {
-    // console.log("project loaded")
+  async loadProject(id) {
+    console.log("loadProject: ", id);
     localStorage.setItem(CURRENT_PROJECT_ID, id);
-    let project = this.getProject(id);
+    let project = await this.getProject(id);
 
-    // enter state where project is loading blocks one at a time 
     // (don't need to update each time)
-    this.vm.emit("PROJECT_LOADING", 
-      vmScratchBlocks.loadWorkspace(project.xml)
-    ); 
+    vmScratchBlocks.loadWorkspace(project.xml);
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
 
   loadCurrentProject() {
-    let currentID = localStorage.getItem(CURRENT_PROJECT_ID);
+    let currentID = this.getCurrentID();
 
     if (currentID !== null) {
-      this.loadProject(Number(currentID));
-    } else { // no current project open up new project 
+      this.loadProject(currentID);
+    } else { // no current project, open up new project 
       this.newProject();
     }
 
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
   
-  deleteProject(id) {
-    let projectIDs = this.getProjectIDs();
-    let index = projectIDs.indexOf(id);
-    if (index > -1) projectIDs.splice(index, 1);
-       
-    let currentID = Number(localStorage.getItem(CURRENT_PROJECT_ID));
-    
-    localStorage.removeItem(`${id}_${PROJECT_XML}`);
-    localStorage.removeItem(`${id}_${PROJECT_NAME}`);
-    localStorage.removeItem(`${id}_${PROJECT_TIMESTAMP}`);
-    localStorage.removeItem(`${id}_${PROJECT_IMAGE_DATA}`);
+  async deleteProject(id) {
+    let db = firebase.firestore();
+    let currentID = this.getCurrentID();
 
-    // save new list of projects
-    localStorage.setItem(PROJECT_IDS, projectIDs);
+    await db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects").doc(id).delete()
+      .then(() => {
+          console.log("Document successfully deleted!");
+      }).catch((error) => {
+          console.error("Error removing document: ", error);
+      });
 
-    // if its already the open project?
     if (currentID === id) {
       localStorage.removeItem(CURRENT_PROJECT_ID);
       this.vm.emit("PROJECT_NAME_CHANGED");
     }
   }
 
-  getProjectName(id) {
-    return localStorage.getItem(`${id}_${PROJECT_NAME}`);
+  async getProjectName(id) {
+    let project = await this.getProject(id)
+    return project.name;
   }
 
-  getCurrentProjectName() {
-    let currentID = Number(localStorage.getItem(CURRENT_PROJECT_ID));
-    return (currentID == 0) ? "Unsaved Project" : this.getProjectName(currentID);
+  async getCurrentProjectName() {
+    let currentID = this.getCurrentID();
+    return (currentID === null) ? "Unsaved Project" : await this.getProjectName(currentID);
   }
 
   changeProjectName(id,newName) {
-    let prevName = localStorage.getItem(`${id}_${PROJECT_NAME}`);
-
-    if (prevName != newName) { 
-      localStorage.setItem(`${id}_${PROJECT_NAME}`, newName);
-      localStorage.setItem(`${id}_${PROJECT_TIMESTAMP}`, new Date());
-      this.vm.emit("PROJECT_NAME_CHANGED"); // event doesn't care if current project or not
-    } else {
-      console.log("Names Are Equal, No Changes")
-    }   
+    let db = firebase.firestore();
+    db.collection("users")
+      .doc(this.getUserID())
+      .collection("projects")
+      .doc(id)
+      .set({name : newName},{ merge: true })
+      .then((doc) => {
+        // console.log("changeProjectName update: ", doc.data());
+        this.vm.emit("PROJECT_NAME_CHANGED");
+      })
+      .catch(error => {
+        console.error("Error in changeProjectName: ", error);
+      });
   }
 }
 
