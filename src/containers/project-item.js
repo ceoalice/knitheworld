@@ -48,7 +48,7 @@ ProjectItem.propTypes = {
     size : PropTypes.number,
     hidden: PropTypes.bool,
     iconURL: PropTypes.string,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
