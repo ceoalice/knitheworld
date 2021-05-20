@@ -36,15 +36,15 @@ class NavBar extends React.Component {
     }
 
     downloadCode () {
-        var xml = VMScratchBlocks.getXML();
-        console.log("downloading code");
-        //console.log(VMScratchBlocks.getXML());
-        var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
-        //console.log(xmlFile)
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(xmlFile);
-        a.download = 'My Project' + '.xml';
-        a.click();
+        // var xml = ProjectManager.getXML();
+        // console.log("downloading code");
+        // //console.log(VMScratchBlocks.getXML());
+        // var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
+        // //console.log(xmlFile)
+        // var a = document.createElement('a');
+        // a.href = URL.createObjectURL(xmlFile);
+        // a.download = 'My Project' + '.xml';
+        // a.click();
     }
 
     uploadCode () {
