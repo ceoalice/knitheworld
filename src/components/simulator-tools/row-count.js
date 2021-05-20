@@ -15,7 +15,13 @@ import Input from '@material-ui/core/Input';
 
 const RowCountComponent = props => {
   const [rowCount, setRowCount] = useState(props.rowCount);
-  useEffect(() => setRowCount(props.rowCount), [props.rowCount]);
+
+  const updateRowCount = (val) => {
+    setRowCount(val);
+    localStorage.setItem("rowCount",val);   
+  };
+
+  useEffect(() =>  updateRowCount(props.rowCount), [props.rowCount]);
   
   const handleBlur = () => {
     if (rowCount > 0) {

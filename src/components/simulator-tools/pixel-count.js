@@ -14,46 +14,52 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import Input from '@material-ui/core/Input';
 
 const PixelCountComponent = props => {
-    const [pixelCount, setPixelCount] = useState(props.pixelCount);
-    useEffect(() => setPixelCount(props.pixelCount), [props.pixelCount]);
+  const [pixelCount, setPixelCount] = useState(props.pixelCount);
 
-    const handleBlur = () => {
-      if (pixelCount > 0) {
-        if (pixelCount < props.pixelCount) props.removePixel(props.pixelCount-pixelCount);
-        else if (pixelCount > props.pixelCount) props.addPixel(pixelCount-props.pixelCount);
-      } else {
-        setPixelCount(props.pixelCount);
-      }
-    } 
-    const handlePress = (e) => {
-      if (e.key === 'Enter') document.activeElement.blur(); // unfocuses the element
-    }
-    const handleChange = (e) => {
-      setPixelCount(e.target.value);
-    }
+  const updatePixelCount = (val) => {
+    setPixelCount(val);
+    localStorage.setItem("pixelCount",val);
+  };
 
-    return (
-        <div className={styles.counterContainer}>
-          <div className={styles.counter}>
-            Columns: 
-          </div>
-          <IconButton size="small" onClick={() => props.removePixel(1)}>
-            <SvgIcon viewBox="0 0 50 50" component={RemoveIcon} /> 
-          </IconButton>
-          <Input
-            className={styles.counter}
-            onBlur={handleBlur}
-            onKeyPress={handlePress}
-            onChange={handleChange}
-            value={pixelCount}
-            style={{width: 50}}
-            type="number"
-          />
-          <IconButton size="small" onClick={() => props.addPixel(1)}>
-            <SvgIcon viewBox="0 0 50 50" component={AddIcon} /> 
-          </IconButton>
+  useEffect(() =>  updatePixelCount(props.pixelCount), [props.pixelCount]);
+
+  const handleBlur = () => {
+    if (pixelCount > 0) {
+      if (pixelCount < props.pixelCount) props.removePixel(props.pixelCount-pixelCount);
+      else if (pixelCount > props.pixelCount) props.addPixel(pixelCount-props.pixelCount);
+    } else {
+      setPixelCount(props.pixelCount);
+    }
+  } 
+  const handlePress = (e) => {
+    if (e.key === 'Enter') document.activeElement.blur(); // unfocuses the element
+  }
+  const handleChange = (e) => {
+    setPixelCount(e.target.value);
+  }
+
+  return (
+      <div className={styles.counterContainer}>
+        <div className={styles.counter}>
+          Columns: 
         </div>
-    );
+        <IconButton size="small" onClick={() => props.removePixel(1)}>
+          <SvgIcon viewBox="0 0 50 50" component={RemoveIcon} /> 
+        </IconButton>
+        <Input
+          className={styles.counter}
+          onBlur={handleBlur}
+          onKeyPress={handlePress}
+          onChange={handleChange}
+          value={pixelCount}
+          style={{width: 50}}
+          type="number"
+        />
+        <IconButton size="small" onClick={() => props.addPixel(1)}>
+          <SvgIcon viewBox="0 0 50 50" component={AddIcon} /> 
+        </IconButton>
+      </div>
+  );
 };
 
 PixelCountComponent.propTypes = {

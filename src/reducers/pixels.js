@@ -62,12 +62,26 @@ const randomColorRGB = count => {
     return colors;
 }
 
+const initPixelColors = () => {
+  let pixelCount = localStorage.getItem('pixelCount') 
+    ? Number(localStorage.getItem('pixelCount'))
+    : 40;
+  let rowCount = localStorage.getItem('rowCount') 
+    ? Number(localStorage.getItem('rowCount'))
+    : 40;
+  return grayedSquares(pixelCount*rowCount);
+}
+
 const initialState = {
     pixelType: 'knit',
     selectedPixel: 0,
-    pixelCount: 40,
-    rowCount: 40,
-    pixelColors: grayedSquares(1600),
+    pixelCount: localStorage.getItem('pixelCount') 
+      ? Number(localStorage.getItem('pixelCount'))
+      : 40,
+    rowCount: localStorage.getItem('rowCount') 
+      ? Number(localStorage.getItem('rowCount'))
+      : 40,
+    pixelColors: initPixelColors(),
     currentColor: "rgb(169,169,169)",
     knitDelay: 200,
     downloadingPixels: false,
