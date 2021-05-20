@@ -12,7 +12,7 @@ import {downloadThePixels} from '../reducers/pixels.js';
 import { updateProjectName , toggleProjectSaved, toggleProjectLoading} from '../reducers/project-state.js';
 
 
-import VMScratchBlocks from '../lib/blocks.js';
+// import VMScratchBlocks from '../lib/blocks.js';
 import ProjectManager from '../lib/project-manager';
 
 function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
@@ -31,9 +31,9 @@ function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs
   //   console.log(JSON.stringify(b.fields));
   // }
   if (!check) {
-    console.log("BLOCKS ARE DIFFERENT")  
+    // console.log("BLOCKS ARE DIFFERENT")
     // console.log("a: ",a)
-    // console.log("b: ",b)  
+    // console.log("b: ",b)
     // console.log("")
   }
 
@@ -65,6 +65,7 @@ class GUI extends React.Component {
 
     componentDidMount () {
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
+        this.vm.on('BLOCKS_NEED_UPDATE', () => {console.log("BLOCKS_NEED_UPDATE started");});
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
 
         this.vm.on('PROJECT_CHANGED',this.checkProjectChanged);
@@ -76,6 +77,7 @@ class GUI extends React.Component {
 
     componentWillUnmount () {
         this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
+        this.vm.removeListener('BLOCKS_NEED_UPDATE', () => {console.log("BLOCKS_NEED_UPDATE started");});
         this.vm.removeListener('PROJECT_RUN_STOP', this.props.setProjectStopped);
 
         this.vm.removeListener('PROJECT_CHANGED',this.checkProjectChanged);
@@ -83,21 +85,33 @@ class GUI extends React.Component {
         this.vm.removeListener('PROJECT_LOADING', this.handleProjectLoading);
     }
 
-    handleProjectName() { 
-      this.props.updateProjectName(ProjectManager.getCurrentProjectName());
+    async handleProjectName() { 
+      this.props.updateProjectName(await ProjectManager.getCurrentProjectName());
     }
 
+    componentDidUpdate(prevProps) {
 
-    handleProjectLoading(stacks) {
-      console.log("TOTAL STACKS: ", stacks.length);
+      // if (prevProps.projectLoading != this.props.projectLoading) {
+      //   this.forceUpdate();
+      //   this.props.stopProjectLoading();
+      // }
+      
+    }
+
+    handleProjectLoading() {
+      // this.forceUpdate();
+      // console.log("PROJECT LOADING");
+      // console.log(this.props.projectLoading);
+      // console.log("TOTAL STACKS: ", stacks.length);
       this.props.startProjectLoading();
-      this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
+      // this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
     }
+    
 
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
       let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
-      
+      // console.log("'change'")
       // blank workspace loaded need to wait for more blocks or bug occured
       if (Object.keys(blocks).length == 0) return;
 
@@ -105,24 +119,27 @@ class GUI extends React.Component {
 
       // console.log(Object.keys(blocks).length, blocksEqual);
 
-      if (!blocksEqual && !this.props.projectLoading) { // CHANGE HAS OCCURED & PROJECT NOT LOADING
+      if (!blocksEqual) { // CHANGE HAS OCCURED & PROJECT NOT LOADING
         // console.log("updating canvas...");
-        if (ProjectManager.getCurrentProjectID()) {
-          ProjectManager.saveCurrentProject();
-        }
-
+        // if (ProjectManager.getCurrentProjectID()) {
+        //   ProjectManager.saveCurrentProject();
+        // }
+        // if(this.props.projectLoading) {
+        //   console.log("DONE LOADING");
+        //   this.props.stopProjectLoading();
+        // }
         this.vm.runtime.startHats('event_whenstarted');
       }
-      else if (blocksEqual && this.props.projectLoading) {
-        // console.log("STACK LOADED");
-        if (this.state.totalStacks <= this.state.stacksLoaded) {
-          // console.log("ALL STACKS LOADED")
-          this.vm.runtime.startHats('event_whenstarted');
-          this.props.stopProjectLoading();
-        } else {
-          this.setState({ stacksLoaded : this.state.stacksLoaded + 1});
-        }
-      }
+      // else if (blocksEqual && this.props.projectLoading) {
+      //   // console.log("STACK LOADED");
+      //   if (this.state.totalStacks <= this.state.stacksLoaded) {
+      //     // console.log("ALL STACKS LOADED")
+      //     this.vm.runtime.startHats('event_whenstarted');
+      //     this.props.stopProjectLoading();
+      //   } else {
+      //     this.setState({ stacksLoaded : this.state.stacksLoaded + 1});
+      //   }
+      // }
 
       this.setState({prevBlocks: blocks});
     }
