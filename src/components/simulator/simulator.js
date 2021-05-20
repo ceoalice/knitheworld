@@ -49,6 +49,8 @@ class SimulatorComponent extends React.Component {
     }
 
     handleResize() {
+      // https://stackoverflow.com/questions/5517783/preventing-canvas-clear-when-resizing-window
+
       if (window.innerWidth != this.state.windowWidth) {
         this.setState({windowWidth : window.innerWidth});
         
@@ -65,13 +67,13 @@ class SimulatorComponent extends React.Component {
       }
     }
 
-    refreshCanvas() {
+    async refreshCanvas() {
       console.log("refreshing canvas");
       this.redrawGrid();
       this.redrawStitches([], true);
     }
 
-    redrawGrid() {
+    async redrawGrid() {
       const ctx = this.gridRef.current.getContext('2d');
       const {pixelCount, rowCount} = {...this.props};
       const {top, left, pixelSize, pixelGap} = {...this.state};
@@ -138,7 +140,7 @@ class SimulatorComponent extends React.Component {
       ctx.restore();
     }
 
-    redrawStitches(prevPixels, all = false) {
+    async redrawStitches(prevPixels, all = false) {
       const ctx = this.stitchRef.current.getContext('2d');
       const {pixelCount, rowCount, pixelColors} = {...this.props};
       const {top, left, pixelSize, pixelGap} = {...this.state};
