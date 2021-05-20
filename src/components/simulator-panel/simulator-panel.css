@@ -6,6 +6,7 @@
 .simToolsContainer {
   position: absolute;
   z-index: 500;
+  width: 100%;
 }
 
 .version {
@@ -13,5 +14,8 @@
   right: 0 ;
   bottom: 0 ;
   zIndex : 500; 
+  color: white;
+  font-size: 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: absolute;
 }

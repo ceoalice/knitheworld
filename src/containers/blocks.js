@@ -111,10 +111,11 @@ class Blocks extends React.Component {
                   flexDirection: "row",
                   justifyContent: "center",
                   zIndex: 100,
+                  fontFamily: '"Courier", monospace',
                   // backgroundColor: "#fff",
                   // borderRadius: "0.5rem",
-                  padding: "3px",
-                  minWidth: "100px"
+                  margin: "5px",
+                  // minWidth: "100px"
                   // color: "#fff"
                   }}> {`${currentProjectName}`} </div>
                 <BlocksComponent
