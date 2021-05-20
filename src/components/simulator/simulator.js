@@ -7,6 +7,7 @@ class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+          windowWidth : window.innerWidth,
           top: 60,
           left: 50,
           pixelSize: 12,
@@ -48,16 +49,20 @@ class SimulatorComponent extends React.Component {
     }
 
     handleResize() {
-      // this.width = this.gridRef.current.offsetWidth;
-      // this.height = this.gridRef.current.offsetHeight;
+      if (window.innerWidth != this.state.windowWidth) {
+        this.setState({windowWidth : window.innerWidth});
+        
+        this.width = this.gridRef.current.offsetWidth;
+        this.height = this.gridRef.current.offsetHeight;
 
-      // this.gridRef.current.width = this.width;
-      // this.gridRef.current.height = this.height;
+        this.gridRef.current.width = this.width;
+        this.gridRef.current.height = this.height;
 
-      // this.stitchRef.current.width = this.width;
-      // this.stitchRef.current.height = this.height;
+        this.stitchRef.current.width = this.width;
+        this.stitchRef.current.height = this.height;
 
-      // this.refreshCanvas();
+        this.refreshCanvas();
+      }
     }
 
     refreshCanvas() {
