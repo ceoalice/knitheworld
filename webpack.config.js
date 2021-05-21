@@ -7,11 +7,27 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(svg|png|wav|gif|jpg)$/,
+        test: /\.(jpg|wav|gif)$/,
         loader: 'file-loader',
         options: {
           outputPath: 'static/assets/'
         }
+      },
+
+      {
+        test: /\.png$/i,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
+      },
+
+      {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        use: ['@svgr/webpack', 'file-loader'],
       },
       {
         test: /\.(js|jsx)$/,
@@ -24,13 +40,19 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
+        exclude: /node_modules/,
         use: [
-          'style-loader',
+          {
+            loader: 'style-loader',
+          },
           {
             loader: 'css-loader',
             options: {
-              modules: true
+              // importLoaders: 1,
+              modules: {
+                  exportLocalsConvention: "camelCase"
+              },
             }
           }
         ]
@@ -42,7 +64,11 @@ module.exports = {
             loader: "html-loader"
           }
         ]
-      }
+      },
+      {
+        test: /\.xml$/i,
+        use: 'raw-loader',
+      },
     ]
   },
   plugins: [
