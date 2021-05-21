@@ -182,7 +182,6 @@ const mapStateToProps = state => ({
     saveAsVisible : state.modals.saveAs,
     projectLoading : state.projectState.projectLoading,
     fullscreenVisible: state.modals.fullscreenSimulator,
-    bluetoothConnected: state.bluetooth.connectionStatus,
     images: state.images
 });
 

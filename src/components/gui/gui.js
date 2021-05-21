@@ -61,21 +61,14 @@ const GUIComponent = props => {
 
 GUIComponent.propTypes = {
 
-    // downloadCode: PropTypes.func.isRequired,
-    // uploadCode: PropTypes.func.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired,
-    bluetoothConnected: PropTypes.bool.isRequired,
     imageImportVisible: PropTypes.bool.isRequired,
     imageExportVisible: PropTypes.bool.isRequired,
     sampleProjectsVisible: PropTypes.bool.isRequired,
     localProjectsVisible: PropTypes.bool.isRequired,
     saveAsVisible: PropTypes.bool.isRequired,
     fullscreenVisible: PropTypes.bool.isRequired,
-    
-    // openImageImport : PropTypes.func.isRequired,
-    // openImageExport: PropTypes.func.isRequired,
-    // openSampleProjects: PropTypes.func.isRequired,
-    // openLocalProjects: PropTypes.func.isRequired
+
 };
 
 export default GUIComponent;
