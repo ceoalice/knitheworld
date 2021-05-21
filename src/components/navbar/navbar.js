@@ -50,7 +50,7 @@ const NavBarComponent = props => {
                   <input
                       type="file"
                       className={styles.fileInput}
-                      onInput={props.loadCode}
+                      onChange={props.loadCode}
                       ref={props.fileChooser}
                   />
               </div>
