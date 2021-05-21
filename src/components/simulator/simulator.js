@@ -43,9 +43,9 @@ class SimulatorComponent extends React.Component {
     componentDidUpdate (prevProps, prevState) {
       if (this.props.rowCount != prevProps.rowCount || this.props.pixelCount != prevProps.pixelCount) {
         this.refreshCanvas();
+      } else {
+        this.redrawStitches(prevProps.pixelColors);
       }
-
-      this.redrawStitches(prevProps.pixelColors);
     }
 
     handleResize() {
@@ -53,9 +53,20 @@ class SimulatorComponent extends React.Component {
 
       if (window.innerWidth != this.state.windowWidth) {
         this.setState({windowWidth : window.innerWidth});
-        
         this.width = this.gridRef.current.offsetWidth;
         this.height = this.gridRef.current.offsetHeight;
+
+        let gridCopy = document.createElement('canvas');
+        let stitchCopy = document.createElement('canvas');
+
+        gridCopy.width = this.width; 
+        stitchCopy.width = this.width;
+
+        gridCopy.height = this.height; 
+        stitchCopy.height = this.height;
+
+        gridCopy.getContext("2d").drawImage(this.gridRef.current,0,0);
+        stitchCopy.getContext("2d").drawImage(this.stitchRef.current,0,0);
 
         this.gridRef.current.width = this.width;
         this.gridRef.current.height = this.height;
@@ -63,7 +74,12 @@ class SimulatorComponent extends React.Component {
         this.stitchRef.current.width = this.width;
         this.stitchRef.current.height = this.height;
 
-        this.refreshCanvas();
+
+        const gridCtx = this.gridRef.current.getContext('2d');
+        const stitchCtx = this.stitchRef.current.getContext('2d');
+
+        gridCtx.drawImage(gridCopy,0,0);
+        stitchCtx.drawImage(stitchCopy,0,0);
       }
     }
 
@@ -151,6 +167,7 @@ class SimulatorComponent extends React.Component {
       ctx.translate(left, top);
 
       ctx.globalAlpha = 1;
+      ctx.strokeStyle = '#ffd500'
 
       if (all) ctx.clearRect(0, 0, this.width, this.height);
 
@@ -161,17 +178,18 @@ class SimulatorComponent extends React.Component {
           let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(pixelGap);
           let currentY = (pixelSize + pixelGap)*(currentRow+2);
 
-          ctx.strokeStyle = '#ffd500'
-          ctx.fillStyle = pixelColors[i];
 
           if (all) { // drawing all stitches regardless of diff from previous state
+            ctx.fillStyle = pixelColors[i];  
             ctx.drawStitch(currentX, currentY, pixelSize);
             continue;
           } else {
             // do comparison between previous pixelColors and update if different
-            let clearRectX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
-            let clearRectY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
             if (pixelColors[i] != prevPixels[i]) { // color changed
+              let clearRectX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
+              let clearRectY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
+
+              ctx.fillStyle = pixelColors[i];
               ctx.clearRect(clearRectX, clearRectY, pixelSize+pixelGap, pixelSize+pixelGap+5);
               ctx.drawStitch(currentX, currentY, pixelSize);
             }
