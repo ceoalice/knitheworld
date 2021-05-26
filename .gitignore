@@ -8,3 +8,6 @@ npm-*
 # Build
 /build
 /dist
+
+# firebase config
+firebase.config.js
