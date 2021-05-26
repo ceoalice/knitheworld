@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactModal from 'react-modal';
 
-import Box from '../box/box.js';
 import Button from '../button/button.js';
 import CloseButton from '../close-button/close-button.js';
 
@@ -26,11 +25,7 @@ const ModalComponent = props => (
         overlayClassName={styles.modalOverlay}
         onRequestClose={props.onRequestClose}
     >
-        <Box
-            dir={'ltr'}
-            direction="column"
-            grow={1}
-        >
+        <div className={styles.box}>
             <div className={classNames(styles.header, props.headerClassName)}>
                 {props.onHelp ? (
                     <div
@@ -88,7 +83,7 @@ const ModalComponent = props => (
               ? props.children
               : <div className={styles.loadIcon}> <CircularProgress /> </div>
             }
-        </Box>
+        </div>
     </ReactModal>
 );
 
