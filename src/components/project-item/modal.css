@@ -1,0 +1,24 @@
+.card {
+  position: absolute;
+  width: 350px;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  outline: 0;
+}
+
+.edit-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.download-content {
+  display: flex;
+  flex-direction : column;
+  align-items : center;
+},
+
+.margin {
+  margin: 8px;
+}
