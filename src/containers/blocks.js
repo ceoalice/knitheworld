@@ -18,6 +18,7 @@ class Blocks extends React.Component {
         super(props);
         // this.ScratchBlocks = VMScratchBlocks(props.vm);
         VMScratchBlocks.setVM(props.vm);
+        ProjectManager.setVM(props.vm);
         this.setBlocks = this.setBlocks.bind(this);
         this.attachVM = this.attachVM.bind(this);
         this.detachVM = this.detachVM.bind(this);
@@ -39,8 +40,15 @@ class Blocks extends React.Component {
                 // ...{toolbox: defaultToolbox}
             // });
             // VMScratchBlocks.loadWorkspace(Blocks.defaultWorkspace);
-            ProjectManager.loadCurrentProject();
-
+            let params = new URLSearchParams(window.location.search)
+            
+            if (params.has('projectID')) {
+              ProjectManager.loadProjectFromUrl();
+            } else {
+              // console.log("loadCurrentProject")
+              ProjectManager.loadCurrentProject();
+              // console.log("loadCurrentProject done")
+            }
             // const xml = this.ScratchBlocks.Xml.textToDom(Blocks.defaultWorkspace);
             // this.ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
             // this.workspace.getFlyout().autoClose = true;

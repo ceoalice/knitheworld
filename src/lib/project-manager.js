@@ -278,8 +278,29 @@ class ProjectManager {
     } else { // no current project, open up new project 
       this.newProject();
     }
+  }
 
-    this.vm.emit("PROJECT_NAME_CHANGED");
+  async loadProjectFromUrl() {
+    let params = new URLSearchParams(window.location.search);
+    // console.log(params.get('projectID'))
+    // console.log(params.get('projectID'))
+    let db = firebase.firestore();
+
+    // let doc = await db.doc(params.get('projectID')).get();
+    let ref = db.collectionGroup("projects");
+    // console.log('id', '==' , params.get('projectID'))
+    let query = ref.where('id', '==' , params.get('projectID'));
+    
+    // console.log(firebase.firestore.FieldPath.documentId())
+    query.get().then((querySnapshot) => {
+      if (querySnapshot.size == 1) {
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          this.newProject(data ? data.xml : null)
+        });    
+      }
+    });
+    // this.vm.emit("PROJECT_NAME_CHANGED");
   }
   
   async deleteProject(id) {
