@@ -3,6 +3,18 @@ import {connect} from 'react-redux';
 
 import styles from './simulator.css';
 
+// function numDiff(arr1,arr2) {
+//   let max = Math.max(arr1.length, arr2.length);
+//   let count = 0; 
+//   for (let i = 0; i < max; i++) {
+//     if (arr1[i] != arr2[i]) {
+//       count += 1;
+//     }
+//   }
+
+//   return count; 
+// }
+
 class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -44,7 +56,7 @@ class SimulatorComponent extends React.Component {
       if (this.props.rowCount != prevProps.rowCount || this.props.pixelCount != prevProps.pixelCount) {
         this.refreshCanvas();
       } else {
-        this.redrawStitches(prevProps.pixelColors);
+        this.redrawStitches();
       }
     }
 
@@ -86,7 +98,7 @@ class SimulatorComponent extends React.Component {
     async refreshCanvas() {
       console.log("refreshing canvas");
       this.redrawGrid();
-      this.redrawStitches([], true);
+      this.redrawStitches(true);
     }
 
     async redrawGrid() {
@@ -156,9 +168,9 @@ class SimulatorComponent extends React.Component {
       ctx.restore();
     }
 
-    async redrawStitches(prevPixels, all = false) {
+    async redrawStitches(all = false) {
       const ctx = this.stitchRef.current.getContext('2d');
-      const {pixelCount, rowCount, pixelColors} = {...this.props};
+      const {pixelCount, rowCount, pixelColors, updatedPixels} = {...this.props};
       const {top, left, pixelSize, pixelGap} = {...this.state};
 
       const stitchCount = pixelCount * rowCount;
@@ -169,31 +181,34 @@ class SimulatorComponent extends React.Component {
       ctx.globalAlpha = 1;
       ctx.strokeStyle = '#ffd500'
 
-      if (all) ctx.clearRect(0, 0, this.width, this.height);
-
       // draw the stitches from the block data :)
-      for (let i=0; i<stitchCount; i++){
+
+      if (all) { // drawing all stitches regardless of diff from previous state
+        ctx.clearRect(0, 0, this.width, this.height);
+
+        for (let i=0; i<stitchCount; i++){
+          let currentRow = Math.floor(i/pixelCount);
+          let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(pixelGap);
+          let currentY = (pixelSize + pixelGap)*(currentRow+2);
+          
+          ctx.fillStyle = pixelColors[i];  
+          ctx.drawStitch(currentX, currentY, pixelSize);
+        }
+      } else {
+        updatedPixels.forEach( (i) => {
+          if (i >= stitchCount) return;
+
           let currentRow = Math.floor(i/pixelCount);
 
           let currentX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(pixelGap);
-          let currentY = (pixelSize + pixelGap)*(currentRow+2);
+          let currentY = (pixelSize + pixelGap)*(currentRow+2);   
+          let clearRectX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
+          let clearRectY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
 
-
-          if (all) { // drawing all stitches regardless of diff from previous state
-            ctx.fillStyle = pixelColors[i];  
-            ctx.drawStitch(currentX, currentY, pixelSize);
-            continue;
-          } else {
-            // do comparison between previous pixelColors and update if different
-            if (pixelColors[i] != prevPixels[i]) { // color changed
-              let clearRectX = (pixelSize + pixelGap)*((i%pixelCount)+2)-(2*pixelGap);
-              let clearRectY = (pixelSize + pixelGap)*(currentRow+2)-(2*pixelGap);
-
-              ctx.fillStyle = pixelColors[i];
-              ctx.clearRect(clearRectX, clearRectY, pixelSize+pixelGap, pixelSize+pixelGap+5);
-              ctx.drawStitch(currentX, currentY, pixelSize);
-            }
-          }
+          ctx.fillStyle = pixelColors[i];
+          ctx.clearRect(clearRectX, clearRectY, pixelSize+pixelGap, pixelSize+pixelGap+5);
+          ctx.drawStitch(currentX, currentY, pixelSize);
+        })
       }
       ctx.restore();
     }
@@ -270,6 +285,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(SimulatorComponent);

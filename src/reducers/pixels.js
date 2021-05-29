@@ -15,27 +15,26 @@ const KNIT_UNTIL_END_OF_ROW = 'knitUntilEndOfRow'
 const CAST_ON_STITCHES = 'castOnStitches';
 const CAST_OFF_STITCHES = 'castOffStitches';
 const CHANGE_YARN_COLOR = 'changeColorTo';
-const UNTIL_END_OF_ROW = 'untilEndOfRow';
+
 const REMOVE_ROW = 'removeRow';
-const HSB_COLOR = 'hsbColor';
 const DOWNLOAD_PIXELS = 'downloadPixels';
 const DOWNLOAD_CODE = 'downloadCode';
 const CLEAR_PIXELS = 'clearPixels';
 const DOWNLOAD_STITCHES = 'downloadStitches';
 const DOWNLOAD_STITCHES_NAME = 'downloadStitchesName';
 
-const randomInt = max => {
-    return Math.floor(Math.random() * Math.floor(max));
-};
+// const randomInt = max => {
+//     return Math.floor(Math.random() * Math.floor(max));
+// };
 
-const randomColorInts = count => {
-    const colors = [];
-    const random = randomInt(100);
-    for (let i=0; i<count; i++) {
-        colors.push(random);
-    }
-    return colors;
-};
+// const randomColorInts = count => {
+//     const colors = [];
+//     const random = randomInt(100);
+//     for (let i=0; i<count; i++) {
+//         colors.push(random);
+//     }
+//     return colors;
+// };
 
 const grayedSquares = count => {
     const colors = [];
@@ -45,22 +44,30 @@ const grayedSquares = count => {
     return colors;
 }
 
-const randomColorRGB = count => {
-    const colors = [];
-
-    // https://stackoverflow.com/questions/23095637/how-do-you-get-random-rgb-in-javascript
-    const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
-    const r = randomBetween(0, 255);
-    const g = randomBetween(0, 255);
-    const b = randomBetween(0, 255);
-
-    const rgb = `rgb(${r},${g},${b})`;
-    for (let i=0; i<count; i++){
-        colors.push(rgb);
-    }
-
-    return colors;
+const range = count => {
+  const out = [];
+  for (let i = 0; i< count; i++) {
+    out.push(i);
+  }
+  return out;
 }
+
+// const randomColorRGB = count => {
+//     const colors = [];
+
+//     // https://stackoverflow.com/questions/23095637/how-do-you-get-random-rgb-in-javascript
+//     const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+//     const r = randomBetween(0, 255);
+//     const g = randomBetween(0, 255);
+//     const b = randomBetween(0, 255);
+
+//     const rgb = `rgb(${r},${g},${b})`;
+//     for (let i=0; i<count; i++){
+//         colors.push(rgb);
+//     }
+
+//     return colors;
+// }
 
 const initPixelColors = () => {
   let pixelCount = localStorage.getItem('pixelCount') 
@@ -83,10 +90,11 @@ const initialState = {
       : 40,
     pixelColors: initPixelColors(),
     currentColor: "rgb(169,169,169)",
-    knitDelay: 200,
-    downloadingPixels: false,
+    // knitDelay: 200,
+    // downloadingPixels: false,
     downloadingStitches: false,
-    downloadingStitchesName: ""
+    downloadingStitchesName: "",
+    updatedPixels : []
 };
 // note pixelCount is a legacy variable from pixelplay,
 // it refers to the number of columns in the pattern as
@@ -94,11 +102,13 @@ const initialState = {
 
 const reducer = function (state, action) {
     if (typeof state === 'undefined') state = initialState;
+    // console.log(action.type)
     switch(action.type) {
-    case SET_PIXEL:
-        return Object.assign({}, state, {
-            selectedPixel: action.selectedPixel
-        });
+    case SET_PIXEL: {
+      return Object.assign({}, state, {
+        selectedPixel: action.selectedPixel
+      });
+    }
     case NEXT_PIXEL: {
       console.log("NEXT_PIXEL called?");
         let select = state.selectedPixel+1;
@@ -165,6 +175,7 @@ const reducer = function (state, action) {
             selectedPixel: select
         });
     }
+
     case NEXT_ROW: {
         // console.log("logged next row!");
         const newColors = [...state.pixelColors];
@@ -229,7 +240,7 @@ const reducer = function (state, action) {
       // }
     }
     case REMOVE_PIXEL: {
-        if (state.pixelCount === 1) return;
+        if (state.pixelCount === 1) return state;
         const newColors = [...state.pixelColors];
 
         let newPixelCount = state.pixelCount-action.value;
@@ -255,16 +266,19 @@ const reducer = function (state, action) {
         // console.log("logged knit stitches!");
         let select = state.selectedPixel
         const newColors = [...state.pixelColors];
+        const updatedPixels = []
 
         for (let i=0; i<action.value; i++){
             newColors[select+i] = state.currentColor;
+            updatedPixels.push(select+i);
         }
 
         let increase = action.value <= 0 ? 0 : action.value;
 
         return Object.assign({}, state, {
             pixelColors: newColors,
-            selectedPixel: select+increase
+            selectedPixel: select+increase,
+            updatedPixels 
         });
     }
     case KNIT_UNTIL_END_OF_ROW: {
@@ -272,34 +286,41 @@ const reducer = function (state, action) {
         let select = state.selectedPixel;
         let nextRow = Math.floor(select/state.pixelCount)+1;
         const newColors = [...state.pixelColors];
+        const updatedPixels = [];
 
-        let toKnit = (state.pixelCount*nextRow)-select;
-
+        // mod for preventing starting new row if at end
+        let toKnit = ((state.pixelCount*nextRow)-select); //%state.pixelCount;
+        
         for (let i=0; i<toKnit; i++){
             newColors[select+i] = state.currentColor;
+            updatedPixels.push(select+i);
         }
 
         return Object.assign({}, state, {
             pixelColors: newColors,
-            selectedPixel: select+toKnit
+            selectedPixel: select+toKnit,
+            updatedPixels
         });
     }
     case CAST_ON_STITCHES: {
         let select = state.selectedPixel;
         let nextRow = Math.floor(select/state.pixelCount)+1;
         const newColors = [...state.pixelColors];
+        const updatedPixels = [];
 
         let toKnit = (state.pixelCount*nextRow*action.value)-select;
 
         for (let i=0; i<toKnit; i++){
           newColors[select+i] = state.currentColor;
+          updatedPixels.push(select+i);
         }
 
         if (nextRow === 1){
           // console.log("casting on..." + toKnit + " stitches");
           return Object.assign({}, state, {
             pixelColors: newColors,
-            selectedPixel: select+toKnit
+            selectedPixel: select+toKnit,
+            updatedPixels
           });
         }
         else{
@@ -311,11 +332,13 @@ const reducer = function (state, action) {
         let select = state.selectedPixel;
         let nextRow = Math.floor(select/state.pixelCount)+1;
         const newColors = [...state.pixelColors];
+        const updatedPixels = [];
 
         let toKnit = (state.pixelCount*nextRow)-select;
 
         for (let i=0; i<toKnit; i++){
           newColors[select+i] = state.currentColor;
+          updatedPixels.push(select+i);
         }
 
         // uncomment if else if you want to limit the bind off functionality
@@ -325,7 +348,8 @@ const reducer = function (state, action) {
           // console.log("casting off..." + toKnit + " stitches");
           return Object.assign({}, state, {
             pixelColors: newColors,
-            selectedPixel: select+toKnit
+            selectedPixel: select+toKnit,
+            updatedPixels
           });
         // }
         // else{
@@ -337,24 +361,25 @@ const reducer = function (state, action) {
         const newColor = "rgb(" + action.value[0] + "," + action.value[1] + "," + action.value[2] + ")";
         // console.log("logged change color to " + newColor);
         return Object.assign({}, state, {
-            currentColor: newColor
+            currentColor: newColor,
+            updatedPixels: []
         });
     }
     case CLEAR_PIXELS: {
         //console.log("logged clear pixels!");
-        let newColors = grayedSquares(state.rowCount * state.pixelCount);
         return Object.assign({}, state, {
-            pixelColors: newColors,
-            selectedPixel: 0
+            pixelColors: grayedSquares(state.rowCount * state.pixelCount),
+            selectedPixel: 0,
+            updatedPixels: range(state.rowCount * state.pixelCount)
         });
     }
-    case DOWNLOAD_PIXELS: {
-        console.log("logged download pixels!");
+    // case DOWNLOAD_PIXELS: {
+    //     console.log("logged download pixels!");
 
-        return Object.assign({}, state, {
-            downloadingPixels: action.value
-        });
-    }
+    //     return Object.assign({}, state, {
+    //         downloadingPixels: action.value
+    //     });
+    // }
     case DOWNLOAD_STITCHES: {
         console.log("logged download stitches!");
 
@@ -362,16 +387,16 @@ const reducer = function (state, action) {
             downloadingStitches: action.value
         });
     }
-    case DOWNLOAD_STITCHES_NAME: {
-      console.log("changed name to: ", action.value);
-      return Object.assign({}, state, {
-        downloadingStitchesName: action.value
-      }); 
-    }
-    case DOWNLOAD_CODE: {
-        console.log("logged download code!");
-        return state;
-    }
+    // case DOWNLOAD_STITCHES_NAME: {
+    //   console.log("changed name to: ", action.value);
+    //   return Object.assign({}, state, {
+    //     downloadingStitchesName: action.value
+    //   }); 
+    // }
+    // case DOWNLOAD_CODE: {
+    //     console.log("logged download code!");
+    //     return state;
+    // }
     default:
         return state;
     }

@@ -109,6 +109,7 @@ class Simulator extends React.Component {
                 fullscreenVisible={this.props.fullscreenVisible}
                 downloadingPixels={this.props.downloadingPixels}
                 downloadingStitches={this.props.downloadingStitches}
+                updatedPixels={this.props.updatedPixels}
             />
         );
     }
@@ -119,7 +120,7 @@ const mapStateToProps = state => ({
     selectedPixel: state.pixels.selectedPixel,
     pixelCount: state.pixels.pixelCount,
     pixelColors: state.pixels.pixelColors,
-    knitDelay: state.pixels.knitDelay,
+    updatedPixels: state.pixels.updatedPixels,
     rowCount: state.pixels.rowCount,
     currentColor: state.pixels.currentColor,
     fullscreenVisible: state.modals.fullscreenSimulator,
