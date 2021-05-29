@@ -32,14 +32,12 @@ class LocalProjectsModal extends React.Component {
 
     async handleProjectsUpdate() {
       let projects = await ProjectManager.getProjects();
-      projects.sort((a,b) => (new Date(b.timestamp.seconds)) - (new Date(a.timestamp.seconds)));
       this.setState({projects});
     }
 
     openProject(id) {
-      ProjectManager.loadProject(id).then(()=> {
-        this.props.onCancel();
-      });
+      this.props.onCancel();
+      ProjectManager.loadProject(id);
     }
 
     deleteProject(id) {

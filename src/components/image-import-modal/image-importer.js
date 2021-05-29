@@ -7,7 +7,7 @@ import styles from './image-importer.css';
 import Button from '../button/button.js';
 
 import {connect} from 'react-redux';
-import { updateProjectName , toggleProjectSaved} from '../../reducers/project-state.js';
+import { updateProjectName } from '../../reducers/project-state.js';
 import ProjectManager from '../../lib/project-manager';
 
 const BASE_CANVAS_WIDTH = 400;
@@ -137,13 +137,10 @@ class ImageImporterComponent extends React.Component {
           color = null;
         }
       }
-      console.log(blocks);
+      
       let xmlString = blocksToXML(blocks);
-
-
-      ProjectManager.newProject(xmlString);
-
       this.props.closeModal();
+      ProjectManager.newProject(xmlString);
     }
 
     onDrop(event, err) {
