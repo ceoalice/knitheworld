@@ -1,13 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import ImageButtonComponent from '../image-button/image-button.js';
-
-import downloadButton from './icon--pattern_download.svg';
-import unravelButton from './icon--unravel.svg';
-
-import {ReactComponent as downloadCodeButton} from './icon--download.svg';
-import {ReactComponent as uploadCodeButton} from './icon--upload_code.svg';
+import {ReactComponent as downloadCodeButton} from '../../lib/assets/icon--download.svg';
+import {ReactComponent as uploadCodeButton} from '../../lib/assets/icon--upload_code.svg';
 
 import styles from './download-button.css';
 

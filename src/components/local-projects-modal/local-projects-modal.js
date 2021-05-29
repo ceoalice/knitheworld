@@ -31,7 +31,7 @@ const LocalProjectModalComponent = props => (
   <Modal
       fullScreen
       // className={styles.modalContent}
-      contentLabel={"Locally Stored Projects"}
+      contentLabel={"My Projects"}
       // headerClassName={styles.header}
       // headerImage={props.connectionSmallIconURL}
       id="localProjectsModal"

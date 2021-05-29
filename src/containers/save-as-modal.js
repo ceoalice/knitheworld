@@ -72,7 +72,7 @@ class SaveAsModal extends React.Component {
         stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
       }
 
-      return stitchCanvas.toDataURL();
+      return stitchCanvas.toDataURL("image/jpeg", 0.5);
     }
 
 

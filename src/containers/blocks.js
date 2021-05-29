@@ -112,20 +112,6 @@ class Blocks extends React.Component {
 
         return (
             <React.Fragment>
-              <div style={{
-                  position : "absolute" , 
-                  right: "0",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  zIndex: 100,
-                  fontFamily: '"Courier", monospace',
-                  // backgroundColor: "#fff",
-                  // borderRadius: "0.5rem",
-                  margin: "5px",
-                  // minWidth: "100px"
-                  // color: "#fff"
-                  }}> {`${currentProjectName}`} </div>
                 <BlocksComponent
                     containerRef={this.setBlocks}
                     {...otherProps}

@@ -18,9 +18,19 @@ class VMScratchBlocks {
     }
 
     loadWorkspace (workspace) {
-        this.workspace.clear();
         const xml = ScratchBlocks.Xml.textToDom(workspace);
-        ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
+        // console.log("textToDom done")
+        console.log("domToWorkspace")
+
+        ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(xml, this.workspace);
+        
+        console.log("domToWorkspace done");
+        // new Promise(resolve => {
+          
+        //   resolve();
+        // });
+
+              
     }
 
     getXML () {

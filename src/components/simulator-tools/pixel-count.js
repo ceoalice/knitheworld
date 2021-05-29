@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import {ReactComponent as AddIcon} from '../../lib/assets/icon--add.svg';
 import {ReactComponent as RemoveIcon} from '../../lib/assets/icon--remove.svg';
-import stitchIcon from './icon--stitches.svg'; 
+// import stitchIcon from './icon--stitches.svg'; 
 
 import {addPixelNode, removePixelNode} from '../../reducers/pixels.js';
 

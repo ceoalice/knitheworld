@@ -19,7 +19,7 @@ const SimulatorPanelComponent = props => {
           <div className={styles.transformContainer}>
             <TransformWrapper
               scale={1}
-              options={{limitToBounds:false, minScale:0.5}}
+              options={{limitToBounds:false, minScale:0.25}}
               wheel={{step:50}}
               >
               <TransformComponent>
@@ -29,7 +29,7 @@ const SimulatorPanelComponent = props => {
           </div>
 
           <p className={styles.version}>
-            v.3.1.2.0
+            v.3.1.4.0
           </p>
         </React.Fragment>
     );

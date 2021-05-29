@@ -25,9 +25,9 @@ const ModalComponent = props => (
         overlayClassName={styles.modalOverlay}
         onRequestClose={props.onRequestClose}
     >
-        <div className={styles.box}>
+        <div dir="ltr" className={styles.box}>
             <div className={classNames(styles.header, props.headerClassName)}>
-                {props.onHelp ? (
+                {/* {props.onHelp ? (
                     <div
                         className={classNames(
                             styles.headerItem,
@@ -42,19 +42,19 @@ const ModalComponent = props => (
                             Help
                         </Button>
                     </div>
-                ) : null}
+                ) : null} */}
                 <div
                     className={classNames(
                         styles.headerItem,
                         styles.headerItemTitle
                     )}
                 >
-                    {props.headerImage ? (
+                    {/* {props.headerImage ? (
                         <img
                             className={styles.headerImage}
                             src={props.headerImage}
                         />
-                    ) : null}
+                    ) : null} */}
                     {props.contentLabel}
                 </div>
                 <div
