@@ -6,7 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import styles from './navbar.css';
-import { ReactComponent as KnitheworldLogo} from './knitheworld-logo.svg';
+import { ReactComponent as KnitheworldLogo} from '../../lib/assets/knitheworld-logo.svg';
 
 const NavBarComponent = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,23 +29,20 @@ const NavBarComponent = props => {
                   <a href="#" onClick={props.newProject}>
                     New
                   </a>
-                  <a role="button" style={{cursor:'pointer'}} onClick={props.openSaveAs}>
+                  <a role="button" style={{cursor:'pointer'}} onClick={props.saveProject}>
                     Save
                   </a>
                   <a role="button" style={{cursor:'pointer'}} onClick={handleClick}>
                     Upload
                   </a>
-                  {/* <a href="#" onClick={props.uploadCode}>
-                    Upload File
-                  </a>
-                  <a role="button" style={{cursor:'pointer'}} onClick={props.openImageImport}>
-                    Upload Image
-                  </a> */}
                   <a role="button" style={{cursor:'pointer'}} onClick={props.openLocalProjects}>
                     My Projects
                   </a>
                   <a role="button" style={{cursor:'pointer'}} onClick={props.openSampleProjects}>
                     Examples
+                  </a>
+                  <a role="button" style={{cursor:'pointer'}} onClick={props.openShareProject}>
+                    Share
                   </a>
                   <input
                       type="file"
@@ -71,16 +68,14 @@ const NavBarComponent = props => {
 };
 
 NavBarComponent.propTypes = {
-
-    downloadCode: PropTypes.func.isRequired,
     uploadCode: PropTypes.func.isRequired,
-    // saveProject: PropTypes.func,
-    openSaveAs: PropTypes.func.isRequired,
+    saveProject: PropTypes.func.isRequired,
     newProject: PropTypes.func.isRequired,
     openImageImport : PropTypes.func.isRequired,
     openImageExport: PropTypes.func.isRequired,
     openSampleProjects: PropTypes.func.isRequired,
-    openLocalProjects: PropTypes.func.isRequired
+    openLocalProjects: PropTypes.func.isRequired,
+    openShareProject: PropTypes.func.isRequired
 };
 
 export default NavBarComponent;

@@ -7,12 +7,13 @@ import {
   openSampleProjects,
   openLocalProjects,
   openSaveAs,
+  openShareProject
 } from '../reducers/modals.js';
 
 import NavBarComponent from '../components/navbar/navbar.js';
 
 import {downloadThePixels} from '../reducers/pixels.js';
-import { updateProjectName , toggleProjectSaved} from '../reducers/project-state.js';
+import { updateProjectName , setProjectSaved} from '../reducers/project-state.js';
 
 
 import VMScratchBlocks from '../lib/blocks.js';
@@ -29,22 +30,22 @@ class NavBar extends React.Component {
         this.uploadCode = this.uploadCode.bind(this);
         this.loadCode = this.loadCode.bind(this);
         this.newProject = this.newProject.bind(this);
+        this.saveProject = this.saveProject.bind(this);
     }
 
     newProject() {
       ProjectManager.newProject();
     }
 
-    downloadCode () {
-        // var xml = ProjectManager.getXML();
-        // console.log("downloading code");
-        // //console.log(VMScratchBlocks.getXML());
-        // var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
-        // //console.log(xmlFile)
-        // var a = document.createElement('a');
-        // a.href = URL.createObjectURL(xmlFile);
-        // a.download = 'My Project' + '.xml';
-        // a.click();
+    saveProject () {
+      
+      if (ProjectManager.getCurrentID()) {
+        ProjectManager.saveProject().then(() => {
+          this.props.projectSaved();
+        });
+      } else {
+        this.props.openSaveAs();
+      }
     }
 
     uploadCode () {
@@ -69,12 +70,12 @@ class NavBar extends React.Component {
         const {...componentProps} = this.props;
         return (
             <NavBarComponent
-              downloadCode = {this.downloadCode}
+              // downloadCode = {this.downloadCode}
               uploadCode = {this.uploadCode}
               fileChooser = {this.fileChooser}
               loadCode = {this.loadCode}
               newProject = {this.newProject}
-              // saveProject = {this.saveProject}
+              saveProject = {this.saveProject}
               {...componentProps}
             />
         );
@@ -87,8 +88,9 @@ const mapDispatchToProps = dispatch => ({
     openLocalProjects: () => dispatch(openLocalProjects()),
     openSampleProjects: () => dispatch(openSampleProjects()),
     openSaveAs: () => dispatch(openSaveAs()),
+    openShareProject: () => dispatch(openShareProject()),
     updateProjectName : (value) => dispatch(updateProjectName(value)),
-    toggleProjectSaved : (value) => dispatch(toggleProjectSaved(value))
+    projectSaved : () => dispatch(setProjectSaved(true))
 });
 
 export default connect(
