@@ -5,7 +5,7 @@ const PROJECT_LOADING = "projectLoading";
 
 const initialState = {
     [PROJECT_RUN_STATE]: false,
-    [PROJECT_SAVED]: false,
+    [PROJECT_SAVED]: true,
     [PROJECT_LOADING]: false,
     currentProjectName: "Unsaved Project"
 };
@@ -51,8 +51,8 @@ const updateProjectName = function (value) {
 }
 
 // toggles boolean determining if project needs to be saved or not
-const toggleProjectSaved = function (value) {
-  // console.log(value ? "PROJECT SAVED" : "NEEDS SAVING");
+const setProjectSaved = function (value) {
+  console.log(value ? "PROJECT SAVED" : "NEEDS SAVING");
   return {
       type: PROJECT_SAVED,
       value: value
@@ -74,5 +74,5 @@ export {
     setProjectRunState,
     updateProjectName,
     toggleProjectLoading,
-    toggleProjectSaved
+    setProjectSaved
 };
