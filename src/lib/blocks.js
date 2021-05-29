@@ -17,6 +17,14 @@ class VMScratchBlocks {
         return this.workspace;
     }
 
+    getWorkspace() {
+      return this.workspace;
+    }
+
+    setCallbackProcedure(callback) {
+      ScratchBlocks.Procedures.externalProcedureDefCallback = callback;
+    }
+
     loadWorkspace (workspace) {
         const xml = ScratchBlocks.Xml.textToDom(workspace);
         // console.log("textToDom done")

@@ -13,9 +13,13 @@ import {
   setProjectSaved, 
   toggleProjectLoading
 } from '../reducers/project-state.js';
+import {
+  activateCustomProcedures, 
+  deactivateCustomProcedures
+} from '../reducers/custom-procedures';
 
 
-// import VMScratchBlocks from '../lib/blocks.js';
+import VMScratchBlocks from '../lib/blocks.js';
 import ProjectManager from '../lib/project-manager';
 
 function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
@@ -57,6 +61,7 @@ class GUI extends React.Component {
         this.checkProjectChanged = this.checkProjectChanged.bind(this);
         this.handleProjectLoading = this.handleProjectLoading.bind(this);
         this.handleProjectName = this.handleProjectName.bind(this);
+        this.handleCustomProceduresClose = this.handleCustomProceduresClose.bind(this);
 
         // this.blockingCheck()
         // this.vm.on('PROJECT_IMAGE_CHANGED', () => {
@@ -65,6 +70,7 @@ class GUI extends React.Component {
     }
 
     componentDidMount () {
+        VMScratchBlocks.setCallbackProcedure(this.props.onActivateCustomProcedures);
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.on('BLOCKS_NEED_UPDATE', () => {console.log("BLOCKS_NEED_UPDATE started");});
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
@@ -148,11 +154,19 @@ class GUI extends React.Component {
       return true;
     }
 
+    handleCustomProceduresClose (data) {
+      this.props.onRequestCloseCustomProcedures(data);
+      const ws = VMScratchBlocks.getWorkspace();
+      ws.refreshToolboxSelection_();
+      ws.toolbox_.scrollToCategoryById('myBlocks');
+    }
+
     render () {
         const {...componentProps} = this.props;
         return (
             <GUIComponent
               vm={this.vm}
+              handleCustomProceduresClose={this.handleCustomProceduresClose}
               {...componentProps}
             />
         );
@@ -169,6 +183,7 @@ const mapStateToProps = state => ({
     projectSaved : state.projectState.projectSaved,
     fullscreenVisible: state.modals.fullscreenSimulator,
     shareProjectVisible : state.modals.shareProject,
+    customProceduresVisible: state.customProcedures.active,
     images: state.images
 });
 
@@ -180,7 +195,13 @@ const mapDispatchToProps = dispatch => ({
     updateProjectName : (value) => dispatch(updateProjectName(value)),
     startProjectLoading: () => dispatch(toggleProjectLoading(true)),
     stopProjectLoading: () => dispatch(toggleProjectLoading(false)), 
-    setProjectSaved: (value) => dispatch(setProjectSaved(value))
+    setProjectSaved: (value) => dispatch(setProjectSaved(value)),
+    onActivateCustomProcedures: (data, callback) => {
+      dispatch(activateCustomProcedures(data, callback));
+    },
+    onRequestCloseCustomProcedures: data => {
+      dispatch(deactivateCustomProcedures(data));
+  },
 });
 
 export default connect(

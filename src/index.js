@@ -7,6 +7,7 @@ import {createStore, combineReducers} from 'redux';
 import modalReducer from './reducers/modals';
 import pixelReducer from './reducers/pixels.js';
 import projectStateReducer from './reducers/project-state.js';
+import customProceduresReducer from './reducers/custom-procedures.js'
 
 import {setAppElement} from "react-modal";
 setAppElement('body');
@@ -15,6 +16,7 @@ const reducers = combineReducers({
     modals: modalReducer,
     pixels: pixelReducer,
     projectState: projectStateReducer,
+    customProcedures: customProceduresReducer
 });
 const store = createStore(reducers);
 

@@ -17,6 +17,7 @@ import LocalProjectsModal from "../../containers/local-projects-modal.js";
 import SampleProjectsModal from "../../containers/sample-projects-modal.js";
 import SaveAsModal from "../../containers/save-as-modal.js";
 import ShareModal from "../../containers/share-modal.js";
+import CustomProcedures from "../../containers/custom-procedures.js";
 
 import styles from './gui.css';
 
@@ -49,6 +50,12 @@ const GUIComponent = props => {
               ? <ShareModal />
               : null
             }
+            { props.customProceduresVisible
+              ? <CustomProcedures 
+                  onRequestClose={props.handleCustomProceduresClose}
+                />
+              : null
+            }
 
             <GUIPanes>
               <div className={styles.blocksContainer}>
@@ -74,7 +81,8 @@ GUIComponent.propTypes = {
     localProjectsVisible: PropTypes.bool.isRequired,
     saveAsVisible: PropTypes.bool.isRequired,
     fullscreenVisible: PropTypes.bool.isRequired,
-    shareProjectVisible: PropTypes.bool.isRequired
+    shareProjectVisible: PropTypes.bool.isRequired,
+    customProceduresVisible: PropTypes.bool.isRequired
 };
 
 export default GUIComponent;
