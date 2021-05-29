@@ -1,0 +1,18 @@
+.body {
+  /* background: $ui-white; */
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 25px;
+  user-select: text;
+}
+
+.modal-content {
+  width: 300px;
+}
+
+.submit-button {
+  color: white;
+  padding: 10px;
+  background: hsla(215, 100%, 65%, 0.9);
+}
