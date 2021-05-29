@@ -27,7 +27,7 @@ const SimulatorToolsComponent = props => {
         <div className={styles.downloadContainer}>
           <Tooltip title="Download Pattern" placement="bottom">
             <div>
-              <IconButton size="small" onClick={props.openImageExport}>
+              <IconButton size="small" onClick={props.triggerDownload}>
                 <SvgIcon
                   className={styles.downloadButton}
                   component={downloadStitchButton}

@@ -6,6 +6,10 @@ import {downloadTheStitches} from '../reducers/pixels.js';
 import RgbQuant from "rgbquant";
 import SimulatorToolsComponent from '../components/simulator-tools/simulator-tools.js';
 
+import JSZip from "jszip";
+import { saveAs } from 'file-saver';
+
+
 function RGBArrayToUIntArray(array) {
   let out = []
   array.forEach(rgb => {
@@ -46,14 +50,22 @@ class SimulatorTools extends React.Component {
 
     toggleDownload () {
       this.props.toggleDownloadStitches();
-      this.downloadPixelPattern();
-      // this.downloadStitchPattern();
+
+      let zip = new JSZip();
+
+      this.downloadPixelPattern(zip);
+      this.downloadStitchPattern(zip);
+
+      zip.generateAsync({type:"blob"})
+      .then((content) => {
+          // see FileSaver.js
+          saveAs(content, `${this.props.projectName}.zip`);
+      });
     }
 
-    downloadPixelPattern() {
+    downloadPixelPattern(zip) {
       // console.log("GOT HERE");
       const {pixelCount, pixelColors, rowCount} = {...this.props};
-      let stitchCount = pixelCount * rowCount;
         // console.log("toggled to " + this.props.downloadingPixels + "!");
 
         // make new canvas for downloading here
@@ -63,7 +75,7 @@ class SimulatorTools extends React.Component {
 
         let q = new RgbQuant({
           colors: this.state.maxColors,
-          palette: [[0,0,0],[255,255,255]]
+          palette: [[0,0,0],[64,64,64],[128,128,128],[255,255,255]]
         });
 
         // we store data about every pixel on the canvas, regardless of whether
@@ -76,20 +88,17 @@ class SimulatorTools extends React.Component {
         let UIntArray = RGBArrayToUIntArray(pixelColors);
 
         // console.log(UIntArray);
-        // q.sample([0,0,0,1,255,255,255,1,0,0,0,1,255,255,255,1,0,0,0,1,255,255,255,1,0,0,0,1,255,255,255,1,0,0,0,1,255,255,255,1],2);
         q.sample(UIntArray, pixelCount)
        
-        console.log(UIntArrayToRGBArray(q.palette(false,true)));
-        console.log(q);
+        // console.log(UIntArrayToRGBArray(q.palette(false,true)));
+        // console.log(q);
         
         let newPixelColors = UIntArrayToRGBArray(q.reduce(UIntArray));
       
         pixelCanvas.width = pixelCount;
         pixelCanvas.height = Math.ceil(totalPixels/pixelCount);
 
-        const pixelctx = pixelCanvas.getContext('2d');
-
-        pixelctx.save();        
+        const pixelctx = pixelCanvas.getContext('2d');      
 
         for (let i=0; i<totalPixels; i++) {
           pixelctx.fillStyle = newPixelColors[i];
@@ -97,24 +106,16 @@ class SimulatorTools extends React.Component {
           pixelctx.fillRect(i%pixelCount, currentRow, 1, 1);
         }
 
-        pixelctx.restore();
-
-        let a = document.createElement('a');
-        a.setAttribute('download',
-          Boolean(this.props.downloadingStitchesName) 
-          ? `${this.props.downloadingStitchesName}PixelPattern.png`
-          : 'MyProjectPixelPattern.png');
-        pixelCanvas.toBlob(blob => {
-            let url = URL.createObjectURL(blob);
-            a.setAttribute('href', url);
-            a.click();
-        });
+        zip.file(
+          `PixelPattern.png`, 
+          pixelCanvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""), 
+          {base64: true}
+        );
     }
 
-    downloadStitchPattern() {
-      const {pixelCount, pixelColors, rowCount} = {...this.props};
+    downloadStitchPattern(zip) {
+      const {pixelCount, pixelColors} = {...this.props};
       const stitchCanvas = document.createElement('canvas');
-      let stitchCount = pixelCount * rowCount;
 
       // tally up all stitches that are actually colors
       let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
@@ -125,28 +126,17 @@ class SimulatorTools extends React.Component {
 
       const stitchctx = stitchCanvas.getContext('2d');
 
-      stitchctx.save();
-
       for (let i=0; i<totalStitches; i++) {
         stitchctx.fillStyle = pixelColors[i];
         let currentRow = Math.floor(i/pixelCount);
         stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
       }
 
-      stitchctx.restore();
-
-      let b = document.createElement('a');
-
-      b.setAttribute('download', 
-          Boolean(this.props.downloadingStitchesName) 
-          ? `${this.props.downloadingStitchesName}KnitPattern.png`
-          : 'MyProjectKnitPattern.png');
-
-      stitchCanvas.toBlob(blob => {
-          let url = URL.createObjectURL(blob);
-          b.setAttribute('href', url);
-          b.click();
-      });
+      zip.file(
+        `KnitPattern.png`, 
+        stitchCanvas.toDataURL("image/jpeg").replace(/^data:image\/(png|jpg);base64,/, ""), 
+        {base64: true}
+      );
     }
 
     render() {
@@ -161,12 +151,14 @@ const mapStateToProps = state => ({
     pixelColors : state.pixels.pixelColors, 
     rowCount: state.pixels.rowCount,
     pixelType: state.pixels.pixelType,
+    projectName: state.projectState.currentProjectName,
     downloadingStitches: state.pixels.downloadingStitches,
     downloadingStitchesName: state.pixels.downloadingStitchesName
 });
 
 const mapDispatchToProps = dispatch => ({
     openImageExport : () => dispatch(openImageExport()),
+    triggerDownload: () => dispatch(downloadTheStitches(true)),
     toggleDownloadStitches: () => dispatch(downloadTheStitches(false)),
 });
 
