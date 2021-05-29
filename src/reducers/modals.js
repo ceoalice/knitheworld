@@ -7,6 +7,7 @@ const MODAL_IMAGE_EXPORT = 'imageExport';
 const MODAL_SAMPLE_PROJECTS = 'sampleProjects';
 const MODAL_LOCAL_PROJECTS = 'localProjects';
 const MODAL_SAVE_AS = 'saveAs';
+const MODAL_SHARE_PROJECT = "shareProject";
 
 const initialState = {
     [MODAL_SIMULATOR]: false, 
@@ -14,7 +15,8 @@ const initialState = {
     [MODAL_IMAGE_EXPORT]: false,
     [MODAL_SAMPLE_PROJECTS]: false,
     [MODAL_LOCAL_PROJECTS]: false,
-    [MODAL_SAVE_AS]: false
+    [MODAL_SAVE_AS]: false,
+    [MODAL_SHARE_PROJECT]: false
 };
 
 const reducer = function (state, action) {
@@ -55,6 +57,7 @@ const openImageImport = function () {
   return openModal(MODAL_IMAGE_IMPORT);
 };
 const closeImageImport = function () {
+  console.log("closeImageImport")
   return closeModal(MODAL_IMAGE_IMPORT);
 };
 
@@ -86,6 +89,12 @@ const closeSaveAs = function() {
   return closeModal(MODAL_SAVE_AS);
 }
 
+const openShareProject = function() {
+  return openModal(MODAL_SHARE_PROJECT);
+}
+const closeShareProject = function() {
+  return closeModal(MODAL_SHARE_PROJECT);
+}
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -100,5 +109,7 @@ export {
     openLocalProjects,
     closeLocalProjects,
     openSaveAs,
-    closeSaveAs
+    closeSaveAs,
+    openShareProject,
+    closeShareProject
 };

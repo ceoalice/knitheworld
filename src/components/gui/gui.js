@@ -6,8 +6,9 @@ import VM from 'scratch-vm';
 import Blocks from '../../containers/blocks.js';
 import DownloadButton from '../../containers/download-button.js';
 import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
-import NavBar from "../../containers/navbar.js"
-import GUIPanes from "./gui-panes.js"
+import NavBar from "../../containers/navbar.js";
+import GUIPanes from "./gui-panes.js";
+import ProjectName from "../project-name/project-name.js";
 
 // modals
 import ImageImportModal from "../../containers/image-import-modal.js";
@@ -15,6 +16,7 @@ import ImageExportModal from "../../containers/image-export-modal.js";
 import LocalProjectsModal from "../../containers/local-projects-modal.js";
 import SampleProjectsModal from "../../containers/sample-projects-modal.js";
 import SaveAsModal from "../../containers/save-as-modal.js";
+import ShareModal from "../../containers/share-modal.js";
 
 import styles from './gui.css';
 
@@ -39,14 +41,18 @@ const GUIComponent = props => {
               ? <ImageExportModal />
               : null
             }
-            {
-              props.saveAsVisible
+            { props.saveAsVisible
               ? <SaveAsModal />
+              : null
+            }
+            { props.shareProjectVisible
+              ? <ShareModal />
               : null
             }
 
             <GUIPanes>
               <div className={styles.blocksContainer}>
+                <ProjectName />
                 <Blocks vm={props.vm} />
               </div>
               <div className={styles.simulatorContainer}>
@@ -68,7 +74,7 @@ GUIComponent.propTypes = {
     localProjectsVisible: PropTypes.bool.isRequired,
     saveAsVisible: PropTypes.bool.isRequired,
     fullscreenVisible: PropTypes.bool.isRequired,
-
+    shareProjectVisible: PropTypes.bool.isRequired
 };
 
 export default GUIComponent;
