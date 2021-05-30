@@ -46,7 +46,7 @@ class ProjectCache {
       if (s.length != 3) return;   
       else if (!paths[s[1]]) paths[s[1]] = [];
 
-      paths[s[1]].push(`./projects${filePath.substring(1)}`);
+      paths[s[1]].push(`./projects/${filePath.substring(2)}`);
     })
 
     return paths;
@@ -57,7 +57,9 @@ class ProjectCache {
   }
 
   getProjects() {
-    return Object.values(this.projects);
+    let out = Object.values(this.projects);
+    out.sort((a,b) => (b.timestamp.seconds - a.timestamp.seconds)); // provide same sort as firebase
+    return out;
   }
 
   getProject(id) {
@@ -79,8 +81,6 @@ class ProjectManager {
   constructor () {
     // cache variable
     this.cache_ = new ProjectCache();
-
-    // this.cache_ = {needUpdate: true, sampleProjects: []};
 
     let db = firebase.firestore();
     let userID = this.getUserID(); 
@@ -127,7 +127,7 @@ class ProjectManager {
   async getProject(id) {
     if (this.cache_.getProject(id)) return this.cache_.getProject(id);
 
-    console.log("pulled from firebase");
+    console.log("pulled from firebase: ", id);
     let db = firebase.firestore();
     let doc = await db.collection("users")
       .doc(this.getUserID())
@@ -149,7 +149,7 @@ class ProjectManager {
 
       let snapshot = await db.collection("users")
       .doc(this.getUserID())
-      .collection("projects").get();
+      .collection("projects").orderBy("timestamp", "desc").get();
 
       return snapshot.docs.map(doc => {
 
@@ -157,7 +157,7 @@ class ProjectManager {
         
         // console.log(doc.data().name, ProjectManager.memSize(JSON.stringify(doc.data())));
         
-        this.cache_.update(doc.id, {...doc.data()})
+        this.cache_.update(doc.id, doc.data())
         // this.cache_[doc.id] = {id : doc.id, ...doc.data()};
         return this.cache_.getProject(doc.id); // this.cache_[doc.id];
       });
@@ -181,13 +181,13 @@ class ProjectManager {
     return (currentID) ? await this.getProjectName(currentID) : "Unsaved Project";
   }
 
-  saveProject(projectName = null, imgData = null) {
+  async saveProject(projectName = null, imgData = null) {
     if (this.getCurrentID()) { 
       // resaving current project
-      this.saveCurrentProject(projectName, imgData);
+      return this.saveCurrentProject(projectName, imgData);
     } else { 
       // saving new project
-      this.saveNewProject(projectName, imgData);
+      return this.saveNewProject(projectName, imgData);
     }
   }
 
@@ -203,15 +203,15 @@ class ProjectManager {
 
     newData.size = ProjectManager.memSize(JSON.stringify(newData));
 
-    await db.collection("users")
-      .doc(this.getUserID())
-      .collection("projects")
-      .add(newData)
-      .then(doc => {
-        localStorage.setItem(CURRENT_PROJECT_ID, doc.id);
+    let ref = db.collection("users").doc(this.getUserID())
+      .collection("projects").doc();
 
-        this.cache_.update(doc.id, newData)
-        // this.cache_[doc.id] = { ...this.cache_[doc.id], ...newData };
+    newData.id = ref.id;
+
+    return ref.set(newData)
+      .then(() => {
+        localStorage.setItem(CURRENT_PROJECT_ID, newData.id);
+        this.cache_.update(newData.id, newData)
         this.vm.emit("PROJECT_NAME_CHANGED");
       })
       .catch(error => {
@@ -227,24 +227,21 @@ class ProjectManager {
     let newData = {
       xml: this.getXML(), 
       timestamp : firebase.firestore.Timestamp.fromDate(new Date())
-    }
+    };
 
-    newData.name = projectName ? projectName : `Project ${newID}`;
-    newData.imgData = imgData ? imgData : "";
+    if (projectName) newData.name = projectName;
+    if (imgData) newData.imgData = imgData;
 
-    let oldData = this.cache_[currentID];
+    newData.size = ProjectManager.memSize(JSON.stringify({ ...this.cache_.getProject(currentID), ...newData }));
 
-    newData.size = ProjectManager.memSize(JSON.stringify({ ...oldData, ...newData }));
+    let ref = db.collection("users").doc(this.getUserID())
+      .collection("projects").doc(currentID);
 
-    await db.collection("users")
-      .doc(this.getUserID())
-      .collection("projects")
-      .doc(currentID)
-      .update(newData)
+    newData.id = ref.id;
+
+    return ref.update(newData)
       .then(() => {
-
         this.cache_.update(currentID, newData)
-        // this.cache_[currentID] = { ...oldData, ...newData };
         this.vm.emit("PROJECT_NAME_CHANGED");
       })
       .catch(error => {
@@ -252,7 +249,7 @@ class ProjectManager {
       });
   }
 
-  newProject(xml = null) {
+  async newProject(xml = null) {
     // will clear blocks in current project & remove currentID
     vmScratchBlocks.loadWorkspace(xml ? xml : ProjectManager.blankWorkSpace);
 
@@ -261,10 +258,8 @@ class ProjectManager {
   }
   
   async loadProject(id) {
-    console.log("loadProject: ", id);
     localStorage.setItem(CURRENT_PROJECT_ID, id);
     let project = await this.getProject(id);
-
     // (don't need to update each time)
     vmScratchBlocks.loadWorkspace(project.xml);
     this.vm.emit("PROJECT_NAME_CHANGED");
@@ -278,6 +273,14 @@ class ProjectManager {
     } else { // no current project, open up new project 
       this.newProject();
     }
+  }
+
+  async XMLChanged() {
+    let project = await this.getProject(this.getCurrentID());
+
+    let workspaceXML = this.getXML();
+
+    return project.xml != workspaceXML;
   }
 
   async loadProjectFromUrl() {
@@ -298,6 +301,8 @@ class ProjectManager {
           let data = doc.data();
           this.newProject(data ? data.xml : null)
         });    
+      } else {
+        this.newProject();
       }
     });
     // this.vm.emit("PROJECT_NAME_CHANGED");
