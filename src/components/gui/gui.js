@@ -51,9 +51,7 @@ const GUIComponent = props => {
               : null
             }
             { props.customProceduresVisible
-              ? <CustomProcedures 
-                  onRequestClose={props.handleCustomProceduresClose}
-                />
+              ? <CustomProcedures />
               : null
             }
 

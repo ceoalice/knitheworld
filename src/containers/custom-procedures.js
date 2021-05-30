@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import CustomProceduresComponent from '../components/custom-procedures/custom-procedures.js';
 import ScratchBlocks from 'scratch-blocks';
+import VMScratchBlocks from '../lib/blocks.js';
+import {deactivateCustomProcedures} from "../reducers/custom-procedures.js";
 import {connect} from 'react-redux';
 
 class CustomProcedures extends React.Component {
@@ -13,10 +15,12 @@ class CustomProcedures extends React.Component {
             'handleAddLabel',
             'handleAddBoolean',
             'handleAddTextNumber',
+            'handleAddColor',
             'handleToggleWarp',
             'handleCancel',
             'handleOk',
-            'setBlocks'
+            'setBlocks',
+            'onRequestClose'
         ]);
         this.state = {
             rtlOffset: 0,
@@ -32,11 +36,6 @@ class CustomProcedures extends React.Component {
         if (!blocksRef) return;
         this.blocks = blocksRef;
         const workspaceConfig = CustomProcedures.defaultOptions;
-        // defaultsDeep({},
-        //     CustomProcedures.defaultOptions,
-        //     this.props.options,
-        //     {rtl: this.props.isRtl}
-        // );
 
         // @todo This is a hack to make there be no toolbox.
         const oldDefaultToolbox = ScratchBlocks.Blocks.defaultToolbox;
@@ -111,11 +110,11 @@ class CustomProcedures extends React.Component {
         });
     }
     handleCancel () {
-        this.props.onRequestClose();
+        this.onRequestClose();
     }
     handleOk () {
         const newMutation = this.mutationRoot ? this.mutationRoot.mutationToDom(true) : null;
-        this.props.onRequestClose(newMutation);
+        this.onRequestClose(newMutation);
     }
     handleAddLabel () {
         if (this.mutationRoot) {
@@ -132,12 +131,23 @@ class CustomProcedures extends React.Component {
             this.mutationRoot.addStringNumberExternal();
         }
     }
+    handleAddColor () {
+      if (this.mutationRoot) {
+          this.mutationRoot.addColorExternal();
+      }
+    }
     handleToggleWarp () {
         if (this.mutationRoot) {
             const newWarp = !this.mutationRoot.getWarp();
             this.mutationRoot.setWarp(newWarp);
             this.setState({warp: newWarp});
         }
+    }
+    onRequestClose(data){
+      this.props.onRequestCloseCustomProcedures(data);
+      const ws = VMScratchBlocks.getWorkspace();
+      ws.refreshToolboxSelection_();
+      ws.toolbox_.scrollToCategoryById('myBlocks');
     }
     render () {
         return (
@@ -147,6 +157,7 @@ class CustomProcedures extends React.Component {
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddTextNumber={this.handleAddTextNumber}
+                onAddColor={this.handleAddColor}
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
@@ -192,6 +203,13 @@ const mapStateToProps = state => ({
     mutator: state.customProcedures.mutator
 });
 
+const mapDispatchToProps = dispatch => ({    
+  onRequestCloseCustomProcedures: data => {
+    dispatch(deactivateCustomProcedures(data));
+  },
+});
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(CustomProcedures);

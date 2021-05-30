@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from '../../containers/modal.js';
-// import Box from '../box/box.jsx';
-// import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-intl';
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
@@ -43,19 +41,26 @@ const CustomProcedures = props => (
                     />
                     <div className={styles.optionTitle}>
                       Add an input
-                        {/* <FormattedMessage
-                            defaultMessage="Add an input"
-                            description="Label for button to add a number/text input"
-                            id="gui.customProcedures.addAnInputNumberText"
-                        /> */}
                     </div>
                     <div className={styles.optionDescription}>
                       number or text
-                        {/* <FormattedMessage
-                            defaultMessage="number or text"
-                            description="Description of the number/text input type"
-                            id="gui.customProcedures.numberTextType"
-                        /> */}
+                    </div>
+                </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
+                    onClick={props.onAddColor}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={textInputIcon}
+                    />
+                    <div className={styles.optionTitle}>
+                      Add an input
+                    </div>
+                    <div className={styles.optionDescription}>
+                      color
                     </div>
                 </div>
                 <div
@@ -70,19 +75,9 @@ const CustomProcedures = props => (
                     />
                     <div className={styles.optionTitle}>
                       Add an input
-                        {/* <FormattedMessage
-                            defaultMessage="Add an input"
-                            description="Label for button to add a boolean input"
-                            id="gui.customProcedures.addAnInputBoolean"
-                        /> */}
                     </div>
                     <div className={styles.optionDescription}>
                       boolean
-                        {/* <FormattedMessage
-                            defaultMessage="boolean"
-                            description="Description of the boolean input type"
-                            id="gui.customProcedures.booleanType"
-                        /> */}
                     </div>
                 </div>
                 <div
@@ -113,11 +108,6 @@ const CustomProcedures = props => (
                         onChange={props.onToggleWarp}
                     /> 
                     Run without screen refresh
-                    {/* <FormattedMessage
-                        defaultMessage="Run without screen refresh"
-                        description="Label for checkbox to run without screen refresh"
-                        id="gui.customProcedures.runWithoutScreenRefresh"
-                    /> */}
                 </label>
             </div>
             <div className={styles.buttonRow}>
@@ -126,22 +116,12 @@ const CustomProcedures = props => (
                     onClick={props.onCancel}
                 >
                   Cancel
-                    {/* <FormattedMessage
-                        defaultMessage="Cancel"
-                        description="Label for button to cancel custom procedure edits"
-                        id="gui.customProcedures.cancel"
-                    /> */}
                 </button>
                 <button
                     className={styles.okButton}
                     onClick={props.onOk}
                 >
                   OK
-                    {/* <FormattedMessage
-                        defaultMessage="OK"
-                        description="Label for button to save new custom procedure"
-                        id="gui.customProcedures.ok"
-                    /> */}
                 </button>
             </div>
         </div>
@@ -154,6 +134,7 @@ CustomProcedures.propTypes = {
     onAddBoolean: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
     onAddTextNumber: PropTypes.func.isRequired,
+    onAddColor: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,

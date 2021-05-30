@@ -15,7 +15,6 @@ import {
 } from '../reducers/project-state.js';
 import {
   activateCustomProcedures, 
-  deactivateCustomProcedures
 } from '../reducers/custom-procedures';
 
 
@@ -61,7 +60,6 @@ class GUI extends React.Component {
         this.checkProjectChanged = this.checkProjectChanged.bind(this);
         this.handleProjectLoading = this.handleProjectLoading.bind(this);
         this.handleProjectName = this.handleProjectName.bind(this);
-        this.handleCustomProceduresClose = this.handleCustomProceduresClose.bind(this);
 
         // this.blockingCheck()
         // this.vm.on('PROJECT_IMAGE_CHANGED', () => {
@@ -109,7 +107,7 @@ class GUI extends React.Component {
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
       let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
-
+      // console.log(blocks)
       // blank workspace loaded need to wait for more blocks or bug occured
       if (Object.keys(blocks).length == 0) return;
 
@@ -154,19 +152,11 @@ class GUI extends React.Component {
       return true;
     }
 
-    handleCustomProceduresClose (data) {
-      this.props.onRequestCloseCustomProcedures(data);
-      const ws = VMScratchBlocks.getWorkspace();
-      ws.refreshToolboxSelection_();
-      ws.toolbox_.scrollToCategoryById('myBlocks');
-    }
-
     render () {
         const {...componentProps} = this.props;
         return (
             <GUIComponent
               vm={this.vm}
-              handleCustomProceduresClose={this.handleCustomProceduresClose}
               {...componentProps}
             />
         );
@@ -198,10 +188,7 @@ const mapDispatchToProps = dispatch => ({
     setProjectSaved: (value) => dispatch(setProjectSaved(value)),
     onActivateCustomProcedures: (data, callback) => {
       dispatch(activateCustomProcedures(data, callback));
-    },
-    onRequestCloseCustomProcedures: data => {
-      dispatch(deactivateCustomProcedures(data));
-  },
+    }
 });
 
 export default connect(
