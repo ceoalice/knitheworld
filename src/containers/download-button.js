@@ -36,7 +36,7 @@ class DownloadButton extends React.Component {
         // console.log(xmlFile)
         var a = document.createElement('a');
         a.href = URL.createObjectURL(xmlFile);
-        a.download = 'My Project' + '.xml';
+        a.download = this.props.currentProjectName + '.xml';
         a.click();
     }
 
@@ -68,7 +68,8 @@ class DownloadButton extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    pixelType: state.pixels.pixelType
+    pixelType: state.pixels.pixelType,
+    currentProjectName: state.projectState.currentProjectName
 });
 
 const mapDispatchToProps = dispatch => ({
