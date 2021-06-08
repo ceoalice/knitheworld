@@ -1,4 +1,4 @@
-import vmScratchBlocks from "./blocks";
+import VMScratchBlocks from "./blocks";
 import firebase from "./firebase.js";
 
 const CURRENT_PROJECT_ID = "currentID";
@@ -117,7 +117,7 @@ class ProjectManager {
   }
 
   getXML() {
-    return vmScratchBlocks.getXML();
+    return VMScratchBlocks.getXML();
   }
 
   getSampleProjects() {
@@ -251,7 +251,7 @@ class ProjectManager {
 
   async newProject(xml = null) {
     // will clear blocks in current project & remove currentID
-    vmScratchBlocks.loadWorkspace(xml ? xml : ProjectManager.blankWorkSpace);
+    VMScratchBlocks.loadWorkspace(xml ? xml : ProjectManager.BLANK_WORKSPACE);
 
     localStorage.removeItem(CURRENT_PROJECT_ID);
     this.vm.emit("PROJECT_NAME_CHANGED");
@@ -261,7 +261,7 @@ class ProjectManager {
     localStorage.setItem(CURRENT_PROJECT_ID, id);
     let project = await this.getProject(id);
     // (don't need to update each time)
-    vmScratchBlocks.loadWorkspace(project.xml);
+    VMScratchBlocks.loadWorkspace(project.xml);
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
 
@@ -350,7 +350,7 @@ class ProjectManager {
   }
 }
 
-ProjectManager.blankWorkSpace =`<xml>
+ProjectManager.BLANK_WORKSPACE =`<xml>
   <block type="event_whenstarted" deletable="false" x="25" y="50">
   </block>
 </xml>`;
