@@ -9,6 +9,9 @@
   margin: 5px;
 }
 
-.italic {
-  font-style: italic;
+.saved {
+  color: #3A9260;
+}
+.unsaved {
+  color: #CBB02A;
 }

@@ -7,8 +7,8 @@ const ProjectName = props => {
   return (
     <div> 
     {props.projectSaved
-      ? <div className={classNames(styles.projectName)}> {props.currentProjectName} </div>
-      : <div className={classNames(styles.projectName, styles.italic)}> {`${props.currentProjectName}•`} </div>
+      ? <div className={classNames(styles.projectName, styles.saved)}> {props.currentProjectName} </div>
+      : <div className={classNames(styles.projectName, styles.unsaved)}> {props.currentProjectName} </div>
     }
     </div>
   );
