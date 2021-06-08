@@ -35,28 +35,18 @@ class Blocks extends React.Component {
             this.workspace = VMScratchBlocks.injectBlocks(
                 this.blocks, Blocks.defaultOptions, defaultToolbox
             );
-            // this.workspace = this.ScratchBlocks.inject(this.blocks, {
-                // ...Blocks.defaultOptions,
-                // ...{toolbox: defaultToolbox}
-            // });
-            // VMScratchBlocks.loadWorkspace(Blocks.defaultWorkspace);
+
             let params = new URLSearchParams(window.location.search)
             
             if (params.has('projectID')) {
               ProjectManager.loadProjectFromUrl();
             } else {
-              // console.log("loadCurrentProject")
               ProjectManager.loadCurrentProject();
-              // console.log("loadCurrentProject done")
             }
-            // const xml = this.ScratchBlocks.Xml.textToDom(Blocks.defaultWorkspace);
-            // this.ScratchBlocks.Xml.domToWorkspace(xml, this.workspace);
-            // this.workspace.getFlyout().autoClose = true;
-            // this.workspace.getFlyout().width_ = 0;
+
             this.attachVM();
         });
         this.props.clearPixels();
-        console.log("here?");
         this.props.vm.start();
     }
 
