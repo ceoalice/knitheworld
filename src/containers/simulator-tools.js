@@ -75,7 +75,8 @@ class SimulatorTools extends React.Component {
 
         let q = new RgbQuant({
           colors: this.state.maxColors,
-          palette: [[0,0,0],[64,64,64],[128,128,128],[255,255,255]]
+          // palette: [[0,0,0],[64,64,64],[128,128,128],[255,255,255]]
+          palette: [[0,0,0],[255,255,255]]
         });
 
         // we store data about every pixel on the canvas, regardless of whether
@@ -134,7 +135,7 @@ class SimulatorTools extends React.Component {
 
       zip.file(
         `KnitPattern.png`, 
-        stitchCanvas.toDataURL("image/jpeg").replace(/^data:image\/(png|jpg);base64,/, ""), 
+        stitchCanvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""), 
         {base64: true}
       );
     }
