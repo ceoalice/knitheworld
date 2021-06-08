@@ -176,11 +176,17 @@ const defaultToolbox =
       </block>
     </category>
     <category
-        name="%{BKY_CATEGORY_MYBLOCKS}"
-        id="myBlocks"
-        colour="#FF6680"
-        secondaryColour="#FF4D6A"
-        custom="PROCEDURE">
+      name="%{BKY_CATEGORY_MYBLOCKS}"
+      id="myBlocks"
+      colour="#FF6680"
+      secondaryColour="#FF4D6A"
+      custom="PROCEDURE">
+    </category>
+    <category
+      name="Suggested Blocks"
+      id="suggestedBlocks"
+      colour="#905F95"
+      secondaryColour="#845889">
     </category>
   </xml>`;
 
