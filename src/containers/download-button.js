@@ -23,6 +23,7 @@ class DownloadButton extends React.Component {
         this.fileChooser = React.createRef();
         this.uploadCode = this.uploadCode.bind(this);
         this.loadCode = this.loadCode.bind(this);
+        this.downloadCode = this.downloadCode.bind(this);
     }
 
     componentDidUpdate () {
