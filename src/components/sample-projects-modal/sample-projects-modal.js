@@ -20,15 +20,12 @@ const SampleProjectModalComponent = props => (
     >
       {props.projects
         ? <div className={classNames(styles.libraryScrollGrid)}>
-            {props.projects.map((dataItem, index) => (
+            {props.projects.map((project, index) => (
                 <ProjectItem
                   isExample
-                  xml={dataItem.xml}
+                  project={project}
                   key={index}
-                  name={dataItem.name}  
-                  id={dataItem.id}
-                  iconURL={dataItem.imgData}
-                  onSelect={()=> props.openProject(dataItem.xml)}
+                  onSelect={()=> props.openProject(project.xml)}
                   onDelete={()=> {}}
                 />
               ))}

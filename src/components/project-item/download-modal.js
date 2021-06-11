@@ -14,8 +14,10 @@ import Button from '@material-ui/core/Button';
 
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
+import ImageManager from "../../lib/image-manager.js"
 
 import styles from "./modal.css"
+
 
 function getModalStyle() {
   const top = 50;
@@ -40,34 +42,35 @@ const DownloadModalComponent = (props) => {
     xml: false,
   });
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
-  const handleSubmit= (e) => {
+  const handleSubmit= async (e) => {
+    props.handleClose(e);
+
+    setState({
+      thumbnail: false,
+      xml: false
+    });
+    
     let zip = new JSZip();
-    // console.log(props.xml);
     if (state.xml) { 
-      zip.file(`${props.name}.xml`, props.xml);
+      zip.file(`${props.project.name}.xml`, props.project.xml);
     }
 
-    if (state.thumbnail) { // && !props.isExample
-      zip.file(
-        `thumbnail.png`, 
-        props.iconURL.replace(/^data:image\/(png|jpg);base64,/, ""), 
-        {base64: true}
-      );
+    if (state.thumbnail) {
+      let data = await ImageManager.getProjectImageData(props.imageURL);
+      zip.file(`thumbnail.png`, data);
     }
 
     if (state.xml || state.thumbnail) {
       zip.generateAsync({type:"blob"})
         .then(function(content) {
             // see FileSaver.js
-            saveAs(content, `${props.name}.zip`);
+            saveAs(content, `${props.project.name}.zip`);
         });
     }
-
-    props.handleClose(e);
   }
 
   const { thumbnail, xml } = state;
@@ -109,9 +112,16 @@ const DownloadModalComponent = (props) => {
 DownloadModalComponent.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  xml: PropTypes.string.isRequired,
-  iconURL: PropTypes.oneOfType([
+
+  project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    xml: PropTypes.string.isRequired,
+    size: PropTypes.number,
+    timestamp: PropTypes.object
+  }).isRequired,
+
+  imageURL: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Promise)
   ]),

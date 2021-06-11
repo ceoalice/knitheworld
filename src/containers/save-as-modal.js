@@ -2,8 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import SaveAsModalComponent from '../components/save-as-modal/save-as-modal.js';
 import { closeSaveAs } from '../reducers/modals.js';
+import { setProjectSaved } from '../reducers/project-state.js';
 
 import ProjectManager from "../lib/project-manager.js";
+import ImageManager from "../lib/image-manager.js";
 
 class SaveAsModal extends React.Component {
     constructor (props) {
@@ -47,7 +49,11 @@ class SaveAsModal extends React.Component {
 
     saveProject() {
       let imgData = (this.state.imgData == "") ? this.getDefaultImageData() : this.state.imgData;
-      ProjectManager.saveProject(this.state.projectName, imgData); 
+
+      ProjectManager.saveProject(this.state.projectName).then(() => {
+          ImageManager.saveProjectImage(ProjectManager.getCurrentID(),imgData);
+          this.props.projectSaved();
+      });
     }
 
     uploadImage () {
@@ -57,7 +63,6 @@ class SaveAsModal extends React.Component {
     getDefaultImageData() {
       const {pixelCount, pixelColors, rowCount} = {...this.props};
       const stitchCanvas = document.createElement('canvas');
-      let stitchCount = pixelCount * rowCount;
 
       let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
 
@@ -66,13 +71,13 @@ class SaveAsModal extends React.Component {
 
       const stitchctx = stitchCanvas.getContext('2d');
 
-      for (let i=0; i<stitchCount; i++) {
+      for (let i=0; i<totalStitches; i++) {
         stitchctx.fillStyle = pixelColors[i];
         let currentRow = Math.floor(i/pixelCount);
         stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
       }
 
-      return stitchCanvas.toDataURL("image/jpeg", 0.5);
+      return stitchCanvas.toDataURL();
     }
 
 
@@ -113,6 +118,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     closeModal: () => dispatch(closeSaveAs()),
+    projectSaved : () => dispatch(setProjectSaved(true))
 });
 
 export default connect(

@@ -4,16 +4,37 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import ProjectItemComponent from '../components/project-item/project-item.js';
+import ImageManager from "../lib/image-manager.js"
 
 
 class ProjectItem extends React.PureComponent {
     constructor (props) {
         super(props);
+        this.state = {
+          imageURL : ""
+        }
         bindAll(this, [
             'handleClick',
-            'handleClickClose'
+            'handleClickClose',
+            'handleUpdate'
         ]);
     }
+
+    componentDidMount() {      
+      this.handleUpdate();
+    }
+    componentDidUpdate() {
+      this.handleUpdate();
+    }
+
+    async handleUpdate() {
+      let imageURL = this.props.isExample 
+      ? ImageManager.getSampleImage(this.props.project.id)
+      : await ImageManager.getProjectImageURL(this.props.project.id)
+      this.setState({imageURL});
+    }
+
+
     handleClick (e) {
       if (!this.props.disabled) {
         this.props.onSelect(this.props.id);
@@ -33,26 +54,24 @@ class ProjectItem extends React.PureComponent {
             <ProjectItemComponent
                 onClick={this.handleClick}
                 onClickClose={this.handleClickClose}
+                iconURL={this.state.imageURL}
                 {...this.props}
             />
         );
     }
 }
-
+// PropTypes.oneOfType([
 ProjectItem.propTypes = {
 
-    description: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    size : PropTypes.number,
+    project: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      xml: PropTypes.string.isRequired,
+      size: PropTypes.number,
+      timestamp: PropTypes.object
+    }).isRequired,
+
     hidden: PropTypes.bool,
-    iconURL: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
     isExample: PropTypes.bool,
     onDelete: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
