@@ -3,6 +3,9 @@ const CopyWebPackPlugin = require('copy-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
 
+// postcss
+const postCSSConfig = require('./postcss.config')
+
 module.exports = {
   module: {
     rules: [
@@ -39,20 +42,35 @@ module.exports = {
           }
         }
       },
+      // https://github.com/postcss/postcss#usage
+      // https://github.com/DavidWells/PostCSS-tutorial
       {
         test: /\.css$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: 'style-loader',
-          },
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
-              // importLoaders: 1,
-              modules: {
-                  exportLocalsConvention: "camelCase"
-              },
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[name]_[local]_[hash:base64:5]',
+              camelCase: true
+            }
+            // options: {
+            //   importLoaders: 1,
+            //   // modules: {
+            //   //     exportLocalsConvention: "camelCase"
+            //   // },
+            // }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+                ident: 'postcss',
+                plugins: function () {
+                    return postCSSConfig;
+                }
             }
           }
         ]
