@@ -5,7 +5,7 @@ const PROJECT_LOADING = "projectLoading";
 
 const initialState = {
     [PROJECT_RUN_STATE]: false,
-    [PROJECT_SAVED]: true,
+    [PROJECT_SAVED]: false,
     [PROJECT_LOADING]: false,
     currentProjectName: "Unsaved Project"
 };

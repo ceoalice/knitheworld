@@ -169,7 +169,6 @@ class CustomProcedures extends React.Component {
 CustomProcedures.propTypes = {
     isRtl: PropTypes.bool,
     mutator: PropTypes.instanceOf(Element),
-    onRequestClose: PropTypes.func.isRequired,
     options: PropTypes.shape({
         media: PropTypes.string,
         zoom: PropTypes.shape({

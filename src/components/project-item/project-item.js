@@ -80,10 +80,13 @@ const ProjectItemComponent = (props) => {
           onClick={props.onClick}
         >
           <div className={styles.featuredImageContainer}>
-              <img
-                className={styles.featuredImage}
-                src={props.iconURL}
-              />
+            <object
+              className={styles.featuredImage}
+              data={props.iconURL}
+              type="image/png"
+            >
+              {props.project.name}
+            </object>
           </div>
 
           {/* {props.insetIconURL ? (
