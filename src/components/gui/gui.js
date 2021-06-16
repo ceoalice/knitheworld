@@ -65,6 +65,9 @@ const GUIComponent = props => {
               </div>
             </GUIPanes>            
 
+            <p className={styles.version}>
+              v.3.2.1.0
+            </p>
             <DownloadButton vm={props.vm}/>
         </React.Fragment>
     );

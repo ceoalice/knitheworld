@@ -29,6 +29,7 @@
 
 .flexbox { 
   /* parent container for Simulator and Blocks */
+  width: 100vw;
   height: calc(100vh - var(--topnav-height)) !important;
   display: flex;
   flex-direction: row;
@@ -43,4 +44,15 @@
 
 .flexbox > span:hover {
   background: #eee;
+}
+
+.version {
+  margin: 5px;
+  right: 0;
+  bottom: 0;
+  z-index : 500; 
+  color: white;
+  font-size: 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position: absolute;
 }

@@ -46,6 +46,7 @@ const GUIPanes = props => {
         split="vertical"
         onChange={updateSplitPos}
         onDragFinished={updateSplitPos}
+        pane2Style={{width:"100%"}}
       >
         { props.children }
       </SplitPane>

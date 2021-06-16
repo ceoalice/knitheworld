@@ -1,20 +1,10 @@
-.transformContainer {
-  height: 100%;
-}
-
 .simToolsContainer {
   position: absolute;
   z-index: 500;
   width: 100%;
 }
 
-.version {
-  margin: 5px;
-  right: 0 ;
-  bottom: 0 ;
-  zIndex : 500; 
-  color: white;
-  font-size: 15px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+.transformContainer {
   position: absolute;
+  overflow: hidden;
 }

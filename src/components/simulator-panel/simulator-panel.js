@@ -11,11 +11,9 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const SimulatorPanelComponent = props => {
     return (
         <React.Fragment>
-
           <div className={styles.simToolsContainer}>
            <SimulatorTools />
           </div>
-          
           <div className={styles.transformContainer}>
             <TransformWrapper
               scale={1}
@@ -27,10 +25,6 @@ const SimulatorPanelComponent = props => {
               </TransformComponent>
             </TransformWrapper>
           </div>
-
-          <p className={styles.version}>
-            v.3.1.4.0
-          </p>
         </React.Fragment>
     );
 };
