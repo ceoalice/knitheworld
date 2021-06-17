@@ -4,6 +4,7 @@ import Modal from '../../containers/modal.js';
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
+import colorInputIcon from "./icon--color-input.svg";
 import labelIcon from './icon--label.svg';
 
 import styles from './custom-procedures.css';
@@ -54,7 +55,7 @@ const CustomProcedures = props => (
                 >
                     <img
                         className={styles.optionIcon}
-                        src={textInputIcon}
+                        src={colorInputIcon}
                     />
                     <div className={styles.optionTitle}>
                       Add an input
