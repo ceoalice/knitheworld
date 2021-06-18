@@ -11,13 +11,12 @@ import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, Ema
 const ShareModalComponent = props => {
   // console.log(window.location.host)
   const isSharable = Boolean(ProjectManger.getCurrentID());
-  const url = "https://youtube.com" + `?projectID=${ProjectManger.getCurrentID()}`;
+  const url = window.location.href + `?projectID=${ProjectManger.getCurrentID()}`;
 
   return (
     <Modal
         className={styles.modalContent}
         contentLabel={"Share Project"}
-        // headerClassName={styles.header}
         headerImage={props.connectionSmallIconURL}
         id="imageExportModal"
         onRequestClose={props.onCancel}
