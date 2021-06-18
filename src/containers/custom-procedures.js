@@ -187,7 +187,7 @@ CustomProcedures.defaultOptions = {
         wheel: false,
         startScale: 0.9
     },
-    media: "/static/blocks-media/",
+    media: `${window.location.pathname}static/blocks-media/`,
     comments: false,
     collapse: false,
     scrollbars: true
