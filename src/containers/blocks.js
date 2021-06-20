@@ -94,9 +94,7 @@ class Blocks extends React.Component {
 
     render () {
         const {
-          currentProjectName,
           clearPixels,
-          projectSaved,
           ...otherProps
         } = this.props;
 
@@ -391,13 +389,14 @@ Blocks.defaultProject = {
 
 Blocks.defaultOptions = {
     zoom: {
+        controls: true,
         startScale: 0.75,
         wheel: true
     },
     grid: {
         spacing: 40,
         length: 2,
-        colour: '#ddd'
+        colour: '#ccc'
     },
     colours: {
         workspace: '#f4f4f4',
@@ -414,7 +413,7 @@ Blocks.defaultOptions = {
         dragShadowOpacity: 0.6
     },
     comments: true,
-    collapse: false,
+    collapse: true,
     horizontalLayout: false,
     toolboxPosition: 'beginning',
     scrollbars: true,
@@ -424,19 +423,13 @@ Blocks.defaultOptions = {
 
 Blocks.propTypes = {
     vm: PropTypes.instanceOf(VM).isRequired,
-    // currentProjectName: PropTypes.string.isRequired
 };
-
-const mapStateToProps = state => ({
-  currentProjectName: state.projectState.currentProjectName,
-  projectSaved: state.projectState.projectSaved
-});
 
 const mapDispatchToProps = dispatch => ({
     clearPixels: () => dispatch(clearThePixels())
 });
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(Blocks);
