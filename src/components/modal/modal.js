@@ -9,7 +9,7 @@ import CloseButton from '../close-button/close-button.js';
 import backIcon from '../../lib/assets/icon--back.svg';
 import helpIcon from '../../lib/assets/icon--help.svg';
 
-import styles from './modal.css';
+import styles from './modal.scss';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -26,29 +26,29 @@ const ModalComponent = props => (
         onRequestClose={props.onRequestClose}
     >
         <div dir="ltr" className={styles.box}>
-            <div className={classNames(styles.header, props.headerClassName)}>
-                {/* {props.onHelp ? (
-                    <div
-                        className={classNames(
-                            styles.headerItem,
-                            styles.headerItemHelp
-                        )}
-                    >
-                        <Button
-                            className={styles.helpButton}
-                            iconSrc={helpIcon}
-                            onClick={props.onHelp}
-                        >
-                            Help
-                        </Button>
-                    </div>
-                ) : null} */}
+            <div className={props.noHeader ? styles.noHeader : styles.header}>
+            <div className={classNames(styles.headerContents, props.headerClassName)}>
                 <div
                     className={classNames(
-                        styles.headerItem,
-                        styles.headerItemTitle
+                        styles.headerButton,
                     )}
                 >
+                  {props.onHelp ? (
+                  <Button
+                      className={styles.helpButton}
+                      iconSrc={helpIcon}
+                      onClick={props.onHelp}
+                  >
+                      Help
+                  </Button>
+                  ) : null}
+                </div>
+                {!props.noHeader ?
+                  <div className={classNames(
+                      styles.headerItem,
+                      styles.headerItemTitle
+                  )}
+                  >
                     {/* {props.headerImage ? (
                         <img
                             className={styles.headerImage}
@@ -56,28 +56,33 @@ const ModalComponent = props => (
                         />
                     ) : null} */}
                     {props.contentLabel}
-                </div>
-                <div
-                    className={classNames(
-                        styles.headerItem,
-                        styles.headerItemClose
-                    )}
+                  </div>
+                  : null
+                }
+
+                <div className={classNames(
+                  styles.headerButton,
+                  {
+                    [styles.rightHeaderButton] : !props.fullScreen
+                  } 
+                )}
                 >
-                    {props.fullScreen ? (
-                        <Button
-                            className={styles.backButton}
-                            iconSrc={backIcon}
-                            onClick={props.onRequestClose}
-                        >
-                            Back
-                        </Button>
-                    ) : (
-                        <CloseButton
-                            size={CloseButton.SIZE_LARGE}
-                            onClick={props.onRequestClose}
-                        />
-                    )}
+                  {props.fullScreen ? (
+                      <Button
+                          className={styles.backButton}
+                          iconSrc={backIcon}
+                          onClick={props.onRequestClose}
+                      >
+                          Back
+                      </Button>
+                  ) : (
+                      <CloseButton
+                          size={CloseButton.SIZE_LARGE}
+                          onClick={props.onRequestClose}
+                      />
+                  )}
                 </div>
+            </div>
             </div>
             {props.children
               ? props.children
@@ -93,13 +98,19 @@ ModalComponent.propTypes = {
     contentLabel: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object
-    ]).isRequired,
+    ]),
     fullScreen: PropTypes.bool,
     headerClassName: PropTypes.string,
     headerImage: PropTypes.string,
     isRtl: PropTypes.bool,
     onHelp: PropTypes.func,
-    onRequestClose: PropTypes.func
+    onRequestClose: PropTypes.func,
+    noHeader: PropTypes.bool
 };
+
+ModalComponent.defaultProps = {
+  noHeader : false,
+  isRtl : false
+}
 
 export default ModalComponent;
