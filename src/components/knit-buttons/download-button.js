@@ -6,7 +6,8 @@ import {ReactComponent as uploadCodeButton} from '../../lib/assets/icon--upload_
 
 import styles from './download-button.css';
 
-import Tooltip from '@material-ui/core/Tooltip'; 
+import Tooltip from '../tooltip/tooltip.js'; 
+
 import SvgIcon from '@material-ui/core/SvgIcon';
 import IconButton from '@material-ui/core/IconButton';
 
