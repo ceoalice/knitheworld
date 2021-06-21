@@ -1,16 +1,16 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebPackPlugin = require('copy-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-const path = require('path');
 
 // postcss
-const postCSSConfig = require('./postcss.config')
+const postCSSConfig = require('./postcss.config');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jpg|wav|gif)$/,
+        test: /\.(jpg|wav|gif|png)$/,
         loader: 'file-loader',
         options: {
           outputPath: 'static/assets/'
@@ -32,6 +32,7 @@ module.exports = {
         exclude: /node_modules/,
         use: ['@svgr/webpack', 'file-loader'],
       },
+      
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -42,13 +43,45 @@ module.exports = {
           }
         }
       },
+      
       // https://github.com/postcss/postcss#usage
       // https://github.com/DavidWells/PostCSS-tutorial
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 2,
+              localIdentName: '[name]_[local]_[hash:base64:5]',
+              camelCase: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+                ident: 'postcss',
+                plugins: function () {
+                    return [autoprefixer({browsers: ['last 3 versions', 'Safari >= 8', 'iOS >= 8']})];;
+                }
+            }
+          },
+          'sass-loader'
+        ]
+      },
+      
       {
         test: /\.css$/,
         exclude: /node_modules/,
         use: [
           'style-loader',
+          // {
+          //   loader: 'style-loader',
+          //   options: { injectType: 'singletonStyleTag' },
+          // },
           {
             loader: 'css-loader',
             options: {
@@ -60,6 +93,7 @@ module.exports = {
             // options: {
             //   importLoaders: 1,
             //   // modules: {
+            //   //     localIdentName: '[name]_[local]_[hash:base64:5]',
             //   //     exportLocalsConvention: "camelCase"
             //   // },
             // }
