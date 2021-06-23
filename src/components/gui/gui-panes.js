@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './gui.css';
+import styles from './gui.scss';
 
 import SplitPane from 'react-split-pane';
 

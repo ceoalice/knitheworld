@@ -1,6 +1,5 @@
-:root {
-  --topnav-height: 48px;
-}
+@import "../../css/units.scss";
+@import "../../css/colors.scss";
 
 .simulatorContainer {
   width: 100%;
@@ -30,20 +29,20 @@
 .flexbox { 
   /* parent container for Simulator and Blocks */
   width: 100vw;
-  height: calc(100vh - var(--topnav-height)) !important;
+  height: calc(100vh - #{$nav-height}) !important;
   display: flex;
   flex-direction: row;
 }
 .flexbox > span {
   width: 7px;
   min-width: 7px;
-  background: #fff;
+  background: $ui-white;
   z-index: 500;
   cursor: col-resize;
 }
 
 .flexbox > span:hover {
-  background: #eee;
+  background: $ui-splitpane;
 }
 
 .version {
@@ -51,7 +50,7 @@
   right: 0;
   bottom: 0;
   z-index : 500; 
-  color: white;
+  color: $ui-white;
   font-size: 15px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: absolute;

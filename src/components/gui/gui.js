@@ -19,7 +19,7 @@ import SaveAsModal from "../../containers/save-as-modal.js";
 import ShareModal from "../../containers/share-modal.js";
 import CustomProcedures from "../../containers/custom-procedures.js";
 
-import styles from './gui.css';
+import styles from './gui.scss';
 
 const GUIComponent = props => {
     return (
