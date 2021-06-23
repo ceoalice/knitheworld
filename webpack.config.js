@@ -6,6 +6,8 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const postCSSConfig = require('./postcss.config');
 const autoprefixer = require('autoprefixer');
 
+const path = require('path')
+
 module.exports = {
   module: {
     rules: [
