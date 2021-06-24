@@ -24,7 +24,7 @@ import styles from './gui.scss';
 const GUIComponent = props => {
     return (
         <React.Fragment>
-            <NavBar />
+            <NavBar vm={props.vm} />
      
             { props.sampleProjectsVisible 
               ? <SampleProjectsModal />
