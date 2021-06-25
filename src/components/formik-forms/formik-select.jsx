@@ -5,9 +5,8 @@ import {Field} from 'formik';
 
 import Tooltip from '../tooltip/tooltip'; 
 
-import selectStyles from '../forms/select.scss';
+import selectStyles from './formik-select.scss';
 import rowStyles from './row.scss';
-import './formik-select.scss';
 
 const FormikSelect = ({
     className,
