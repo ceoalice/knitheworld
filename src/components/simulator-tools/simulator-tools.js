@@ -7,7 +7,7 @@ import RowCountComponent from './row-count.js';
 import styles from './simulator-tools.css';
 
 import {ReactComponent as downloadStitchButton} from '../../lib/assets/icon--download_stitches.svg';
-import Tooltip from '@material-ui/core/Tooltip'; 
+import Tooltip from '../tooltip/tooltip'; 
 import SvgIcon from '@material-ui/core/SvgIcon';
 import IconButton from '@material-ui/core/IconButton';
 
