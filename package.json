@@ -61,7 +61,6 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "_comment": "react-style-proptype not needed",
     "email-validator": "^2.0.4",
     "file-saver": "^2.0.5",
     "firebase": "^8.6.1",
