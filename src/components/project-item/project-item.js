@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import CloseButton from '../close-button/close-button.js';
-import styles from './project-item.css';
 import classNames from 'classnames';
 
 import EditIcon from '@material-ui/icons/Edit';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import EditModal from "./edit-modal.js"
 import DownloadModal from "./download-modal.js";
+
+import styles from './project-item.scss';
 
 function projectSize(kilobytes) {
   if (kilobytes > 1e+6) {
@@ -120,12 +121,10 @@ const ProjectItemComponent = (props) => {
                 <div>
                   <SaveAltIcon
                   onClick={handleClickDownload}
-                  style={{ color: "white" }}
                   className={classNames(styles.icon,styles.save)} 
                   /> 
                   <EditIcon 
                   onClick={handleClick}
-                  style={{ color: "white" }}
                   className={classNames(styles.icon,styles.edit)} 
                   />
                 </div>
@@ -136,10 +135,9 @@ const ProjectItemComponent = (props) => {
           {
             !props.isExample 
               ? (
-                <div className={classNames(styles.closeButton)}>
-                  <CloseButton
-                    buttonType="trash"
-                    size={CloseButton.SIZE_LARGE}
+                <div className={classNames(styles.deleteProjectButton)}>
+                  <DeleteForeverIcon
+                    fontSize="large"
                     onClick={props.onClickClose}
                   />
                 </div>

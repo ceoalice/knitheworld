@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Modal from '../../containers/modal';
-import styles from './save-as-modal.css';
-import Button from "../button/button.js";
+
+import Button from '@material-ui/core/Button';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
+import styles from './save-as-modal.scss';
 
 const SaveAsModalComponent = props => (
     <Modal

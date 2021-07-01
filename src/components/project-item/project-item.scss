@@ -21,9 +21,11 @@
 .icon {
   background-color:  hsla(0, 0%, 0%, 0.15);
   border-radius: 50%;
+  color: white !important;
   padding: 2px;
   position: absolute;
-  margin : 10px 15px;  
+  margin : 10px 15px;
+  transition: all 0.15s ease-out !important;
 }
 
 .icon:hover {
@@ -40,17 +42,17 @@
   bottom: 30px;
 }
 
-.close-button {
+.delete-project-button {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  z-index: auto;
   display: flex;
   align-items: center;
   justify-content: center;
 
   overflow: hidden;  /* Mask the icon animation */
-  width: 2.5rem;
-  height: 2.5rem;
-  /* background-color: $ui-white-transparent; */
-  background-color: hsla(0, 100%, 100%, 0.25); 
-  /* color: $ui-white; */
+  background-color: rgba(211, 211, 211, 0.9); 
   color: white;
   border-radius: 50%;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -59,14 +61,11 @@
   transition: all 0.15s ease-out;
 }
 
-.close-button {
-  position: absolute;
-  top: .5rem;
-  right: .5rem;
-  z-index: auto;
+.delete-project-button:hover {
+  background-color: rgba(102, 102, 102, 0.9);
 }
 
-.close-button:focus {
+.delete-project-button:focus {
   outline: none !important;
   -webkit-tap-highlight-color: transparent;
 }

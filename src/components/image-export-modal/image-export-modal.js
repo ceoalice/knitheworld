@@ -3,7 +3,7 @@ import React from 'react';
 
 import Modal from '../../containers/modal';
 import styles from './image-export-modal.css';
-import Button from "../button/button.js"
+import Button from '@material-ui/core/Button';
 
 const ImageExportModalComponent = props => (
     <Modal

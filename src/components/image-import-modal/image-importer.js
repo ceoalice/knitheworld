@@ -2,9 +2,9 @@ import React from 'react';
 import RgbQuant from "rgbquant";
 import {blocksToXML, RGBToHex} from "./helpers.js";
 
-import styles from './image-importer.css';
+import styles from './image-importer.scss';
 
-import Button from '../button/button.js';
+import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
 import { updateProjectName } from '../../reducers/project-state.js';
@@ -180,7 +180,7 @@ class ImageImporterComponent extends React.Component {
                 <input
                   name="numPixels"
                   type="number"
-                  min="1" max="1000"
+                  min="1" max="100"
                   value={this.state.numPixels}
                   onChange={this.handleInputChange} 
                   />

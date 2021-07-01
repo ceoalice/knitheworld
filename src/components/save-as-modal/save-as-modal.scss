@@ -1,3 +1,5 @@
+@import "../../css/colors.scss";
+
 .body {
   /* background: $ui-white; */
   display: flex;
@@ -14,8 +16,9 @@
 }
 
 .submit-button {
-  color: white;
+  color: white !important;
   padding: 10px;
+  background-color: $ui-tertiary !important; 
   background: hsla(215, 100%, 65%, 0.9);
 }
 

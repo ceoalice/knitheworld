@@ -3,8 +3,6 @@ import React from 'react';
 
 import Modal from '../../containers/modal';
 import styles from './share-modal.css';
-// import Button from "../button/button.js";
-
 import ProjectManger from "../../lib/project-manager.js";
 import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, EmailShareButton, EmailIcon } from "react-share";
 

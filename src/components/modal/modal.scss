@@ -1,5 +1,6 @@
 @import "../../css/colors.scss";
 @import "../../css/units.scss";
+@import "../../css/typography.scss";
 
 .box {
   display: flex;
@@ -81,7 +82,39 @@ $sides: 0rem;
 
 .no-header {
   position: absolute;
+  pointer-events: none;
   width: 100%;
+}
+
+.close-button {
+  background-color: hsla(0, 0%, 0%, 0.15) !important;
+  color: white !important;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out !important;
+  pointer-events: auto;
+}
+
+.close-button:hover {
+  transform: scale(1.1, 1.1);
+  background-color: hsla(0, 0%, 0%, 0.30) !important;
+}
+
+.back-button {
+  font-weight: normal;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.back-button div {
+  font-weight: normal;
+  font-family: $font-family-helvetica;
+  color: $ui-white;
+  padding-left: 10px;
+  font-size: $font-size;
 }
 
 .header {
@@ -154,37 +187,9 @@ $sides: 0rem;
     cursor: default;
 }
 
-// [dir="ltr"] .header-item-title {
-//     margin: 0 -$sides 0 0;
-// }
-
-// [dir="rtl"] .header-item-title {
-//     margin: 0 0 0 -$sides;
-// }
-
-// .full-screen [dir="ltr"] .header-item-title {
-//     margin: 0 0 0 -$sides;
-// }
-
-// .full-screen [dir="rtl"] .header-item-title {
-//     margin: 0 -$sides 0 0;
-// }
-
-// .header-item-close {
-//     flex-basis: $sides;
-//     justify-content: flex-end;
-//     z-index: 1;
-// }
-
 .full-screen .header-item-close {
     order: -1;
     justify-content: flex-start;
-}
-
-.back-button {
-    font-weight: normal;
-    padding-right: 0;
-    padding-left: 0;
 }
 
 [dir="rtl"] .back-button img {

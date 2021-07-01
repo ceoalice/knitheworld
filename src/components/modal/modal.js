@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactModal from 'react-modal';
 
-import Button from '../button/button.js';
-import CloseButton from '../close-button/close-button.js';
-
-import backIcon from '../../lib/assets/icon--back.svg';
-import helpIcon from '../../lib/assets/icon--help.svg';
-
-import styles from './modal.scss';
-
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { ReactComponent as BackIcon} from '../../lib/assets/icon--back.svg';
+import { ReactComponent as HelpIcon} from '../../lib/assets/icon--help.svg';
+
+import styles from './modal.scss';
 
 const ModalComponent = props => (
     <ReactModal
@@ -34,13 +33,13 @@ const ModalComponent = props => (
                     )}
                 >
                   {props.onHelp ? (
-                  <Button
+                    <Button
                       className={styles.helpButton}
-                      iconSrc={helpIcon}
                       onClick={props.onHelp}
-                  >
-                      Help
-                  </Button>
+                    >
+                      <HelpIcon /> 
+                      <div> Help </div>
+                    </Button>
                   ) : null}
                 </div>
                 {!props.noHeader ?
@@ -67,19 +66,23 @@ const ModalComponent = props => (
                   } 
                 )}
                 >
-                  {props.fullScreen ? (
-                      <Button
-                          className={styles.backButton}
-                          iconSrc={backIcon}
-                          onClick={props.onRequestClose}
-                      >
-                          Back
-                      </Button>
+                  {props.fullScreen ? (    
+                    <Button
+                      className={classNames(styles.backButton)}
+                      onClick={props.onRequestClose}
+                    >
+                        <BackIcon /> 
+                        <div> Back </div>
+                    </Button>
+             
                   ) : (
-                      <CloseButton
-                          size={CloseButton.SIZE_LARGE}
-                          onClick={props.onRequestClose}
-                      />
+                    <IconButton 
+                      size='small'
+                      onClick={props.onRequestClose}
+                      className={styles.closeButton}
+                    >
+                      <CloseIcon/>
+                    </IconButton>
                   )}
                 </div>
             </div>
@@ -110,7 +113,8 @@ ModalComponent.propTypes = {
 
 ModalComponent.defaultProps = {
   noHeader : false,
-  isRtl : false
+  isRtl : false,
+  fullScreen: false
 }
 
 export default ModalComponent;
