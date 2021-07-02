@@ -174,6 +174,7 @@ const mapStateToProps = state => ({
     fullscreenVisible: state.modals.fullscreenSimulator,
     shareProjectVisible : state.modals.shareProject,
     customProceduresVisible: state.customProcedures.active,
+    joinVisible: state.modals.join,
     images: state.images
 });
 

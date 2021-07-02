@@ -8,6 +8,7 @@ const MODAL_SAMPLE_PROJECTS = 'sampleProjects';
 const MODAL_LOCAL_PROJECTS = 'localProjects';
 const MODAL_SAVE_AS = 'saveAs';
 const MODAL_SHARE_PROJECT = "shareProject";
+const MODAL_JOIN = "join";
 
 const initialState = {
     [MODAL_SIMULATOR]: false, 
@@ -16,7 +17,8 @@ const initialState = {
     [MODAL_SAMPLE_PROJECTS]: false,
     [MODAL_LOCAL_PROJECTS]: false,
     [MODAL_SAVE_AS]: false,
-    [MODAL_SHARE_PROJECT]: false
+    [MODAL_SHARE_PROJECT]: false,
+    [MODAL_JOIN] : false
 };
 
 const reducer = function (state, action) {
@@ -57,7 +59,6 @@ const openImageImport = function () {
   return openModal(MODAL_IMAGE_IMPORT);
 };
 const closeImageImport = function () {
-  console.log("closeImageImport")
   return closeModal(MODAL_IMAGE_IMPORT);
 };
 
@@ -95,6 +96,14 @@ const openShareProject = function() {
 const closeShareProject = function() {
   return closeModal(MODAL_SHARE_PROJECT);
 }
+
+const openJoin = function() {
+  return openModal(MODAL_JOIN);
+}
+const closeJoin = function() {
+  return closeModal(MODAL_JOIN);
+}
+
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -111,5 +120,7 @@ export {
     openSaveAs,
     closeSaveAs,
     openShareProject,
-    closeShareProject
+    closeShareProject,
+    openJoin,
+    closeJoin
 };

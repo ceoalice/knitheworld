@@ -38,7 +38,7 @@ const ModalComponent = props => (
                       onClick={props.onHelp}
                     >
                       <HelpIcon /> 
-                      <div> Help </div>
+                      <div style={{textTransform: "none"}}> Help </div>
                     </Button>
                   ) : null}
                 </div>
@@ -72,7 +72,7 @@ const ModalComponent = props => (
                       onClick={props.onRequestClose}
                     >
                         <BackIcon /> 
-                        <div> Back </div>
+                        <div style={{textTransform: "none"}}> Back </div>
                     </Button>
              
                   ) : (
