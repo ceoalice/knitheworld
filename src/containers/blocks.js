@@ -11,6 +11,7 @@ import defaultToolbox from '../lib/default-toolbox.js';
 import {connect} from 'react-redux';
 
 import { clearThePixels } from '../reducers/pixels.js';
+import UserManager from '../lib/user-manager.js';
 
 
 class Blocks extends React.Component {
@@ -19,6 +20,8 @@ class Blocks extends React.Component {
         // this.ScratchBlocks = VMScratchBlocks(props.vm);
         VMScratchBlocks.setVM(props.vm);
         ProjectManager.setVM(props.vm);
+        UserManager.setVM(props.vm);
+        
         this.setBlocks = this.setBlocks.bind(this);
         this.attachVM = this.attachVM.bind(this);
         this.detachVM = this.detachVM.bind(this);
