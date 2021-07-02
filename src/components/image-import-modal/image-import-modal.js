@@ -7,14 +7,10 @@ import styles from './image-import-modal.css';
 
 const ImageImportModalComponent = props => (
     <Modal
+        noHeader
         className={styles.modalContent}
-        contentLabel={"Import Image"}
-        // headerClassName={styles.header}
-        headerImage={props.connectionSmallIconURL}
         id="imageImportModal"
-        fullScreen={false}
         onRequestClose={props.onCancel}
-        isRtl={false}
     >
         <div className={styles.body}>
           <ImageImporter closeModal={props.onCancel}/>
@@ -26,10 +22,6 @@ ImageImportModalComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onHelp: PropTypes.func
 };
-
-// ImageImportModalComponent.defaultProps = {
-//     connectingMessage: 'Connecting'
-// };
 
 export {
   ImageImportModalComponent as default

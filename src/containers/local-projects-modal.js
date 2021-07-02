@@ -1,7 +1,6 @@
 import React from 'react';
 import LocalProjectsModalComponent from '../components/local-projects-modal/local-projects-modal.js';
 import { closeLocalProjects } from '../reducers/modals.js';
-import { updateProjectName } from '../reducers/project-state.js';
 
 import {connect} from 'react-redux';
 
@@ -60,7 +59,6 @@ class LocalProjectsModal extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onCancel: () => dispatch(closeLocalProjects()),
-    updateProjectName : (value) => dispatch(updateProjectName(value))
 });
 
 export default connect(
