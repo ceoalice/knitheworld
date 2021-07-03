@@ -76,6 +76,7 @@ class GUI extends React.Component {
         this.vm.on('PROJECT_CHANGED',this.checkProjectChanged);
         this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectName);
         this.vm.on('PROJECT_LOADING', this.handleProjectLoading);
+        window.addEventListener("beforeunload", this.handleBeforeUnload);
     }
 
 
@@ -88,10 +89,24 @@ class GUI extends React.Component {
         this.vm.removeListener('PROJECT_CHANGED',this.checkProjectChanged);
         this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectName);
         this.vm.removeListener('PROJECT_LOADING', this.handleProjectLoading);
+        window.removeEventListener("beforeunload", this.handleBeforeUnload);
     }
 
     async handleProjectName() { 
       this.props.updateProjectName(await ProjectManager.getCurrentProjectName());
+    }
+
+    handleBeforeUnload(e) {
+      // warn site reloading on non-development url
+      if (window.location.hostname != "localhost") { // don't need unload warning in development
+        e = e || window.event;
+        // For IE and Firefox prior to version 4
+        if (e) {
+            e.returnValue = 'Sure?';
+        }
+        // For Safari
+        return 'Sure?';
+      }
     }
 
     handleProjectLoading() {
