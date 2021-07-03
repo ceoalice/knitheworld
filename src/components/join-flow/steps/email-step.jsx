@@ -154,7 +154,7 @@ class EmailStep extends React.Component {
                                 // />
                             )}
                             headerImgClass={styles["email-step-image"]}
-                            headerImgSrc="/static/email-header.png"
+                            headerImgSrc="/static/images/email-header.png"
                             innerClassName={styles["join-flow-inner-email-step"]}
                             nextButton={
                               'Create Your Account'

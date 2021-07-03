@@ -80,7 +80,7 @@ class CountryStep extends React.Component {
                         <JoinFlowStep
                             step={this.props.step}
                             headerImgClass={styles["country-step-image"]}
-                            headerImgSrc="/static/country-header.png"
+                            headerImgSrc="/static/images/country-header.png"
                             innerClassName={styles["join-flow-inner-country-step"]}
                             title={
                               "What country do you live in?"
