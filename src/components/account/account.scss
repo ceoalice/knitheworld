@@ -1,0 +1,46 @@
+
+@import "../../css/colors.scss";
+@import "../../css/typography.scss";
+
+.account {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: $font-family-helvetica;
+}
+.username {
+  color: $ui-white;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.account a {
+  // text-align: center;
+  line-height: 100%;
+}
+
+.signin {
+  display: flex; 
+  flex-direction: column;
+  background-color: $ui-white-15percent;
+  padding: 10px; 
+  width: 200px;
+}
+
+.account-tools {
+  display: flex; 
+}
+
+.icon {
+  background-color:  hsla(0, 0%, 30%, 0.15);
+  border-radius: 50%;
+  padding: 2px;
+  color: $ui-white !important;
+  // position: absolute;
+  margin: 0 15px;
+  transition: all 0.15s ease-out !important;
+}
+
+.icon:hover {
+  background-color: hsla(0, 0%, 30%, 0.4);
+}

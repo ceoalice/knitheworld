@@ -11,7 +11,9 @@
   justify-content: space-between;
 }
 
-.topnav a, .topnav-left a {
+.topnav button {
+  border: none;
+  background-color: $ui-primary;
   float: left;
   color: white;
   text-align: center;
@@ -23,9 +25,10 @@
   font-size: 1rem;
   font-weight: normal;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+.topnav button:hover {
   background-color: $ui-secondary;
 }
 

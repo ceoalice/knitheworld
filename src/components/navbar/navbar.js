@@ -12,39 +12,45 @@ import { ReactComponent as KnitheworldLogo} from '../../lib/assets/knitheworld-l
 import Account from "../account/account"
 
 const NavBarComponent = props => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState({
+    save : null,
+    upload: null
+  });
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl({ ...anchorEl, [event.currentTarget.name]: event.currentTarget });
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (el) => {
+    setAnchorEl({ ...anchorEl, [el]: null });
   };
-
+  
+  const {save, upload} = anchorEl;
     return (
         <React.Fragment>
             <Toolbar disableGutters variant="dense" className={styles.topnav}>
               <div className={styles.topnavLeft}>
                 <KnitheworldLogo className={styles.logo} />
-                <a role="button" style={{cursor:'pointer'}} onClick={props.newProject}>
+                <button onClick={props.newProject}>
                   New
-                </a>
-                <a role="button" style={{cursor:'pointer'}} onClick={props.saveProject}>
+                </button>
+                <button name="save" onClick={handleClick}>
                   Save
-                </a>
-                <a role="button" style={{cursor:'pointer'}} onClick={handleClick}>
+                </button>
+                <button name="upload" onClick={handleClick}>
                   Upload
-                </a>
-                <a role="button" style={{cursor:'pointer'}} onClick={props.openLocalProjects}>
-                  My Projects
-                </a>
-                <a role="button" style={{cursor:'pointer'}} onClick={props.openSampleProjects}>
+                </button>
+                <button onClick={props.openSampleProjects}>
                   Examples
-                </a>
-                <a role="button" style={{cursor:'pointer'}} onClick={props.openShareProject}>
+                </button>
+
+                { props.signedIn 
+                ? <button onClick={props.openShareProject}>
                   Share
-                </a>
+                </button>
+                : null
+                }
+                
                 <input
                     type="file"
                     className={styles.fileInput}
@@ -57,14 +63,32 @@ const NavBarComponent = props => {
 
               <Menu
                 id="upload-menu"
-                anchorEl={anchorEl}
+                anchorEl={upload}
                 keepMounted
                 // disableAutoFocusItem
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+                open={Boolean(upload)}
+                onClose={()=> handleClose('upload')}
               >
-                <MenuItem onClick={() => { props.uploadCode(); handleClose(); }}> File </MenuItem>
-                <MenuItem onClick={() => { props.openImageImport(); handleClose(); }}> Image </MenuItem>
+                <MenuItem onClick={() => { props.uploadCode(); handleClose('upload'); }}> File </MenuItem>
+                <MenuItem onClick={() => { props.openImageImport(); handleClose('upload'); }}> Image </MenuItem>
+              </Menu>
+
+              <Menu
+                id="save-menu"
+                anchorEl={save}
+                keepMounted
+                open={Boolean(save)}
+                onClose={()=> handleClose('save')}
+              >
+                {props.signedIn 
+                ? <MenuItem onClick={() => { props.saveProject(); handleClose('save'); }}> Save now </MenuItem>
+                : null
+                } 
+                {props.signedIn
+                ? <MenuItem onClick={() => { props.saveAsCopy(); handleClose('save'); }}> Save as copy </MenuItem>
+                : null
+                }
+                <MenuItem onClick={() => { props.downloadCode(); handleClose('save'); }}> Save to computer </MenuItem>
               </Menu>
               </Toolbar>
         </React.Fragment>
@@ -74,7 +98,9 @@ const NavBarComponent = props => {
 NavBarComponent.propTypes = {
     vm: PropTypes.instanceOf(VM).isRequired,
     uploadCode: PropTypes.func.isRequired,
+    downloadCode: PropTypes.func.isRequired,
     saveProject: PropTypes.func.isRequired,
+    saveAsCopy: PropTypes.func.isRequired,
     newProject: PropTypes.func.isRequired,
     openImageImport : PropTypes.func.isRequired,
     openImageExport: PropTypes.func.isRequired,
