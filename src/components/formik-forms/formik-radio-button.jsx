@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Field} from 'formik';
 
-import FormikInput from'.//formik-input.jsx';
+import FormikInput from'./formik-input.jsx';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
 
-import formStyles from './formik-forms.scss';
-import radioStyles from './formik-radio-button.scss';
-import './row.scss';
+import styles from './formik-radio-button.scss';
 
 const FormikRadioButtonSubComponent = ({
     children,
@@ -20,32 +20,22 @@ const FormikRadioButtonSubComponent = ({
     ...props
 }) => (
     <React.Fragment>
-        <input
-            checked={value === field.value}
-            className={classNames(
-              radioStyles['formik-radio-button'],
-                className
-            )}
+      <FormControlLabel 
+        className={labelClassName}
+        control={
+          <Radio 
+            color="primary"
+            className={className}
             id={id}
-            name={field.name}
-            type="radio"
+            checked={value === field.value}
             value={value}
-            onBlur={field.onBlur} /* eslint-disable-line react/jsx-handler-names */
-            onChange={field.onChange} /* eslint-disable-line react/jsx-handler-names */
-            {...props}
-        />
-        {label && (
-            <label
-                className={classNames(
-                    formStyles['formik-label'],
-                    radioStyles['formik-radio-label'],
-                    labelClassName
-                )}
-                htmlFor={id}
-            >
-                {label}
-            </label>
-        )}
+            name={field.name}
+            onBlur={field.onBlur} 
+            onChange={field.onChange}
+          />
+        } 
+        label={label}
+      />
         {children}
     </React.Fragment>
 );
@@ -78,11 +68,11 @@ const FormikRadioButton = ({
     ...props
 }) => (
     <Field
-        className={className}
+        className={classNames(styles['formik-radio-button'], className)}
         component={FormikRadioButtonSubComponent}
         id={id}
         label={label}
-        labelClassName={isCustomInput ? radioStyles['formik-radio-label-other'] : ''}
+        labelClassName={styles['formik-radio-label']}
         name={name}
         value={value}
         {...props}
@@ -92,10 +82,10 @@ const FormikRadioButton = ({
                 autoCapitalize="off"
                 autoComplete="off"
                 autoCorrect="off"
-                className={radioStyles["formik-radio-input"]}
+                className={styles["formik-radio-input"]}
                 name="custom"
                 spellCheck={false}
-                wrapperClassName={radioStyles["formik-radio-input-wrapper"]}
+                wrapperClassName={styles["formik-radio-input-wrapper"]}
                 onChange={event => onSetCustom(event.target.value)}
                 onFocus={event => onSetCustom(event.target.value)}
                 onSetRef={onSetCustomRef}

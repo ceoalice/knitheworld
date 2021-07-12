@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Field} from 'formik';
 
-import rowStyles from './row.scss';
-import inputStyles from './formik-input.scss';
+import styles from './formik-input.scss';
 
 import Tooltip from '../tooltip/tooltip'; 
 
@@ -13,7 +12,6 @@ const FormikInput = ({
     error,
     onSetRef,
     toolTip,
-    validationClassName,
     wrapperClassName,
     ...props
 }) => {
@@ -23,12 +21,7 @@ const FormikInput = ({
   }
   return (
     <div
-        className={classNames(
-            'col-sm-9',
-            rowStyles['row'],
-            rowStyles['row-with-tooltip'],
-            wrapperClassName
-        )}
+        className={wrapperClassName}
     >
         <Tooltip 
           open={
@@ -42,7 +35,7 @@ const FormikInput = ({
             <div>
               <Field
               className={classNames(
-                  inputStyles['formik-input'],
+                  styles['formik-input'],
                   {fail: error},
                   className
               )}
@@ -63,7 +56,6 @@ FormikInput.propTypes = {
     onSetRef: PropTypes.func,
     toolTip: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     type: PropTypes.string,
-    validationClassName: PropTypes.string,
     wrapperClassName: PropTypes.string
 };
 

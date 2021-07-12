@@ -1,40 +1,12 @@
 @import "../../css/colors.scss";
 
-.formik-radio-label {
-    margin-left: 1rem;
+
+.formik-radio-label :global(.MuiFormControlLabel-label) {
+  font-size: .75rem ;
 }
 
-input[type="radio"].formik-radio-button {
-    margin-top: 1px;
-    border: 1px solid $box-shadow-light-gray;
-    border-radius: 50%;
-    width: 1rem;
-    min-width: 1rem; /* necessary to prevent width from being too small in 'other' case */
-    height: 1rem;
-    appearance: none;
-    background-color: $ui-white;
-
-    &:checked,
-    &:focus {
-        outline: none;
-    }
-
-    &:checked {
-        transition: all .25s ease;
-        box-shadow: 0 0 0 2px $ui-blue-25percent;
-        border: 1px solid $ui-blue;
-        background-color: $ui-white;
-
-        &:after {
-            display: block;
-            transform: translate(.125rem, .125rem);
-            border-radius: 50%;
-            background-color: $ui-blue;
-            width: .625rem;
-            height: .625rem;
-            content: "";
-        }
-    }
+.formik-radio-button:global(.MuiRadio-colorPrimary.Mui-checked) {
+  color: $ui-blue;
 }
 
 input.formik-radio-input, .formik-radio-input input {
@@ -51,11 +23,6 @@ input.formik-radio-input, .formik-radio-input input {
 
 .formik-radio-input-wrapper {
     margin-left: auto;
-    margin-right: .25rem;
+    margin-right: .5rem;
     width: 10.25rem;
-}
-
-.formik-radio-label-other {
-    max-width: 7rem;
-    margin-right: .25rem;
 }

@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Field} from 'formik';
 
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import checkboxStyles from './formik-checkbox.scss';
-import formStyles from './formik-forms.scss';
 
 const FormikCheckboxSubComponent = ({
     field,
@@ -15,29 +17,19 @@ const FormikCheckboxSubComponent = ({
     ...props
 }) => (
     <div className={classNames('checkbox', outerClassName)}>
-        <input
-            checked={field.value}
-            className={checkboxStyles["formik-checkbox"]}
-            id={id}
-            name={field.name}
-            type="checkbox"
-            value={field.value}
-            onBlur={field.onBlur}
-            onChange={field.onChange}
-            {...props}
+        <FormControlLabel
+          control={
+            <Checkbox
+              className={checkboxStyles["formik-checkbox"]}
+              checked={field.value}
+              onChange={field.onChange}
+              name={field.name}
+              onBlur={field.onBlur}
+              color="primary"
+            />
+          }
+          label={label}
         />
-        {label && (
-            <label
-                className={classNames(
-                    checkboxStyles['formik-checkbox-label'],
-                    formStyles['formik-label'],
-                    labelClassName
-                )}
-                htmlFor={id}
-            >
-                {label}
-            </label>
-        )}
     </div>
 );
 

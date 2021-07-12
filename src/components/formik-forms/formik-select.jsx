@@ -1,35 +1,53 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Field} from 'formik';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputBase from '@material-ui/core/InputBase';
+
 import Tooltip from '../tooltip/tooltip'; 
 
-import selectStyles from './formik-select.scss';
-import rowStyles from './row.scss';
+import styles from './formik-select.scss';
+
+const SelectSubComponent = ({
+  field, // { name, value, onChange, onBlur }
+  ...props
+}) => {
+  return (
+      <FormControl style={{minWidth:'100%'}}>
+        <InputLabel shrink>
+          {props.label}
+        </InputLabel>
+        <Select
+          fullWidth
+          input={<InputBase className={styles['formik-select']} />}
+          {...field}
+        >
+          {props.children}
+        </Select>
+      </FormControl>
+)};
 
 const FormikSelect = ({
     className,
     error,
     options,
-    validationClassName,
     ...props
 }) => {
     const optionsList = options.map((item, index) => (
-        <option
+        <MenuItem
             disabled={item.disabled}
             key={index}
             value={item.value}
         >
             {item.label}
-        </option>
+        </MenuItem>
     ));
     return (
-        <div className={classNames(
-          selectStyles['select'],
-          rowStyles['row-with-tooltip']
-        )}
-        // "select row-with-tooltip"
+        <div className={className}
         >
         <Tooltip 
           open={Boolean(error)} 
@@ -37,13 +55,14 @@ const FormikSelect = ({
           mode={error ? "error" : "info" }
           placement="right">
             <div>
-            < Field
-                  className={className}
-                  component="select"
-                  {...props}
+              <Field
+                type='select'
+                className={className} 
+                component={SelectSubComponent} 
+                {...props}
               >
-                  {optionsList}
-              </Field>
+                {optionsList}
+              </Field> 
             </div>
           </Tooltip>
 
@@ -60,7 +79,6 @@ FormikSelect.propTypes = {
         label: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired
     })).isRequired,
-    validationClassName: PropTypes.string,
     // selected value
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
