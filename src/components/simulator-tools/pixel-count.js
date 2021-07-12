@@ -2,19 +2,14 @@ import React, { useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-// import {ReactComponent as AddIcon} from '../../lib/assets/icon--add.svg';
-// import {ReactComponent as RemoveIcon} from '../../lib/assets/icon--remove.svg';
-
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
 
 import {addPixelNode, removePixelNode} from '../../reducers/pixels.js';
 
 import styles from './simulator-tools.css';
-import IconButton from '@material-ui/core/IconButton';
-// import SvgIcon from '@material-ui/core/SvgIcon';
-import Input from '@material-ui/core/Input';
 
 const PixelCountComponent = props => {
   const [pixelCount, setPixelCount] = useState(props.pixelCount);

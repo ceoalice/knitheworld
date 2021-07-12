@@ -21,13 +21,7 @@
   align-items: center;
   user-select: none;
   width: 100%;
-
-  /* REQUIRED FOR SPLITPANE TO WORK */
-  /* overflow: visible; */
-  /* width: 0px; */
-  /*  */
-
-  margin-top: 5px;
+  padding: 2.5px 0;
   position: relative;
 }
 
