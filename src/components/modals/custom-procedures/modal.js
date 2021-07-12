@@ -1,4 +1,4 @@
-import bindAll from 'lodash.bindall';
+import {bindAll} from 'lodash';
 // import defaultsDeep from 'lodash.defaultsdeep';
 import PropTypes from 'prop-types';
 import React from 'react';
