@@ -3,8 +3,7 @@ import React from 'react';
 import Simulator from '../../containers/simulator.js';
 import SimulatorTools from '../../containers/simulator-tools.js';
 
-import styles from './simulator-panel.css';
-
+import styles from './simulator-panel.scss';
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -28,8 +27,5 @@ const SimulatorPanelComponent = props => {
         </React.Fragment>
     );
 };
-
-// can add back <FullscreenButton /> inside the return
-//
 
 export default SimulatorPanelComponent;

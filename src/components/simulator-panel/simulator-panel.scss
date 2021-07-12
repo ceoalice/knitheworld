@@ -7,4 +7,11 @@
 .transformContainer {
   position: absolute;
   overflow: hidden;
+  cursor: -webkit-grab; 
+  cursor: grab;
+}
+
+.transformContainer:active {
+  cursor: -webkit-grabbing; 
+  cursor: grabbing;
 }
