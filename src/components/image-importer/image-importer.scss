@@ -1,0 +1,44 @@
+@import "../../css/colors.scss";
+
+.container {
+  min-height: 70vh;
+  width: 100vw;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center !important;
+}
+
+.testForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-form {
+  min-height: 20vh;
+  width: 30vw;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center !important;
+}
+
+.upload-button {
+  color: white !important;
+  background-color: $ui-tertiary !important;
+  padding: 10px;
+  background: hsla(215, 100%, 65%, 0.9);
+}
+
+.canvas-container {
+  background-color: #DDDDDD;
+  margin: 5px;
+
+  border: 4px solid hsla(0, 100%, 100%, 0.25);
+  padding: 0;
+
+  /* border-radius: $space; */
+  border-radius: 0.5rem;
+}
