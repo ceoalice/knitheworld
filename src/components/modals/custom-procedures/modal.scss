@@ -1,0 +1,114 @@
+.modal-content {
+  width: 700px;
+  margin: 50px auto; /* This modal is taller than most, reduce top margin */
+}
+
+.body {
+  /* background: $ui-white; */
+  background: white;
+  padding: 1.5rem 2.25rem;
+}
+
+.body input[type="checkbox"],
+.body input[type="radio"] {
+  margin: 3px;
+}
+
+/* Blocks workspace for custom procedure declaration editor */
+.workspace {
+  min-height: 200px;
+  position: relative;
+}
+
+.workspace :global(.injectionDiv){
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.workspace :global(.blocklySvg) {
+  /* background-color: $ui-primary; */
+  background-color: hsla(215, 100%, 95%, 1);
+}
+
+/* Row of "card" buttons for modifying custom procedures */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-card {
+  background: white;
+  /* border: 2px solid $ui-black-transparent; */ 
+  border: 2px solid hsla(0, 0%, 0%, 0.15);
+  /* border-radius: $space; */
+  border-radius: 0.5rem;
+  /* padding: calc($space * 2); */
+  padding: calc( 0.5rem * 2);
+  text-align: center;
+  flex-grow: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-basis: 100px;
+}
+
+.option-card:hover {
+  /* border: 2px solid $motion-primary; */
+  border: 2px solid hsla(215, 100%, 65%, 1);
+  /* box-shadow: 0px 0px 0px 4px $motion-transparent; */
+  box-shadow: 0px 0px 0px 4px hsla(215, 100%, 65%, 0.35);
+}
+
+.option-card + .option-card {
+  margin-left: 1rem;
+}
+
+.option-icon {
+  max-height: 48px;
+  margin-bottom: 0.5rem;
+}
+
+.option-title {
+  font-weight: bold;
+  color: hsla(225, 15%, 40%, 1);
+}
+
+/* "Run without screen refresh" row */
+.checkbox-row {
+  margin-top: 1rem;
+}
+
+/* Confirmation buttons at the bottom of the modal */
+.button-row {
+  margin-top: 1rem;
+  font-weight: bolder;
+  text-align: right;
+}
+
+.button-row button {
+  /* border: 1px solid $ui-black-transparent;  */
+  border: 1px solid hsla(0, 0%, 0%, 0.15);
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.button-row button.ok-button {
+  /* background: $motion-primary; */
+  background: hsla(215, 100%, 65%, 1);
+  border: hsla(215, 100%, 65%, 1);
+  /* border: $motion-primary; */
+  color: white;
+}
+
+[dir="ltr"] .button-row button + button {
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .button-row button + button {
+  margin-right: 0.5rem;
+}

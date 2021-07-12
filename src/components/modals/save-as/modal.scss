@@ -1,0 +1,31 @@
+@import "../../../css/colors.scss";
+
+.body {
+  /* background: $ui-white; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  background: #fff;
+  padding: 25px;
+}
+
+.modal-content {
+  width: 300px;
+}
+
+.submit-button {
+  color: white !important;
+  padding: 10px;
+  background-color: $ui-tertiary !important; 
+  background: hsla(215, 100%, 65%, 0.9);
+}
+
+.fileInput {
+  display: none;
+}
+
+.check {
+  color: hsla(215, 100%, 65%, 0.9);
+}
