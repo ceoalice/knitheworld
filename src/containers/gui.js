@@ -179,17 +179,8 @@ class GUI extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    imageImportVisible: state.modals.imageImport,
-    imageExportVisible: state.modals.imageExport,
-    sampleProjectsVisible : state.modals.sampleProjects,
-    localProjectsVisible : state.modals.localProjects,
-    saveAsVisible : state.modals.saveAs,
     projectLoading : state.projectState.projectLoading,
     projectSaved : state.projectState.projectSaved,
-    fullscreenVisible: state.modals.fullscreenSimulator,
-    shareProjectVisible : state.modals.shareProject,
-    customProceduresVisible: state.customProcedures.active,
-    joinVisible: state.modals.join,
     images: state.images
 });
 
