@@ -7,42 +7,32 @@
   
   font-size: 1rem !important;
   font-weight: normal !important; 
-  padding: 14px 10px !important;
+  padding: 10px 10px !important;
   text-decoration: none !important;
   text-align: center !important;
   border: 3px solid rgba(0, 0, 0, 0.15);
 }
 
 :global(.MuiTooltip-arrow) {
-  // font-size: 16 !important;
-  // width: 17px !important;
-  // &:before {
-  //   border: 2px solid rgba(0, 0, 0, 0.25);
-  //   border-color: rgba(0, 0, 0, 0.25);
-  // }
+  &:before {
+    border: 2px solid rgba(0, 0, 0, 0.25);
+  }
 }
 
-
-// :global(.MuiTooltip-arrow) {
-//   &:before {
-//     background-color: red !important;
-//   }
-// }
-
-:global(#error .MuiTooltip-tooltip) {
+.error:global(.MuiTooltip-tooltip) {
   background-color: $ui-orange !important;
 }
-:global(#error .MuiTooltip-arrow) {
+.error :global(.MuiTooltip-arrow) {
   &:before {
     background-color: $ui-orange !important;
   }
 }
 
-:global(#info .MuiTooltip-tooltip) {
-  background-color: $ui-primary !important;
+.info:global(.MuiTooltip-tooltip) {
+  background-color: $ui-tertiary !important;
 }
-:global(#info .MuiTooltip-arrow) {
+.info :global(.MuiTooltip-arrow) {
   &:before {
-    background-color: $ui-primary !important;
+    background-color: $ui-tertiary !important;
   }
 }

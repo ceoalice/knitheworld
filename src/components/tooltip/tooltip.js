@@ -1,44 +1,35 @@
-import { omit } from "lodash";
+import classNames from "classnames";
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import { StylesProvider } from "@material-ui/core/styles";
-
 import Tooltip from '@material-ui/core/Tooltip';
-// import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
-import "./tooltip.scss";
+import styles from "./tooltip.scss";
 
-class KnitheWorldTooltip extends React.Component {
-
-  render() {
+const KnitheWorldTooltip = props =>  {
     return (
-      // this.props.open ? 
-        <div >
-          <Tooltip 
-            id={this.props.mode}
-            title={this.props.content || '_'}
-            placement={this.props.placement}
-            arrow={this.props.arrow}
-            {...this.props}
-
+        <div>
+          <Tooltip  
+            id ={props.mode}  
+            // className doesn't override for Tooltip use classes   
+            classes={{
+              tooltip: styles[props.mode],
+              arrow: styles[props.mode],
+            }}  
+            title={props.content || '_'}
+            {...props}
 
             // https://stackoverflow.com/questions/61139778/react-material-ui-tooltips-disable-animation
             TransitionProps={{ timeout: 0 }}
           >
-            {this.props.children}
+            {props.children}
           </Tooltip>
         </div>
-      // : 
-      //   <div> {this.props.children} </div>
     );
-  }
-
 };
 
 KnitheWorldTooltip.propTypes = {
   open: PropTypes.bool,
-  // children: PropTypes.node.isRequired,
   placement: PropTypes.string,
   content: PropTypes.oneOfType([
     PropTypes.string,
@@ -50,7 +41,7 @@ KnitheWorldTooltip.propTypes = {
 
 KnitheWorldTooltip.defaultProps = {
   arrow: true,
-  mode: "info"
+  mode: "info",
 }
 
 export default KnitheWorldTooltip;
