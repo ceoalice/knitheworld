@@ -50,7 +50,7 @@ class WelcomeStep extends React.Component {
                         <JoinFlowStep
                             step={this.props.step}
                             headerImgClass={styles["welcome-step-image"]}
-                            headerImgSrc="/static/images/welcome-header.png"
+                            headerImgSrc={`${window.location.pathname}static/images/welcome-header.png`}
                             innerClassName={styles["join-flow-inner-welcome-step"]}
                             nextButton={
                             //   this.props.createProjectOnComplete ? (

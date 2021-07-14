@@ -3,16 +3,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Formik} from 'formik';
-// const {injectIntl, intlShape} = require('react-intl');
-// const FormattedMessage = require('react-intl').FormattedMessage;
 
 import FormikRadioButton from '../../formik-forms/formik-radio-button.jsx';
 import JoinFlowStep from './join-flow-step.jsx';
 
-// const InfoButton = require('../info-button/info-button.jsx');
-
 import styles from './join-flow-steps.scss';
-import './row.scss'
 
 const GenderOption = ({
     id,
@@ -24,18 +19,12 @@ const GenderOption = ({
 }) => (
     <div
         className={classNames(
-            'col-sm-9',
-            'row',
-            'row-inline',
             styles['gender-radio-row'],
             {[styles['gender-radio-row-selected']]: (selectedValue === value)}
         )}
         onClick={() => onSetFieldValue('gender', value, false)}
     >
         <FormikRadioButton
-            className={classNames(
-                'join-flow-radio' // not anywhere?
-            )}
             id={id}
             label={label}
             name="gender"
@@ -162,9 +151,6 @@ class GenderStep extends React.Component {
                             >
                                 <FormikRadioButton
                                     isCustomInput
-                                    className={classNames(
-                                        'join-flow-radio' // not anywhere?
-                                    )}
                                     id="GenderRadioOptionCustom"
                                     label={
                                       'Another gender:'

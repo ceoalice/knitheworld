@@ -4,18 +4,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Formik} from 'formik';
 
-// const {injectIntl, intlShape} = require('react-intl');
-// const FormattedMessage = require('react-intl').FormattedMessage;
-
 import FormikSelect from '../../formik-forms/formik-select.jsx';
 import JoinFlowStep from './join-flow-step.jsx';
-
-// const InfoButton = require('../info-button/info-button.jsx');
 
 import styles from './join-flow-steps.scss';
 
 const getBirthMonthOptions = intl => ([
-    {value: 'null', label: 'Month'}, //intl.formatMessage({id: 'general.month'}), disabled: true},
     {value: '1', label: 'January'}, //intl.formatMessage({id: 'general.monthJanuary'})},
     {value: '2', label: 'February'}, //intl.formatMessage({id: 'general.monthFebruary'})},
     {value: '3', label: 'March'}, //intl.formatMessage({id: 'general.monthMarch'})},
@@ -39,11 +33,6 @@ const getBirthYearOptions = intl => {
         .map((defaultVal, i) => (
             {value: String(curYear - i), label: String(curYear - i)}
         ));
-    birthYearOptions.unshift({ // set placeholder as first option
-        disabled: true,
-        value: 'null',
-        label: 'Year' // intl.formatMessage({id: 'general.year'})
-    });
     return birthYearOptions;
 };
 
@@ -101,7 +90,7 @@ class BirthDateStep extends React.Component {
                         <JoinFlowStep
                             step={this.props.step}
                             headerImgClass={styles["birthdate-step-image"]}
-                            headerImgSrc="/static/images/birthdate-header.png"
+                            headerImgSrc={`${window.location.pathname}static/images/birthdate-header.png`}
                             innerClassName={styles["join-flow-inner-birthdate-step"]}
                             title={
                               'When were you born?'
@@ -113,28 +102,22 @@ class BirthDateStep extends React.Component {
                         >
                             <div
                                 className={classNames(
-                                    'col-sm-9',
-                                    'row',
                                     styles['birthdate-select-row']
                                 )}
                             >
                                 <FormikSelect
                                     className={classNames(
                                         styles['join-flow-select'],
-                                        styles['join-flow-select-month'],
+                                        // styles['join-flow-select-month'],
                                         {fail: errors.birth_month}
                                     )}
                                     /* hide month (left side) error, if year (right side) error exists */
                                     error={errors.birth_year ? null : errors.birth_month}
                                     id="birth_month"
                                     name="birth_month"
+                                    label="Month" //intl.formatMessage({id: 'general.month'})
                                     options={birthMonthOptions}
                                     validate={this.validateSelect}
-                                    validationClassName={classNames(
-                                      styles['validation-birthdate'],
-                                      styles['validation-birthdate-month'],
-                                      styles['validation-left']
-                                    )}
                                     /* eslint-disable react/jsx-no-bind */
                                     onFocus={() => setFieldError('birth_month', null)}
                                     /* eslint-enable react/jsx-no-bind */
@@ -142,18 +125,15 @@ class BirthDateStep extends React.Component {
                                 <FormikSelect
                                     className={classNames(
                                       styles['join-flow-select'],
-                                      styles['join-flow-select-year'],
+                                      // styles['join-flow-select-year'],
                                         {fail: errors.birth_year}
                                     )}
                                     error={errors.birth_year}
                                     id="birth_year"
                                     name="birth_year"
+                                    label="Year" //intl.formatMessage({id: 'general.year'})
                                     options={birthYearOptions}
                                     validate={this.validateSelect}
-                                    validationClassName={classNames(
-                                      styles['validation-birthdate'],
-                                      styles['validation-birthdate-year']
-                                    )}
                                     /* eslint-disable react/jsx-no-bind */
                                     onFocus={() => setFieldError('birth_year', null)}
                                     /* eslint-enable react/jsx-no-bind */
@@ -175,11 +155,8 @@ class BirthDateStep extends React.Component {
 }
 
 BirthDateStep.propTypes = {
-    // intl: intlShape,
     onNextStep: PropTypes.func,
     sendAnalytics: PropTypes.func.isRequired
 };
-
-// const IntlBirthDateStep = injectIntl(BirthDateStep);
 
 export default BirthDateStep;

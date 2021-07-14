@@ -220,9 +220,7 @@ class UsernameStep extends React.Component {
                                       && !touched.username && "Don't use your real name"
                                     // && this.props.intl.formatMessage({id: 'registration.usernameAdviceShort'})
                                       }
-                                    // toolTipVal = 'registration.usernameAdviceShort'
                                     validate={this.validateUsernameIfPresent}
-                                    validationClassName={styles["validation-full-width-input"]}
                                     onBlur={() => {
                                       // this.handleFocused(null);
                                       validateField('username');
@@ -265,7 +263,6 @@ class UsernameStep extends React.Component {
                                           }
                                         type={values.showPassword ? 'text' : 'password'}
                                         validate={password => this.validatePasswordIfPresent(password, values.username)}
-                                        validationClassName={styles["validation-full-width-input"]}
                                         onBlur={() => validateField('password')}
                                         onChange={e => {
                                             setFieldValue('password', e.target.value);
@@ -305,13 +302,11 @@ class UsernameStep extends React.Component {
                                                 //     id: 'registration.confirmPasswordInstruction'
                                                 // })
                                         }
-                                        // toolTipVal='registration.confirmPasswordInstruction'
                                         type={values.showPassword ? 'text' : 'password'}
                                         validate={() =>
                                             this.validatePasswordConfirmIfPresent(values.password,
                                                 values.passwordConfirm)
                                         }
-                                        validationClassName={styles["validation-full-width-input"]}
                                         onBlur={() => validateField('passwordConfirm')}
                                         onChange={e => {
                                             setFieldValue('passwordConfirm', e.target.value);

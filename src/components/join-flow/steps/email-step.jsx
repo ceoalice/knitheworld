@@ -154,7 +154,7 @@ class EmailStep extends React.Component {
                                 // />
                             )}
                             headerImgClass={styles["email-step-image"]}
-                            headerImgSrc="/static/images/email-header.png"
+                            headerImgSrc={`${window.location.pathname}static/images/email-header.png`}
                             innerClassName={styles["join-flow-inner-email-step"]}
                             nextButton={
                               'Create Your Account'
@@ -186,7 +186,7 @@ class EmailStep extends React.Component {
                                 }
                                 type="email"
                                 validate={this.validateEmail}
-                                validationClassName={styles["validation-full-width-input"]}
+                                // validationClassName={styles["validation-full-width-input"]}
                                 onBlur={() => validateField('email')}
                                 onChange={e => {
                                     setFieldValue('email', e.target.value.substring(0, 254));
