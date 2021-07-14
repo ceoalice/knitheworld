@@ -8,8 +8,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import VM from 'scratch-vm';
 
 import styles from './navbar.scss';
-import { ReactComponent as KnitheworldLogo} from '../../lib/assets/knitheworld-logo.svg';
+import { ReactComponent as KnitheworldLogo} from './knitheworld-logo.svg';
 import Account from "../account/account"
+import Popover from "../popover/popover.js";
 
 const NavBarComponent = props => {
   const [anchorEl, setAnchorEl] = React.useState({
@@ -73,7 +74,7 @@ const NavBarComponent = props => {
                 <MenuItem onClick={() => { props.openImageImport(); handleClose('upload'); }}> Image </MenuItem>
               </Menu>
 
-              <Menu
+              <Popover
                 id="save-menu"
                 anchorEl={save}
                 keepMounted
@@ -89,7 +90,7 @@ const NavBarComponent = props => {
                 : null
                 }
                 <MenuItem onClick={() => { props.downloadCode(); handleClose('save'); }}> Save to computer </MenuItem>
-              </Menu>
+              </Popover>
               </Toolbar>
         </React.Fragment>
     );
