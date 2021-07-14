@@ -31,8 +31,9 @@ python_compressed.js
 !/msg/json/en.json
 
 # Build output files
-/blockly_*
-/blocks_*
+/blockly_compressed*
+/blocks_compressed*
+/blockly_uncompressed*
 /gh-pages/
 /dist/
 
