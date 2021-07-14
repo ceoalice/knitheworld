@@ -2,12 +2,13 @@
 .DS_Store
 
 # NPM
-/node_modules
+/node_modules*
 npm-*
 
 # Build
-/build
-/dist
+/dist*
 
-# firebase config
+# firebase stuff
+.firebase
 firebase.config.js
+*-debug.log
