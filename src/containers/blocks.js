@@ -11,6 +11,10 @@ import defaultToolbox from '../lib/default-toolbox.js';
 import {connect} from 'react-redux';
 
 import { clearThePixels } from '../reducers/pixels.js';
+
+import VMScratchBlocks from '../lib/blocks.js';
+import ProjectManager from '../lib/project-manager.js';
+import defaultToolbox, {getToolBox} from '../lib/toolbox.js';
 import UserManager from '../lib/user-manager.js';
 
 
