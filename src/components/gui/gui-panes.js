@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './gui.scss';
 
 import SplitPane from 'react-split-pane';
+import VMScratchBlocks from "../../lib/blocks"
 
 
 const GUIPanes = props => {
@@ -15,10 +16,9 @@ const GUIPanes = props => {
   const LIMIT = 0.25; // min percent of screen width that splitpane can shrink to 
 
   const updateSplitPos = (size) => {
-    // dispatches resize event so Blockly Window resizes 
-    window.dispatchEvent(new Event('resize'));
     localStorage.setItem('splitPos', size);
     setSplitPos(size);
+    VMScratchBlocks.resize();
   }
 
   // https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
