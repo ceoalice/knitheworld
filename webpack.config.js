@@ -82,11 +82,7 @@ module.exports = {
             loader: "html-loader"
           }
         ]
-      },
-      {
-        test: /\.xml$/i,
-        use: 'raw-loader',
-      },
+      }
     ]
   },
   plugins: [
