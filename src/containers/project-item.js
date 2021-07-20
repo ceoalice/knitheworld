@@ -64,7 +64,7 @@ class ProjectItem extends React.PureComponent {
 ProjectItem.propTypes = {
 
     project: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       name: PropTypes.string.isRequired,
       xml: PropTypes.string.isRequired,
       size: PropTypes.number,

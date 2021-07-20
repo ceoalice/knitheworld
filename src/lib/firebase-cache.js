@@ -10,7 +10,6 @@ class FirebaseCache {
 
     // sample projects need to be loaded just once and stored in cache
     this.loadSampleProjects();
-    this.loadSampleImages();
   }
 
   async loadSampleImages() {
@@ -24,43 +23,39 @@ class FirebaseCache {
       this.sampleImages[id] = (await import(`${imgPath}`)).default,
       x ++;
     }
+  clearCurrentProjectID() {
+    localStorage.removeItem(CURRENT_PROJECT_ID);
+  }
+  clearUserID() {
+    localStorage.removeItem(USER_ID);
+  }
+  clearProjectCache() {
+    this.projects = {};
+    this.needUpdate =  true;
   }
 
   async loadSampleProjects() {
-    let paths = this.getFilePaths('xml');
-    let x = 1;
-    for (const projectName in paths) {
-      let id = `sampleProject${x}`;
-      let xmlPath = paths[projectName];
-       
+    let projects = await firebase.storage().ref("sample_projects").listAll();
+
+    projects.prefixes.forEach( async (folderRef, id) => {   
+      let thumbnailRef = folderRef.child("thumbnail.png");
+      let xmlRef = folderRef.child("index.xml");
+
+      console.log(xmlRef.exists);
+
+      this.sampleImages[id] = await thumbnailRef.getDownloadURL();
+      let xmlBlob = await getFileData(await xmlRef.getDownloadURL());
+
       this.sampleProjects[id] = {
-        xml: (await import(`${xmlPath}`)).default, 
-        name: projectName, 
+        name : folderRef.name,
+        xml : await xmlBlob.text(),
         id
-      };
-      x ++;
-    }
-  }
-
-  getFilePaths(type) {
-    // https://stackoverflow.com/questions/29421409/how-to-load-all-files-in-a-directory-using-webpack-without-require-statements
-    // https://stackoverflow.com/questions/34895800/javascript-restructure-an-array-of-strings-based-on-prefix
-    let files =  type === 'png' 
-      ? require.context('./projects', true, /\.png$/).keys()
-      : require.context('./projects', true, /\.xml$/).keys();
-
-    let paths = {};
-
-    files.forEach(filePath => {
-      let s = filePath.split('/'); // "./Blue zig zag/index.xml" => [".", "Blue zig zag", "index.png"]
-      paths[s[1]] = `./projects/${filePath.substring(2)}`;
-    })
-
-    return paths;
+      }
+    });
   }
 
   getSampleProjects() {
-    return Object.values(this.sampleProjects);
+    return Object.values(this.sampleProjects).sort((a,b) => a.xml.length - b.xml.length);
   }
   getSampleImage(id) {
     return this.sampleImages[id];
