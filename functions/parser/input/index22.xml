@@ -1,0 +1,146 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="procedures_definition" id="Grq:q2F]|IR%o9p9jxjs" x="42" y="-1213">
+    <statement name="custom_block">
+      <shadow type="procedures_prototype" id="v[0o(Vhv^8o@zU.8k5fz">
+        <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" argumentnames="[&quot;num&quot;,&quot;color&quot;]" argumentdefaults="[&quot;&quot;,&quot;&quot;]" warp="false"></mutation>
+        <value name=",jbgRZB8c4k_d.T1(]/5">
+          <shadow type="argument_reporter_string_number" id="SrFnpaZ@bBwfRdo,rY`j">
+            <field name="VALUE">num</field>
+          </shadow>
+        </value>
+        <value name="~ABjLH5y%9p4@Cb0w)qj">
+          <shadow type="argument_reporter_string_number" id="IyY|hr2%tZ}2H2=l*/Nn">
+            <field name="VALUE">color</field>
+          </shadow>
+        </value>
+      </shadow>
+    </statement>
+    <next>
+      <block type="knit_changecolorto" id="_Q{^3@F_b(W,q7?7Z^ky">
+        <value name="COLOR">
+          <shadow type="colour_picker" id="dzedZ~m(%v)Xb/Jb#4-P">
+            <field name="COLOUR">#b6c3f5</field>
+          </shadow>
+          <block type="argument_reporter_string_number" id="nm(+D;G_{UVNCAqnIQrd">
+            <field name="VALUE">color</field>
+          </block>
+        </value>
+        <next>
+          <block type="knit_knitstitches" id="N$,]j,b~.0*[#I=d$99b">
+            <value name="VALUE">
+              <shadow type="math_positive_number" id="v^u1wm62q#RTOTeWdPv:">
+                <field name="NUM">1</field>
+              </shadow>
+              <block type="argument_reporter_string_number" id="GbfZY}r2~*A@uvrN(;8E">
+                <field name="VALUE">num</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+  <block type="event_whenstarted" id="TI{u.R`PdMe{oz/=k*3j" deletable="false" x="-247" y="-1035">
+    <next>
+      <block type="procedures_call" id="F63vOzNav=C^gX.{p+at">
+        <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+        <value name=",jbgRZB8c4k_d.T1(]/5">
+          <shadow type="text" id="v;~ZUr#t)-c4T_kue+kW">
+            <field name="TEXT">40</field>
+          </shadow>
+        </value>
+        <value name="~ABjLH5y%9p4@Cb0w)qj">
+          <shadow type="text" id="fOnK;nP@IAIC-?tdA?ai">
+            <field name="TEXT">#f00</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="procedures_call" id=")S@d*vS=[a.3hF,oI{gx">
+            <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+            <value name=",jbgRZB8c4k_d.T1(]/5">
+              <shadow type="text" id="Tos;e!vZy%H]l5uQ[;6g">
+                <field name="TEXT">40</field>
+              </shadow>
+            </value>
+            <value name="~ABjLH5y%9p4@Cb0w)qj">
+              <shadow type="text" id="C!n?5usJ~oiBOe=tc**.">
+                <field name="TEXT">#00ff00</field>
+              </shadow>
+            </value>
+            <next>
+              <block type="procedures_call" id="Wq]Z)9oK,k]([+=bk74-">
+                <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+                <value name=",jbgRZB8c4k_d.T1(]/5">
+                  <shadow type="text" id="~G[Ead)4jh6tE`w}n_D,">
+                    <field name="TEXT">40</field>
+                  </shadow>
+                </value>
+                <value name="~ABjLH5y%9p4@Cb0w)qj">
+                  <shadow type="text" id="xhC=,c5Gx1vb(PSkA@0n">
+                    <field name="TEXT">#0000ff</field>
+                  </shadow>
+                </value>
+                <next>
+                  <block type="procedures_call" id="S%{tvmV=DaUE!;Z`|*5Q">
+                    <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+                    <value name=",jbgRZB8c4k_d.T1(]/5">
+                      <shadow type="text" id="Eq82d1T]d#ovo[Xs6:K1">
+                        <field name="TEXT">40</field>
+                      </shadow>
+                    </value>
+                    <value name="~ABjLH5y%9p4@Cb0w)qj">
+                      <shadow type="text" id="mS5)zhZq)=|%KB;0@[md">
+                        <field name="TEXT">#f00</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="procedures_call" id="QxJ7M(ps$p`WRdj@xB[@">
+                        <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+                        <value name=",jbgRZB8c4k_d.T1(]/5">
+                          <shadow type="text" id="SrmPkxZ8Ltpx?eVCfu7Q">
+                            <field name="TEXT">40</field>
+                          </shadow>
+                        </value>
+                        <value name="~ABjLH5y%9p4@Cb0w)qj">
+                          <shadow type="text" id="dDNrq$}gqF5x70S[-99C">
+                            <field name="TEXT">#00ff00</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="procedures_call" id="V`Sdcm0^%;-HEc^_f6|p">
+                            <mutation proccode="color stitches %s %s" argumentids="[&quot;,jbgRZB8c4k_d.T1(]/5&quot;,&quot;~ABjLH5y%9p4@Cb0w)qj&quot;]" warp="false"></mutation>
+                            <value name=",jbgRZB8c4k_d.T1(]/5">
+                              <shadow type="text" id="{jUe~D*.fM[=@M7QYiqm">
+                                <field name="TEXT">40</field>
+                              </shadow>
+                            </value>
+                            <value name="~ABjLH5y%9p4@Cb0w)qj">
+                              <shadow type="text" id="@H;~c:80{CM7~cL]crXv">
+                                <field name="TEXT">#0000ff</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+  <block type="knit_changecolorto" id="]bDf0y22.6qbGn#m{zO+" x="226" y="-846">
+    <value name="COLOR">
+      <shadow type="colour_picker" id="ihpc~Jtg/xE1UY$t`HIz">
+        <field name="COLOUR">#b6c3f5</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="knit_knituntilendofrow" id="pFXWk{[9|UDB9-fq7?~A"></block>
+    </next>
+  </block>
+</xml>

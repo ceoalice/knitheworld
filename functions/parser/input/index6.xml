@@ -1,0 +1,183 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables>
+    <variable type="broadcast_msg" id="W4+Cd,?n;a!^a6Ui(SE3" islocal="false" iscloud="false">message1</variable>
+    <variable type="broadcast_msg" id="qwr{h-3ulg7wgt4ZXl.x" islocal="false" iscloud="false">Diamonds</variable>
+    <variable type="broadcast_msg" id="Y^I9B2lY3sj;_fs7O%N^" islocal="false" iscloud="false">squares</variable>
+    <variable type="list" id="efS)bAhiaf5ajR@YSX_w" islocal="false" iscloud="false">num_stitches</variable>
+    <variable type="" id="{l)j!8e8@vgV:i!BlEm=" islocal="false" iscloud="false">round</variable>
+    <variable type="" id="4_YE@sZeTe.Td.Y%#}hd" islocal="false" iscloud="false">stitch</variable>
+  </variables>
+  <block type="event_whenstarted" id="g%0~,iPT?Ogw2vcia/mv" deletable="false" x="25" y="50">
+    <next>
+      <block type="control_repeat" id="I.%`H._K_yYa5D7?F]fR">
+        <value name="TIMES">
+          <shadow type="math_whole_number" id="d)Dn?%H(}T~J.chuS7EG">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <statement name="SUBSTACK">
+          <block type="event_broadcastandwait" id="7[nnKiQ2`IY%hVg7l~Ku">
+            <value name="BROADCAST_INPUT">
+              <shadow type="event_broadcast_menu" id="]u(8BAqs(07]cMYFKL1R">
+                <field name="BROADCAST_OPTION" id="Y^I9B2lY3sj;_fs7O%N^" variabletype="broadcast_msg">squares</field>
+              </shadow>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+  <block type="event_whenbroadcastreceived" id="wd$2.A%mv_3w`_Y{oj6^" x="20" y="317">
+    <field name="BROADCAST_OPTION" id="Y^I9B2lY3sj;_fs7O%N^" variabletype="broadcast_msg">squares</field>
+    <next>
+      <block type="data_setvariableto" id="~GJ2tM{5CKVY~T+86CJ1">
+        <field name="VARIABLE" id="{l)j!8e8@vgV:i!BlEm=" variabletype="">round</field>
+        <value name="VALUE">
+          <shadow type="text" id="7,3G@]QXFnG|%xiwrW.K">
+            <field name="TEXT">1</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="data_setvariableto" id="oEnw_@,z;E=n]+MWut2n">
+            <field name="VARIABLE" id="4_YE@sZeTe.Td.Y%#}hd" variabletype="">stitch</field>
+            <value name="VALUE">
+              <shadow type="text" id="d-@tlL@X*#?;meSQx2BZ">
+                <field name="TEXT">1</field>
+              </shadow>
+            </value>
+            <next>
+              <block type="control_repeat" id="2APW;H$/l/.`8/C)qej#">
+                <value name="TIMES">
+                  <shadow type="math_whole_number" id="=7B04+J]3lQ3vSi~=Gs?">
+                    <field name="NUM">20</field>
+                  </shadow>
+                </value>
+                <statement name="SUBSTACK">
+                  <block type="knit_changecolorto" id="ao,-F(~|Q^S0jXLV}h,M">
+                    <value name="COLOR">
+                      <shadow type="colour_picker" id="47pb*KVjYi-W#uDShC/m">
+                        <field name="COLOUR">#b6f5f5</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="knit_knitstitches" id="SwSFej{dax|Nr6ntI;c{">
+                        <value name="VALUE">
+                          <shadow type="math_positive_number" id="oEPVQ*A`t#=Ma+a!9718">
+                            <field name="NUM">3</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="data_changevariableby" id="_^5O?~?%n]8Xcgrt6Q=x">
+                            <field name="VARIABLE" id="4_YE@sZeTe.Td.Y%#}hd" variabletype="">stitch</field>
+                            <value name="VALUE">
+                              <shadow type="math_number" id="lh,W50N%=Xe^TUXZ@M+@">
+                                <field name="NUM">5</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="knit_changecolorto" id="s.Qd`7SThF297U$S$4P6">
+                                <value name="COLOR">
+                                  <shadow type="colour_picker" id="i]Oy0b^:yDi6tjP$[:$K">
+                                    <field name="COLOUR">#98daf5</field>
+                                  </shadow>
+                                </value>
+                                <next>
+                                  <block type="knit_knitstitches" id="Bz|N759}+:aKZ`N;zEh|">
+                                    <value name="VALUE">
+                                      <shadow type="math_positive_number" id="|6](Imsk*~6P,)_Q+9*U">
+                                        <field name="NUM">4</field>
+                                      </shadow>
+                                    </value>
+                                    <next>
+                                      <block type="data_changevariableby" id="Ziu@6V)~fUI[f3/JDDMR">
+                                        <field name="VARIABLE" id="4_YE@sZeTe.Td.Y%#}hd" variabletype="">stitch</field>
+                                        <value name="VALUE">
+                                          <shadow type="math_number" id="*rO#ol7bz4z?jP8u*G35">
+                                            <field name="NUM">5</field>
+                                          </shadow>
+                                        </value>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <next>
+                  <block type="control_repeat" id="+g(EQEj]Oi4y(xImGlS$">
+                    <value name="TIMES">
+                      <shadow type="math_whole_number" id="t!A3hYE8[4Qv1EAHE|Li">
+                        <field name="NUM">20</field>
+                      </shadow>
+                    </value>
+                    <statement name="SUBSTACK">
+                      <block type="knit_changecolorto" id="~@x+=1/4nKImb/hweo_2">
+                        <value name="COLOR">
+                          <shadow type="colour_picker" id="?vy}n_Wx~~r2Qzp@%jc9">
+                            <field name="COLOUR">#98daf5</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="knit_knitstitches" id="iGoefqy+:|}^NZxP2)k8">
+                            <value name="VALUE">
+                              <shadow type="math_positive_number" id="=2maiKuR=HS@-P[:0LXu">
+                                <field name="NUM">3</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="data_changevariableby" id="lNkJ;Q7g.6H[14`c[2!+">
+                                <field name="VARIABLE" id="4_YE@sZeTe.Td.Y%#}hd" variabletype="">stitch</field>
+                                <value name="VALUE">
+                                  <shadow type="math_number" id="JTCNXo`n#0ljeW:-1ccY">
+                                    <field name="NUM">5</field>
+                                  </shadow>
+                                </value>
+                                <next>
+                                  <block type="knit_changecolorto" id=",eb,TFSvNB/?$%e8GsoK">
+                                    <value name="COLOR">
+                                      <shadow type="colour_picker" id="{!(95C1]Q=b}EdcdT-6m">
+                                        <field name="COLOUR">#b6f5f5</field>
+                                      </shadow>
+                                    </value>
+                                    <next>
+                                      <block type="knit_knitstitches" id="]BkfaFS4A:+3TdyRGmAb">
+                                        <value name="VALUE">
+                                          <shadow type="math_positive_number" id="9r;bkxuJhEX98a/W)s%?">
+                                            <field name="NUM">4</field>
+                                          </shadow>
+                                        </value>
+                                        <next>
+                                          <block type="data_changevariableby" id="`^_AR/PIi%D.]BwX/`h!">
+                                            <field name="VARIABLE" id="4_YE@sZeTe.Td.Y%#}hd" variabletype="">stitch</field>
+                                            <value name="VALUE">
+                                              <shadow type="math_number" id="wY4iwyIqJw78Tl79!IE$">
+                                                <field name="NUM">5</field>
+                                              </shadow>
+                                            </value>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
