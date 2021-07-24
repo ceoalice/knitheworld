@@ -1,51 +1,21 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
-const firebaseClient = require("firebase");
 const fs = require('fs');
 
 admin.initializeApp();
 
-firebaseClient.initializeApp({
-  apiKey: "AIzaSyBT_Bpt9X85tY2Qi76nl7VH9oOWWg8rdmM",
-  authDomain: "knitheworld-bb33d.firebaseapp.com",
-  projectId: "knitheworld-bb33d",
-  storageBucket: "knitheworld-bb33d.appspot.com",
-  messagingSenderId: "737704448227",
-  appId: "1:737704448227:web:3880d5ef324e9e8ebeb5d6",
-  measurementId: "G-TBCBQ1X109"
-});
-
 const trie = require('./trie/trie');
-// const words1000 = JSON.parse(fs.readFileSync("./trie/input/1000_words.json",'utf-8'));
 const examples = JSON.parse(fs.readFileSync("./trie/input/default.json",'utf-8'));
-const defaultHTML = fs.readFileSync('../dist/index.html').toString();
+const defaultHTML = fs.readFileSync('./hosting/index.html').toString();
 
 // Cloud Functions Docs
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
-function log(content, options = {}) {
-  functions.logger.info(content, {structuredData: true, ...options});
-}
-
-// exports.autoComplete = functions.https.onRequest((req, res) => {
-//   // log(req.readable);
-//   log(req.query.blocks)
-//   const blocks = JSON.parse(req.query.blocks);
-//   let t2 = trie.Trie.fromObject(examples);
-
-//   let completes = t2.autoCompleteAll(blocks, true);
-
-//   res.send(completes.map(a => [...blocks, ...a]));
-// });
-
 exports.suggestNext = functions.https.onCall((data, context) => {
-  log(data.block)
+  functions.logger.log(data.block);
+
   const block = data.block;
-  
   let t2 = trie.Trie.fromObject(examples);
-
-  log(t2.allNodes.length)
-
   let suggests = t2.autoSuggest(block);
 
   return suggests;
@@ -74,20 +44,30 @@ exports.getEmailByUsername = functions.https.onCall(async (data, context) => {
   return "";
 });
 
+// https://medium.com/@jalalio/dynamic-og-tags-in-your-statically-firebase-hosted-polymer-app-476f18428b8b
+// https://firebase.google.com/docs/hosting/functions
+// https://github.com/firebase/functions-samples/blob/main/authorized-https-endpoint/functions/index.js
+
 exports.project = functions.https.onRequest((req, res) => {
   let metaPlaceholder = '<title>KnitheWorld</title>'
 
-  let indexHTML = defaultHTML.replace(metaPlaceholder, '<title>PROJECT PAGE</title>');
-
-  res.status(200).send(indexHTML);
+  try {
+    let indexHTML = defaultHTML.replace(metaPlaceholder, '<title>PROJECT PAGE</title>');
+    res.status(200).send(indexHTML);
+  } catch(error) {
+    res.status(500).send(error);
+  }
 });
 
 exports.user = functions.https.onRequest((req, res) => {
   let metaPlaceholder = '<title>KnitheWorld</title>'
 
-  let indexHTML = defaultHTML.replace(metaPlaceholder, '<title>USER PAGE</title>');
-
-  res.status(200).send(indexHTML);
+  try {
+    let indexHTML = defaultHTML.replace(metaPlaceholder, '<title>USER PAGE</title>');
+    res.status(200).send(indexHTML);
+  } catch(error) {
+    res.status(500).send(error);
+  }
 });
 
 // trigger functions -------------------------------------------
@@ -163,4 +143,3 @@ exports.deleteUsername = functions.firestore.document('/users/{uid}')
       functions.logger.log('error occured deleting user and username: ', username, context.params.uid);
     })
 });
-
