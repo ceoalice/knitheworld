@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import VMScratchBlocks from '../lib/blocks.js';
-import ProjectManager from '../lib/project-manager.js';
-import VM from 'scratch-vm';
-import BlocksComponent from '../components/blocks/blocks.js';
-
-import defaultToolbox from '../lib/default-toolbox.js';
-
+import {bindAll} from "lodash";
 import {connect} from 'react-redux';
+import VM from 'scratch-vm';
 
 import { clearThePixels } from '../reducers/pixels.js';
 
@@ -17,24 +11,35 @@ import ProjectManager from '../lib/project-manager.js';
 import defaultToolbox, {getToolBox} from '../lib/toolbox.js';
 import UserManager from '../lib/user-manager.js';
 
+import BlocksComponent from '../components/blocks/blocks.js';
+import Popover from "../components/popover/popover.js";
 
 class Blocks extends React.Component {
     constructor (props) {
         super(props);
-        // this.ScratchBlocks = VMScratchBlocks(props.vm);
+        this.state = {
+          anchorEl : null,
+          anchorElOpen : false
+        }
+        
         VMScratchBlocks.setVM(props.vm);
         ProjectManager.setVM(props.vm);
         UserManager.setVM(props.vm);
         
-        this.setBlocks = this.setBlocks.bind(this);
-        this.attachVM = this.attachVM.bind(this);
-        this.detachVM = this.detachVM.bind(this);
-        this.onScriptGlowOn = this.onScriptGlowOn.bind(this);
-        this.onScriptGlowOff = this.onScriptGlowOff.bind(this);
-        this.onBlockGlowOn = this.onBlockGlowOn.bind(this);
-        this.onBlockGlowOff = this.onBlockGlowOff.bind(this);
-        this.onVisualReport = this.onVisualReport.bind(this);
-        this.getBlocks = this.getBlocks.bind(this);
+        bindAll(this,[
+          'setBlocks',
+          'attachVM',
+          'detachVM',
+          'onScriptGlowOn',
+          'onScriptGlowOff',
+          'onBlockGlowOn',
+          'onBlockGlowOff',
+          'onVisualReport',
+          'handleSuggest',
+          'popoverOffClick',
+          'setPopoverAnchorEl',
+          'popoverAnchorClicked'
+        ])
     }
 
     componentDidMount () {
@@ -52,13 +57,50 @@ class Blocks extends React.Component {
             }
 
             this.attachVM();
+        }).then(() => {
+          this.setPopoverAnchorEl();
         });
+
+        window.addEventListener('click', this.popoverOffClick);
         this.props.clearPixels();
         this.props.vm.start();
     }
 
     componentWillUnmount () {
+      window.removeEventListener('click', this.popoverOffClick)
+      this.state.anchorEl.removeEventListener('click', this.popoverAnchorClicked);
+    }
 
+    setPopoverAnchorEl() {
+      // scratchCategoryId-suggestions -> generated from id="suggestions" 
+      // in the <category> tag in lib/toolbox.js
+      const el = document.getElementsByClassName("scratchCategoryId-suggestions")[0];
+
+      if (el) {
+        this.setState({anchorEl : el}, () => {
+          this.state.anchorEl.addEventListener('click', this.popoverAnchorClicked);
+        });
+      }
+    }
+
+    popoverOffClick(e) {
+      if (this.state.anchorElOpen) {
+        this.setState({anchorElOpen : false});
+        e.preventDefault(); 
+      }
+    }
+
+    popoverAnchorClicked() {   
+      if (this.state.anchorElOpen) {
+        this.setState({anchorElOpen : false})
+      }
+    }
+
+    handleSuggest(suggestions) {
+      console.log({suggestions})
+      if (!this.state.anchorElOpen) this.setState({anchorElOpen : true});
+      this.workspace.updateToolbox( getToolBox(suggestions) );
+      this.setPopoverAnchorEl();
     }
 
     attachVM () {
@@ -71,6 +113,7 @@ class Blocks extends React.Component {
         this.props.vm.addListener('BLOCK_GLOW_ON', this.onBlockGlowOn);
         this.props.vm.addListener('BLOCK_GLOW_OFF', this.onBlockGlowOff);
         this.props.vm.addListener('VISUAL_REPORT', this.onVisualReport);
+        this.props.vm.addListener('SUGGEST_EVENT', this.handleSuggest);
     }
 
     detachVM () {
@@ -95,9 +138,6 @@ class Blocks extends React.Component {
     setBlocks (blocks) {
         this.blocks = blocks;
     }
-    getBlocks () {
-        console.log(this.ScratchBlocks.Xml.workspaceToDom(this.workspace));
-    }
 
     render () {
         const {
@@ -107,259 +147,22 @@ class Blocks extends React.Component {
 
         return (
             <React.Fragment>
+                <Popover
+                  open={this.state.anchorElOpen} 
+                  anchorEl={this.state.anchorEl}
+                  onClick={this.popoverAnchorClicked}
+                >
+                  <div> New Suggestions </div>
+                </Popover>
+
                 <BlocksComponent
                     containerRef={this.setBlocks}
                     {...otherProps}
-                /> 
-                
-                {/* </BlocksComponent> */}
+                />
             </React.Fragment>
         );
     }
 }
-
-Blocks.defaultWorkspace =
-`<xml>
-  <block type="event_whenstarted" deletable="false" x="25" y="50">
-    <next>
-      <block type="knit_changecolorto">
-        <value name="COLOR">
-          <shadow type="colour_picker">
-            <field name="COLOUR">#ffa686</field>
-          </shadow>
-        </value>
-        <next>
-          <block type="knit_castonstitches">
-            <value name="VALUE">
-              <shadow type="math_positive_number">
-                <field name="NUM">1</field>
-              </shadow>
-            </value>
-            <next>
-              <block type="control_repeat" id="control_repeat">
-                <value name="TIMES">
-                  <shadow type="math_whole_number">
-                    <field name="NUM">5</field>
-                  </shadow>
-                </value>
-                <statement name="SUBSTACK">
-                  <block type="knit_changecolorto">
-                    <value name="COLOR">
-                      <shadow type="colour_picker">
-                        <field name="COLOUR">#f7ed77</field>
-                      </shadow>
-                    </value>
-                    <next>
-                      <block type="knit_knituntilendofrow">
-                        <next>
-                          <block type="knit_changecolorto">
-                            <value name="COLOR">
-                              <shadow type="colour_picker">
-                                <field name="COLOUR">#ffa686</field>
-                              </shadow>
-                            </value>
-                            <next>
-                              <block type="knit_knituntilendofrow">
-                              </block>
-                            </next>
-                          </block>
-                        </next>
-                      </block>
-                    </next>
-                  </block>
-                </statement>
-                <next>
-                  <block type="knit_changecolorto">
-                    <value name="COLOR">
-                      <shadow type="colour_picker">
-                        <field name="COLOUR">#f7ed77</field>
-                      </shadow>
-                    </value>
-                    <next>
-                      <block type="knit_castoffstitches" id="knit_castoffstitches">
-                      </block>
-                    </next>
-                  </block>
-                </next>
-              </block>
-            </next>
-          </block>
-        </next>
-      </block>
-    </next>
-  </block>
-</xml>`;
-
-/*
-<block type="event_whenstarted" deletable="false" x="25" y="50">
-	<next>
-		<block type="knit_changecolorto">
-      <value name="COLOR">
-        <shadow type="colour_picker">
-        </shadow>
-      </value>
-      <next>
-        <block type="knit_castonstitches">
-          <value name="VALUE">
-            <shadow type="math_positive_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-          <next>
-            <block type="control_repeat" id="control_repeat">
-              <value name="TIMES">
-                <shadow type="math_whole_number">
-                  <field name="NUM">5</field>
-                </shadow>
-              </value>
-              <statement name="SUBSTACK">
-                <block type="knit_changecolorto">
-                  <value name="COLOR">
-                    <shadow type="colour_picker">
-                    </shadow>
-                  </value>
-                  <next>
-                    <block type="knit_knitstitches">
-                      <value name="VALUE">
-                        <shadow type="math_positive_number">
-                          <field name="NUM">1</field>
-                        </shadow>
-                      </value>
-                      <next>
-                        <block type="knit_changecolorto">
-                          <value name="COLOR">
-                            <shadow type="colour_picker">
-                            </shadow>
-                          </value>
-                          <next>
-                            <block type="knit_knitstitches">
-                              <value name="VALUE">
-                                <shadow type="math_positive_number">
-                                  <field name="NUM">1</field>
-                                </shadow>
-                              </value>
-                            </block>
-                          </next>
-                        </block>
-                      </next>
-                    </block>
-                  </next>
-                </block>
-              </statement>
-              <next>
-                <block type="knit_changecolorto">
-                  <value name="COLOR">
-                    <shadow type="colour_picker">
-                    </shadow>
-                  </value>
-                  <next>
-                    <block type="knit_castoffstitches" id="knit_castoffstitches">
-                    </block>
-                  </next>
-                </block>
-              </next>
-            </block>
-          </next>
-        </block>
-      </next>
-    </block>
-	</next>
-</block>
-
-
-
-*/
-
-/*
-
-<block type="event_whenstarted" deletable="false" x="25" y="50">
-  <next>
-    <block type="control_forever">
-      <statement name="SUBSTACK">
-        <block type="knit_changecolorto">
-          <value name="COLOR">
-            <shadow type="colour_picker">
-            </shadow>
-          </value>
-          <next>
-            <block type="knit_knitstitches">
-              <value name="VALUE">
-                <shadow type="math_positive_number">
-                  <field name="NUM">1</field>
-                </shadow>
-              </value>
-              <next>
-                <block type="control_waitms">
-                  <value name="VALUE">
-                    <shadow type="math_positive_number">
-                      <field name="NUM">200</field>
-                    </shadow>
-                  </value>
-                  <next>
-                    <block type="knit_changecolorto">
-                      <value name="COLOR">
-                        <shadow type="colour_picker">
-                        </shadow>
-                      </value>
-                      <next>
-                        <block type="knit_knitstitches">
-                          <value name="VALUE">
-                            <shadow type="math_positive_number">
-                              <field name="NUM">1</field>
-                            </shadow>
-                          </value>
-                          <next>
-                            <block type="control_waitms">
-                              <value name="VALUE">
-                                <shadow type="math_positive_number">
-                                  <field name="NUM">200</field>
-                                </shadow>
-                              </value>
-                            </block>
-                          </next>
-                        </block>
-                      </next>
-                    </block>
-                  </next>
-                </block>
-              </next>
-            </block>
-          </next>
-        </block>
-      </statement>
-    </block>
-  </next>
-</block>
-
-
-*/
-
-{/* PREVIOUS DEFAULT CODE BLOCK
-<block type="looks_changecolor">
-  <value name="VALUE">
-    <shadow type="math_integer">
-      <field name="NUM">10</field>
-    </shadow>
-  </value>
-  <next>
-    <block type="control_waitms">
-      <value name="VALUE">
-        <shadow type="math_positive_number">
-          <field name="NUM">50</field>
-        </shadow>
-      </value>
-      <next>
-        <block type="looks_forwardpixel">
-          <value name="VALUE">
-            <shadow type="math_positive_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-        </block>
-      </next>
-    </block>
-  </next>
-</block> */}
 
 Blocks.defaultProject = {
   "targets": [
@@ -410,7 +213,7 @@ Blocks.defaultOptions = {
         flyout: '#8ec6c5',
         toolbox: '#6983aa',
         toolboxText: '#ffffff',
-        toolboxHover: '#a3a3a3',
+        toolboxHover: '#cccc00',
         toolboxSelected: '#5a7090',
         scrollbar: '#CECDCE',
         scrollbarHover: '#CECDCE',

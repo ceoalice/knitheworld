@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import styles from './blocks.css';
+import styles from './blocks.scss';
 
 const BlocksComponent = props => {
     const {

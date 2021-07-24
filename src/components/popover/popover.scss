@@ -1,0 +1,29 @@
+@import "../../css/colors.scss";
+@import "../../css/typography.scss";
+
+.popover {
+  pointer-events: none;
+
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  /*
+    Introduced in Internet Explorer 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
+
+  visibility: hidden;
+}
+
+
+.popover :global(.MuiPopover-paper) {
+  pointer-events: none;
+  color: $ui-white;
+  background-color: $ui-tertiary;
+  border: 3px solid rgba(0, 0, 0, 0.15);
+  font-family: $font-family-helvetica;
+  opacity: 0.7 !important;
+  visibility: visible;
+}
