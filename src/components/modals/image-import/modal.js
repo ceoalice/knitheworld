@@ -13,16 +13,16 @@ const ImageImportModal = (props) => (
       noHeader
       className={styles.modalContent}
       id="imageImportModal"
-      onRequestClose={props.onCancel}
+      onRequestClose={props.closeModal}
     >
         <div className={styles.body}>
-          <ImageImporter />
+          <ImageImporter closeModal={props.closeModal} />
         </div>
     </Modal>
   );
 
 const mapDispatchToProps = dispatch => ({
-    onCancel: () => dispatch(closeImageImport()) 
+    closeModal: () => dispatch(closeImageImport()) 
 });
 
 export default connect(

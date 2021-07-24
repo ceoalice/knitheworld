@@ -4,7 +4,7 @@ import RgbQuant from "rgbquant";
 import { bindAll } from 'lodash';
 
 import ProjectManager from '../lib/project-manager';
-import { blocksToXML, RGBToHex } from "../lib/image-import"
+import { blocksToXML, RGBToHex } from "../lib/image-import";
 
 import ImageImporterComponent from "../components/image-importer/image-importer";
 
@@ -15,6 +15,14 @@ class ImageImporter extends React.Component {
           src: null,
           numPixels : 10,
           numColors : 2,
+          bounds: {
+            numPixels : [1, 50],
+            numColors : [1, 25]
+          },
+          errors: {
+            numPixels : false,
+            numColors : false
+          },
           // quantized Image Data (post-quantization)
           qData : null,
           qWidth : 0,
@@ -62,9 +70,8 @@ class ImageImporter extends React.Component {
     }
 
     resizeData() {
-      let factor = this.state.qWidth/this.state.numPixels;
-
-      let rWidth = this.state.numPixels;
+      let rWidth = Number(this.state.numPixels); // sometimes numPixels saved as string of a number
+      let factor = this.state.qWidth/rWidth;
       let rHeight = Math.ceil(this.state.qHeight / factor); 
       let rData = [];
 
@@ -82,28 +89,26 @@ class ImageImporter extends React.Component {
           );
         }
       }
-      this.setState({rData, rWidth, rHeight})
+      this.setState({rData, rWidth, rHeight}, this.RGBAToCanvas);
     }
     
-    quantize(src) {
-      console.log("QUANTIZING");
+    async quantize() {
       let q = new RgbQuant({
-        colors: this.state.numColors,
+        colors: Number(this.state.numColors), // sometimes numColors saved as string of a number
       });
 
       let img = new Image();
-      img.src = src;
+      img.src = this.state.src;
 
       img.onload  = () => {
         q.sample(img);
         const data = q.reduce(img);
         this.setState({
+          // loading : false,
           qData : data,
           qWidth : img.width,
           qHeight : img.height
-        })
-        this.resizeData();
-        this.RGBAToCanvas();
+        }, this.resizeData);
       }
     }
 
@@ -140,35 +145,51 @@ class ImageImporter extends React.Component {
     }
 
     onDrop(event, err) {
-      let src = URL.createObjectURL(event.target.files[0]);
+      if (event.target.files[0]) {
+        let src = URL.createObjectURL(event.target.files[0]);
 
-      if (src) {
-        console.log("FILE DROPPED");
-        this.setState({src});
+        if (src) {
+          console.log("FILE DROPPED");
+          this.setState({src});
+        }
       }
     }
 
     handleInputChange(event) {
       const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const value = Number(target.value);
       const name = target.name;
-      this.setState({
-        [name]: Number(value)
-      });
+      const errors = {...this.state.errors};
+      const bounds = {...this.state.bounds};
+
+      if (isNaN(value)) { // NaN error
+        this.setState({errors : {...errors, [name] : "NaN" }});
+      } else if ( value < bounds[name][0] || value > bounds[name][1] ) { //bounds error
+        this.setState({errors : {...errors, [name] : "bounds" }});
+      } else if (errors[name]) {
+        this.setState({errors : {...errors, [name] : false }});
+      }
+      
+      this.setState({[name]: target.value});
     }
 
     handleSubmit(event) {
-      this.quantize(this.state.src);
+      if (!this.state.errors.numColors && !this.state.errors.numColors) {
+        this.quantize();
+      }
       event.preventDefault();
     }
 
     render() {
         return (
           <ImageImporterComponent
-            onDrop={this.onDrop}
             canvasRef={this.canvasRef}
             numPixels={this.state.numPixels}
             numColors={this.state.numColors}
+            errors={this.state.errors}
+            bounds={this.state.bounds}
+
+            onDrop={this.onDrop}
             handleInputChange={this.handleInputChange}
             handleSubmit={this.handleSubmit}
             export={this.export}

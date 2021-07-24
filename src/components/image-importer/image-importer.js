@@ -1,34 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import styles from './image-importer.scss';
 
+
 const ImageImporterComponent = (props) => {
     return (
-        <div className={styles.testForm}>
-          <form className={styles.testForm} onSubmit={props.handleSubmit}>
-            <input type="file"
+        <div className={styles.imageForm}>
+          <form className={styles.imageForm} onSubmit={props.handleSubmit}>
+            <input
+              className={styles.fileInput}
+              type="file"
               onChange={props.onDrop}
               accept="image/png, image/jpeg"
             />
-            <div className={styles.flexRow} style={{display: 'flex', flexDirection:'row'}}>
+            <div className={styles.flexRow}>
               <TextField
+                error={Boolean(props.errors.numPixels)}
+                helperText={props.errors.numPixels && 
+                  (props.errors.numPixels == "NaN" 
+                    ? "Needs to be a Number" 
+                    : `Value Bounds: (${props.bounds.numPixels[0]}, ${props.bounds.numPixels[1]}).`)}
+
                 className={styles.numberInput}
                 label="Number of Pixels Wide:"
                 name="numPixels"
-                type="number"
                 value={props.numPixels}
                 onChange={props.handleInputChange}
-                variant="outlined" 
+                variant="outlined"
               />
               <TextField
-                className={styles.numberInput}
+                error={Boolean(props.errors.numColors)}
+                helperText={props.errors.numColors && 
+                  (props.errors.numColors == "NaN" 
+                    ? "Needs to be a Number" 
+                    : `Value Bounds: (${props.bounds.numColors[0]}, ${props.bounds.numColors[1]}).`)}
+
+                className={classNames(styles.numberInput, styles.rightInput)}
                 label="Max Number of Colors:"
                 name="numColors"
-                type="number"
                 value={props.numColors}
                 onChange={props.handleInputChange} 
                 variant="outlined"
@@ -41,10 +55,9 @@ const ImageImporterComponent = (props) => {
             <canvas 
               ref={props.canvasRef} id="final" 
               width={`${props.BASE_CANVAS_WIDTH}px`} 
-              height={`${props.BASE_CANVAS_WIDTH}px`}>
-            </canvas>
+              height={`${props.BASE_CANVAS_WIDTH}px`}
+            />
           </div>
-
           <Button className={styles.uploadButton} onClick={props.export}> Upload </Button>
         </div>
     );
@@ -52,9 +65,10 @@ const ImageImporterComponent = (props) => {
 
 
 ImageImporterComponent.propTypes = {
-  numPixels: PropTypes.number.isRequired,
-  numColors: PropTypes.number.isRequired,
+  numPixels: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  numColors: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   BASE_CANVAS_WIDTH : PropTypes.number.isRequired,
+  errors : PropTypes.object.isRequired,
 
   onDrop: PropTypes.func.isRequired, 
   handleInputChange: PropTypes.func.isRequired,

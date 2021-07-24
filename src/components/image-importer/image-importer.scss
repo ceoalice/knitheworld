@@ -1,28 +1,23 @@
 @import "../../css/colors.scss";
 
-.container {
-  min-height: 70vh;
-  width: 100vw;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center !important;
-}
-
-.testForm {
+.imageForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.image-form {
-  min-height: 20vh;
-  width: 30vw;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center !important;
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.preview-button {
+  color: white !important;
+  background-color: $ui-tertiary !important;
+  padding: 10px;
+  background: hsla(215, 100%, 65%, 0.9);
+  text-transform: none !important;
 }
 
 .upload-button {
@@ -34,11 +29,40 @@
 
 .canvas-container {
   background-color: #DDDDDD;
+  position: relative;
   margin: 5px;
 
   border: 4px solid hsla(0, 100%, 100%, 0.25);
   padding: 0;
 
   /* border-radius: $space; */
+  border-radius: 0.5rem;  
+}
+
+.loader-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: hsla(0, 0%, 0%, .1);
+}
+
+.number-input:global(.MuiTextField-root) {
+  padding: 8px 10px;
+  height: 75px;
+}
+
+.right-input :global(.MuiFormHelperText-root) {
+  text-align: right;
+}
+
+
+.file-input {
+  padding: 5px; 
+  border: 1px solid rgba(0, 0, 0, 0.23);
   border-radius: 0.5rem;
+  margin: 5px;
 }
