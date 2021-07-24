@@ -3,18 +3,6 @@ import {connect} from 'react-redux';
 
 import styles from './simulator.css';
 
-// function numDiff(arr1,arr2) {
-//   let max = Math.max(arr1.length, arr2.length);
-//   let count = 0; 
-//   for (let i = 0; i < max; i++) {
-//     if (arr1[i] != arr2[i]) {
-//       count += 1;
-//     }
-//   }
-
-//   return count; 
-// }
-
 class SimulatorComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -96,7 +84,7 @@ class SimulatorComponent extends React.Component {
     }
 
     async refreshCanvas() {
-      console.log("refreshing canvas");
+      // console.log("refreshing canvas");
       this.redrawGrid();
       this.redrawStitches(true);
     }
@@ -217,11 +205,11 @@ class SimulatorComponent extends React.Component {
         return (
           <div className={styles.simulator}>
             <canvas
-                className={styles.gridCanvas}
+                className={styles.canvas}
                 ref={this.gridRef}
             />
             <canvas
-                className={styles.stitchCanvas}
+                className={styles.canvas}
                 ref={this.stitchRef}
             />
           </div>

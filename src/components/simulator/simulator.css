@@ -1,19 +1,10 @@
 .simulator {
   position: relative;
-  /* background-color: red;  */
   width: 200vw; /* temp fix */
   height: 200vh;
 }
 
-.grid-canvas {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: none; 
-}
-.stitch-canvas {
+.canvas {
   width: 100%;
   height: 100%;
   position: absolute;
