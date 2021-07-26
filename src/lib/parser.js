@@ -7,35 +7,73 @@ const options = {
 };
 
 class BlockParser {
-  constructor() {}
-
-  parseFromString(xmlString) {
-    let xmlObj = parser.parse(xmlString,options).xml;
-    return this.getAllStacks(xmlObj);
+  constructor() {
+    this.primary = [];
+    this.secondary = [];
   }
 
-  getAllStacks(xmlObj) {
+// CLASS METHODS ---------------------------------------
+  setPrimaryStack(stack) {
+    this.primary = stack;
+  }
+
+  addSecondaryStack(stack) {
+    this.secondary.push(stack);
+  }
+
+  // maybe methods? 
+  getVariables() {
+  }
+  getLists() {
+  }
+  getCustomBlocks() {
+  }
+
+// STATIC METHODS -------------------------------------- 
+  static parse(xmlString) {
+    let out = new BlockParser();
+
+    let xmlObj = parser.parse(xmlString,options).xml;
+    let stacks = BlockParser.getAllStacks(xmlObj);
+    
+    if (stacks[0] == 'event_whenstarted') { // Single Stack
+      out.setPrimaryStack(stacks);
+    } else { // Multiple Stacks
+      // find primary stack and rest are secondary
+      stacks.forEach((stack) => {
+        if(stack[0] == 'event_whenstarted') {
+          out.setPrimaryStack(stack);
+        } else {
+          out.addSecondaryStack(stack);
+        }
+      });
+    }
+
+    return out;
+  }
+
+  static getAllStacks(xmlObj) {
     if (xmlObj.block) {
       if (Array.isArray(xmlObj.block)) {
         let out = []
         xmlObj.block.forEach(block => {
-          out.push(this.getStack(block))
+          out.push(BlockParser.getStack(block))
         })
         return out;
       } else {
-        return this.getStack(xmlObj.block);
+        return BlockParser.getStack(xmlObj.block);
       }
     }
   }
 
-  getStack(block) {
+  static getStack(block) {
     let currentBlock = block;
     let out = [currentBlock['@type']];
 
     while(Boolean(currentBlock.next) || Boolean(currentBlock.statement)) {
       if (currentBlock.statement) {
         if (currentBlock.statement.block) {
-          out.push(this.getStack(currentBlock.statement.block))
+          out.push(BlockParser.getStack(currentBlock.statement.block))
         }
       }
       if (currentBlock.next) {
@@ -49,4 +87,4 @@ class BlockParser {
   }
 }
 
-export default new BlockParser();
+export default BlockParser;
