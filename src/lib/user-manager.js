@@ -1,7 +1,7 @@
 import { omit } from "lodash";
 import firebase from "./firebase.js";
 import FirebaseCache from "./firebase-cache.js";
-const emailValidator = require('email-validator');
+import emailValidator from 'email-validator';
 
 class UserManager {
   constructor() {
@@ -9,19 +9,14 @@ class UserManager {
 
     this.onAuthStateChanged(user => {
       if (user) {
-        console.log("USER HERE");
         if (user.uid != this.cache_.getUserID()) {
           this.cache_.clearLocalStore();
           this.cache_.cacheUserID(user.uid);
         }
       } else {
-        console.log("USER NOT HERE");
         this.cache_.clearLocalStore();
         this.cache_.clearProjectCache();
       }
-
-      console.log("userID: ", this.cache_.getUserID());
-      console.log("projectID: ", this.cache_.getCurrentProjectID());
     });
   }
   
@@ -97,7 +92,7 @@ class UserManager {
       identifier = result.data;
     }
 
-    firebase
+    return firebase
       .auth()
       .setPersistence(
         formData.rememberMe 
@@ -109,11 +104,12 @@ class UserManager {
       })
       .then((userCredential) => {
         // Signed in 
-        let user = userCredential.user;
-        console.log("User signed in with ID: ", user.uid);
+        // console.log("User signed in with ID: ", userCredential.user.uid);
+        return true;
       })
       .catch((error) => {
         console.log(error);
+        return false;
       });
   }
 
@@ -130,7 +126,6 @@ class UserManager {
     if (user) { 
       let fs =  firebase.firestore();
       let doc = await fs.collection("users").doc(user.uid).get();
-      console.log(doc);
       if (doc.exists) {
         return doc.data().username;
       }
@@ -168,23 +163,9 @@ class UserManager {
       } else {
         this.cache_.updateUsernameValidity(username, true); // username available 
       }
-
-      // console.log(this.cache_.usernames);
-
       return  this.cache_.getUsernameValidity(username); 
     }
   }
 }
 
 export default new UserManager();
-
-
-// let fs = firebase.firestore();
-// let query = fs.collection('usernames').where('username', '==' , username);
-// let results = await query.get();
-
-// if (results.size) {
-//   this.cache_.updateUsernameValidity(username, false);   
-// } else {
-//   this.cache_.updateUsernameValidity(username, true); // username available 
-// }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import VM from 'scratch-vm';
 
 // modals
 import LocalProjectsModal from "./local-projects/modal.js";
@@ -47,7 +48,7 @@ const ModalLayerComponent = props => {
 };
 
 ModalLayerComponent.propTypes = {
-    vm: PropTypes.object.isRequired,
+    vm: PropTypes.instanceOf(VM).isRequired,
     imageImportVisible: PropTypes.bool.isRequired,
     imageExportVisible: PropTypes.bool.isRequired,
     sampleProjectsVisible: PropTypes.bool.isRequired,

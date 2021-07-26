@@ -192,17 +192,28 @@ const getToolBox = (suggestions = []) => (
   </category>
 
   <category name="Math" id="operators" colour="#ccfccb" secondaryColour="#8df88b">
-    ${getBlock("operator_add")} ${getBlock("operator_subtract")}
-    ${getBlock("operator_multiply")} ${getBlock("operator_divide")}
-    ${getBlock("operator_mod")} 
+    ${getBlock("operator_add")}
+    ${getBlock("operator_subtract")}
+    ${getBlock("operator_multiply")}
+    ${getBlock("operator_divide")}
+    ${getBlock("operator_mod")}
     ${getBlock("operator_random")}
     ${getBlock("operator_round")}
     ${getBlock("operator_mathop")}
-    ${getBlock("operator_lt")} ${getBlock("operator_equals")} ${getBlock("operator_gt")}
-    ${getBlock("operator_and")} ${getBlock("operator_or")} ${getBlock("operator_not")}
+    ${getBlock("operator_lt")}
+    ${getBlock("operator_equals")}
+    ${getBlock("operator_gt")}
+    ${getBlock("operator_and")}
+    ${getBlock("operator_or")}
+    ${getBlock("operator_not")}
   </category>
 
-  <category name="%{BKY_CATEGORY_VARIABLES}" id="data" colour="#8be4ac" secondaryColour="#6adc94" custom="VARIABLE"></category>
+  <category 
+    name="%{BKY_CATEGORY_VARIABLES}" 
+    id="data" colour="#8be4ac" 
+    secondaryColour="#6adc94" 
+    custom="VARIABLE"
+  />
 
   <category name="Functions" id="events" colour="#F7B05B" secondaryColour="#F6A23C">
     ${getBlock("event_whenbroadcastreceived")}
@@ -214,19 +225,17 @@ const getToolBox = (suggestions = []) => (
     id="myBlocks"
     colour="#FF6680"
     secondaryColour="#FF4D6A"
-    custom="PROCEDURE">
-  </category>
+    custom="PROCEDURE" 
+  />
   
   <category
     name="Suggested Blocks"
-    id="suggestedBlocks"
+    id="suggestions"
     colour="#905F95"
     secondaryColour="#845889">
-    ${
-      suggestions.map( type => (
+    ${suggestions.map( type => (
         getBlock(type)
-      ))
-    }
+      ))}
   </category>
   </xml>`);
 

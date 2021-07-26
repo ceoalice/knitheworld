@@ -34,11 +34,6 @@ class SampleProjectsModal extends React.Component {
     render () {
       const props = {...this.props};
       return (
-          // <SampleProjectsModalComponent
-          //     onCancel={this.props.onCancel}
-          //     projects={this.state.projects}
-          //     openProject={this.openProject}
-          // />
         <Modal
           fullScreen
           contentLabel={"Sample Projects"}
