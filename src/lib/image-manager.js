@@ -72,7 +72,15 @@ class ImageManager {
   }
 
   async deleteProjectImage(id) {
-    let st = firebase.storage();
+    let usersRef = firebase.storage().ref('users');
+
+    let file = usersRef.child(`${this.getUserID()}/${id}.png`);
+
+    file.delete().then(() => {
+      console.log("Deleted Image");
+    }).catch(() => {
+      console.log("Could Not Delete Image");
+    });
   }
 
 }
