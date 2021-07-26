@@ -1,28 +1,44 @@
+import firebase, { getFileData } from "./firebase.js";
+
+const CURRENT_PROJECT_ID = "currentProjectID";
+const USER_ID = "userID";
+
 class FirebaseCache {
   constructor () {
-    this.needUpdate =  true; // if needUpdate is true, firebase must be called to pull data
+    // if needUpdate is true, firebase must be called to pull data (used for getProjects only)
+    this.needUpdate =  true; 
+
+    // ID of the current signed in user and the most recent project being edited
+    // (firestore re-affirms auth so IDs can be stored locally and only signed in users can alter their docs)
+    // USER_ID = localStorage.getItem(USER_ID);
+    // CURRENT_PROJECT_ID = localStorage.getItem(CURRENT_PROJECT_ID);
 
     this.sampleProjects = {}; //  object maping project ID to sample project
     this.projects = {}; // object maping project ID to project
 
-    this.sampleImages = {}; //  object maping project ID to sample project
-    this.images = {}; // object maping project ID to project
+    this.sampleImages = {}; //  object mapping project ID to sample project image URL
+    this.images = {}; // object mapping project ID to project image URL
+
+    this.usernames = {} // object mapping username with bool determining if it already available to use
+    this.emails = {} // object mapping email with bool determining if it already is in use
+
+    this.suggestions = {} // object mapping project configuration to list of suggestions 
 
     // sample projects need to be loaded just once and stored in cache
     this.loadSampleProjects();
   }
 
-  async loadSampleImages() {
-    let paths = this.getFilePaths('png');
+  cacheUserID(userID) {
+    localStorage.setItem(USER_ID, userID);
+  }
+  cacheCurrentProjectID(projectID) {
+    localStorage.setItem(CURRENT_PROJECT_ID, projectID);
+  }
 
-    let x = 1;
-    for (const projectName in paths) {
-      let id = `sampleProject${x}`;
-      let imgPath = paths[projectName];
-
-      this.sampleImages[id] = (await import(`${imgPath}`)).default,
-      x ++;
-    }
+  clearLocalStore() {
+    this.clearUserID();
+    this.clearCurrentProjectID();
+  }
   clearCurrentProjectID() {
     localStorage.removeItem(CURRENT_PROJECT_ID);
   }
@@ -41,8 +57,6 @@ class FirebaseCache {
       let thumbnailRef = folderRef.child("thumbnail.png");
       let xmlRef = folderRef.child("index.xml");
 
-      console.log(xmlRef.exists);
-
       this.sampleImages[id] = await thumbnailRef.getDownloadURL();
       let xmlBlob = await getFileData(await xmlRef.getDownloadURL());
 
@@ -54,6 +68,13 @@ class FirebaseCache {
     });
   }
 
+  getCurrentProjectID() {
+    return localStorage.getItem(CURRENT_PROJECT_ID);
+  }
+  getUserID() {
+    return localStorage.getItem(USER_ID);
+  }
+  
   getSampleProjects() {
     return Object.values(this.sampleProjects).sort((a,b) => a.xml.length - b.xml.length);
   }
@@ -74,20 +95,41 @@ class FirebaseCache {
     return this.images[id];
   }
 
-  update(id, args) {
+
+  getUsernameValidity(username) { // true value if username taken, false otherwise
+    return this.usernames[username];
+  }
+  hasUsername(username) { // check if username value in cache
+    return this.usernames.hasOwnProperty(username);
+  }
+
+  getEmailValidity(email) { // true value if email in use, false otherwise
+    return this.emails[email];
+  }
+  hasEmail(email) {
+    this.emails.hasOwnProperty(email);
+  }
+
+  updateProject(id, args) {
     if (!this.projects[id]) this.projects[id] = { id };
     this.projects[id] = { ...this.projects[id], ...args };
   }
   updateImage(id,imgData) {
     this.images[id] = imgData;
   }
+  updateUsernameValidity(username,val) {
+    this.usernames[username] = val;
+  }
+  updateEmailValidity(email,val) {
+    this.emails[email] = val;
+  }
 
-  delete(id) {
+  deleteProject(id) {
     delete this.projects[id];
   }
   deleteImage(id) {
     delete this.images[id];
-  }
+  }  
 }
 
 

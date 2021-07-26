@@ -2,59 +2,10 @@ import VMScratchBlocks from "./blocks";
 import firebase from "./firebase.js";
 import FirebaseCache from "./firebase-cache.js";
 
-const CURRENT_PROJECT_ID = "currentID";
-const USER_ID = "userID";
-
 class ProjectManager {
   constructor () {
     // cache variable
-    let username = 'username';
-    let password = "password";
-
-
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(`nsendek@mit.edu`, password)
-    // .then((userCredential) => {
-    //   // Signed in 
-    //   var user = userCredential.user;
-    //   console.log("then")
-    //   console.log(user)
-
-    //   console.log(firebase.auth().currentUser.uid)
-    //   // ...
-    // })
-    // .catch((error) => {
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   console.log("ERROR")
-    //   console.log(error)
-    //   // ..
-    // });
-
-
     this.cache_ = FirebaseCache;
-
-    let db = firebase.firestore();
-    let userID = this.getUserID(); 
-
-    if (userID === null) {
-      db.collection("users").add({
-        joined : firebase.firestore.Timestamp.fromDate(new Date()),
-      })
-      .then((docRef) => {
-        localStorage.setItem(USER_ID, docRef.id);
-        console.log("User written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-          console.error("Error adding document: ", error);
-      });
-    } else {
-      db.collection("users").doc(userID).update({
-        lastOnline : firebase.firestore.Timestamp.fromDate(new Date()),
-      });
-      console.log("User found with ID: ", userID);
-    }
   }
 
   setVM (vm) {
@@ -62,11 +13,11 @@ class ProjectManager {
   }
 
   getCurrentID() {
-    return localStorage.getItem(CURRENT_PROJECT_ID);
+    return this.cache_.getCurrentProjectID(); // localStorage.getItem(CURRENT_PROJECT_ID);
   }
 
   getUserID() {
-    return localStorage.getItem(USER_ID);
+    return this.cache_.getUserID(); // localStorage.getItem(USER_ID);
   }
 
   getXML() {
@@ -86,17 +37,14 @@ class ProjectManager {
       .doc(this.getUserID())
       .collection("projects").doc(id).get();
 
-    // let {xml, name, timestamp, imgData, size} = ;
-    //
-    this.cache_.update(doc.id, doc.data())
-    // this.cache_[id] = {id , ...doc.data()}
+    this.cache_.updateProject(doc.id, doc.data())
     return this.cache_.getProject(id);
   }
 
   async getProjects() {
     let db = firebase.firestore();
 
-    if (this.cache_.needUpdate) {
+    if (this.cache_.needUpdate && this.getUserID()) {
       console.log("cache needs update");
       this.cache_.needUpdate = false;
 
@@ -104,28 +52,19 @@ class ProjectManager {
       .doc(this.getUserID())
       .collection("projects").orderBy("timestamp", "desc").get();
 
-      return snapshot.docs.map(doc => {
-
-        // let {xml, name, timestamp, imgData, size} = doc.data();
-        
-        // console.log(doc.data().name, ProjectManager.memSize(JSON.stringify(doc.data())));
-        
-        this.cache_.update(doc.id, doc.data())
-        // this.cache_[doc.id] = {id : doc.id, ...doc.data()};
-        return this.cache_.getProject(doc.id); // this.cache_[doc.id];
+      return snapshot.docs.map(doc => {        
+        this.cache_.updateProject(doc.id, doc.data())
+        return this.cache_.getProject(doc.id);
       });
     } else {
-      // let projects = Object.entries(this.cache_)
-      //   .filter(keyVal => keyVal[0] != 'needUpdate' && keyVal[0] != 'sampleProjects')
-      //   .map(keyVal => keyVal[1]);
-      return this.cache_.getProjects(); //projects;
-    }    
+      return this.cache_.getProjects();
+    }
   }
 
   async getProjectName(id) {
     if (this.cache_.getProject(id)) return this.cache_.getProject(id).name;
 
-    // let project = await this.getProject(id);
+    let project = await this.getProject(id);
     return project.name;
   }
 
@@ -162,8 +101,8 @@ class ProjectManager {
 
     return ref.set(newData)
       .then(() => {
-        localStorage.setItem(CURRENT_PROJECT_ID, newData.id);
-        this.cache_.update(newData.id, newData)
+        this.cache_.cacheCurrentProjectID(newData.id);
+        this.cache_.updateProject(newData.id, newData)
         this.vm.emit("PROJECT_NAME_CHANGED");
       })
       .catch(error => {
@@ -192,7 +131,7 @@ class ProjectManager {
 
     return ref.update(newData)
       .then(() => {
-        this.cache_.update(currentID, newData)
+        this.cache_.updateProject(currentID, newData)
         this.vm.emit("PROJECT_NAME_CHANGED");
       })
       .catch(error => {
@@ -204,12 +143,12 @@ class ProjectManager {
     // will clear blocks in current project & remove currentID
     VMScratchBlocks.loadXML(xml ? xml : ProjectManager.BLANK_WORKSPACE);
 
-    localStorage.removeItem(CURRENT_PROJECT_ID);
+    this.cache_.clearCurrentProjectID();
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
   
   async loadProject(id) {
-    localStorage.setItem(CURRENT_PROJECT_ID, id);
+    this.cache_.cacheCurrentProjectID(id);
     let project = await this.getProject(id);
     // (don't need to update each time)
     VMScratchBlocks.loadXML(project.xml);
@@ -269,12 +208,13 @@ class ProjectManager {
       .delete()
       .then(() => {
         console.log("Document successfully deleted!");
-        this.cache_.delete(id)
+        this.cache_.deleteProject(id)
         // delete this.cache_[id];
         // console.log("cache: ", this.cache_);
 
         if (this.getCurrentID() === id) {
-          localStorage.removeItem(CURRENT_PROJECT_ID);
+          this.cache_.clearCurrentProjectID();
+          this.vm.emit("PROJECT_NAME_CHANGED");
         }
       }).catch((error) => {
           console.error("Error removing document: ", error);
@@ -291,7 +231,7 @@ class ProjectManager {
       .doc(id)
       .update(newData)
       .then(() => {
-        this.cache_.update(id, newData);
+        this.cache_.updateProject(id, newData);
         // this.cache_[id] = { ...this.cache_[id], ...{name : newName} };
         this.vm.emit("PROJECT_NAME_CHANGED");
       })
