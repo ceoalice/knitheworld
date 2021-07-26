@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GUI from './containers/gui.js';
 
 import {Provider} from 'react-redux';
 import {createStore, combineReducers} from 'redux';
@@ -10,8 +9,12 @@ import projectStateReducer from './reducers/project-state.js';
 import customProceduresReducer from './reducers/custom-procedures.js'
 import userReducer from './reducers/user.js'
 
+import GUI from './views/gui.js';
+import ProjectPage from './views/project.js';
+import UserPage from './views/user.js';
+
 import {setAppElement} from "react-modal";
-setAppElement('body');
+setAppElement(document.getElementById('root'));
 
 const reducers = combineReducers({
     modals: modalReducer,
@@ -23,10 +26,11 @@ const reducers = combineReducers({
 const store = createStore(reducers);
 
 ReactDOM.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <GUI />
         </Provider>
-    </React.StrictMode>,
+    // </React.StrictMode>,
+    ,
     document.getElementById('root')
 );

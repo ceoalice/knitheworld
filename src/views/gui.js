@@ -20,6 +20,8 @@ import {
 
 import VMScratchBlocks from '../lib/blocks.js';
 import ProjectManager from '../lib/project-manager';
+import BlockParser from "../lib/parser";
+import Suggester from "../lib/suggest";
 
 function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
   let check = true;
@@ -51,7 +53,6 @@ class GUI extends React.Component {
         super(props);
         this.vm = new VM();
         this.vm.setTurboMode(true);
-        
         this.state = {
           prevBlocks :  null,
           totalStacks : 1,
@@ -70,7 +71,6 @@ class GUI extends React.Component {
     componentDidMount () {
         VMScratchBlocks.setCallbackProcedure(this.props.onActivateCustomProcedures);
         this.vm.on('PROJECT_RUN_START', this.props.setProjectRunning);
-        this.vm.on('BLOCKS_NEED_UPDATE', () => {console.log("BLOCKS_NEED_UPDATE started");});
         this.vm.on('PROJECT_RUN_STOP', this.props.setProjectStopped);
 
         this.vm.on('PROJECT_CHANGED',this.checkProjectChanged);
@@ -83,7 +83,6 @@ class GUI extends React.Component {
 
     componentWillUnmount () {
         this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
-        this.vm.removeListener('BLOCKS_NEED_UPDATE', () => {console.log("BLOCKS_NEED_UPDATE started");});
         this.vm.removeListener('PROJECT_RUN_STOP', this.props.setProjectStopped);
 
         this.vm.removeListener('PROJECT_CHANGED',this.checkProjectChanged);
@@ -118,23 +117,49 @@ class GUI extends React.Component {
       // this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
     }
     
+    log(obj) {
+      console.log(JSON.parse(JSON.stringify(obj)));
+    }
 
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
-      let blocks = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
-      // console.log(blocks)
+      let blocksObj = JSON.parse(JSON.stringify(this.vm.runtime.targets[0].blocks._blocks)); 
       // blank workspace loaded need to wait for more blocks or bug occured
-      if (Object.keys(blocks).length == 0) return;
+      if (Object.keys(blocksObj).length == 0) return;
 
-      let blocksEqual = this.allBlocksEqual(blocks);
+      let isDragging = VMScratchBlocks.getWorkspace().isDragging(); 
 
-      if (!blocksEqual) { // NOTICABLE CHANGE HAS OCCURED IN WORKSPACE NEED TO RERENDER SIM
+      if (!isDragging && !this.allBlocksEqual(blocksObj)) { 
+        // NOTICABLE CHANGE HAS OCCURED IN WORKSPACE 
+        // NEED TO RERENDER SIM FROM MAIN STACK
         // console.log("updating canvas...");
         this.vm.runtime.startHats('event_whenstarted');
+
+        // blocks changed might need to get new set of autosuggestiongs
+        // FIGURE OUT NEW SET OF AUTOSUGGESTED BLOCKS BASED ON PROJECT
+        const blocks = BlockParser.parse(ProjectManager.getXML());
+        
+        // console.log({blocks});
+
+        // console.log(blocks.primary);
+      
+          if (blocks.primary.length > 1) {
+            let lastBlock = blocks.primary[blocks.primary.length - 1];
+
+            if (Array.isArray(lastBlock) && blocks.primary.length > 2)  {
+              lastBlock = blocks.primary[blocks.primary.length - 2];
+            }
+
+            console.log({lastBlock});
+            Suggester.suggest(lastBlock).then((res) => {
+              this.vm.emit("SUGGEST_EVENT", res.data);
+            })
+          }
+ 
+
       }
 
       // CHECK IF WORKSPACE CODE HAS CHANGED AND NEEDS TO BE SAVED AGAIN
-
       if (ProjectManager.getCurrentID()) {
         ProjectManager.XMLChanged().then((changed) => {
           if (changed) {
@@ -145,7 +170,10 @@ class GUI extends React.Component {
         });
       }
 
-      this.setState({prevBlocks: blocks});
+      // save most current block data when not dragging
+      if (!isDragging) {
+        this.setState({prevBlocks: blocksObj});
+      }
     }
 
     allBlocksEqual(blocks) {
