@@ -202,7 +202,7 @@ class ProjectManager {
 
   async newProject(xml = null) {
     // will clear blocks in current project & remove currentID
-    VMScratchBlocks.loadWorkspace(xml ? xml : ProjectManager.BLANK_WORKSPACE);
+    VMScratchBlocks.loadXML(xml ? xml : ProjectManager.BLANK_WORKSPACE);
 
     localStorage.removeItem(CURRENT_PROJECT_ID);
     this.vm.emit("PROJECT_NAME_CHANGED");
@@ -212,7 +212,7 @@ class ProjectManager {
     localStorage.setItem(CURRENT_PROJECT_ID, id);
     let project = await this.getProject(id);
     // (don't need to update each time)
-    VMScratchBlocks.loadWorkspace(project.xml);
+    VMScratchBlocks.loadXML(project.xml);
     this.vm.emit("PROJECT_NAME_CHANGED");
   }
 
