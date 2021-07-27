@@ -1,0 +1,12 @@
+@import "../../css/colors.scss";
+
+.body {
+  display: flex;
+  flex-direction: column;
+  background: $ui-white;
+  user-select: text;
+}
+
+.modal-content {
+  width: 439px;
+}
