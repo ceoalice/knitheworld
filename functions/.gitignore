@@ -3,3 +3,5 @@ node_modules/
 parser/output
 
 trie/output
+
+hosting/
