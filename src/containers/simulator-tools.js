@@ -1,14 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { bindAll } from "lodash";
 
-import {openImageExport} from '../reducers/modals.js';
-import {downloadTheStitches} from '../reducers/pixels.js';
 import RgbQuant from "rgbquant";
 import SimulatorToolsComponent from '../components/simulator-tools/simulator-tools.js';
 
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
 
+import ProjectManager from "../lib/project-manager.js";
+import ImageManager from "../lib/image-manager.js";
 
 function RGBArrayToUIntArray(array) {
   let out = []
@@ -34,11 +35,26 @@ class SimulatorTools extends React.Component {
         super(props);
         this.state = {
           maxColors: 4,
+          showMinecraft : false
         }
-        this.downloadPixelPattern = this.downloadPixelPattern.bind(this);
-        this.downloadStitchPattern = this.downloadStitchPattern.bind(this);
-        this.toggleDownload = this.toggleDownload.bind(this);
 
+        bindAll(this, [
+          'downloadPixelPattern',
+          'downloadStitchPattern',
+          // 'toggleDownload',
+          'savePattern',
+          'download',
+          'saveThumbnail',
+          'downloadMinecraft',
+          'getCurrentStitchCanvas'
+        ]);
+    }
+
+    componentDidMount() {
+      let params = new URLSearchParams(window.location.search)
+      if (params.has('minecraft')) {
+        this.setState({showMinecraft : true});
+      }
     }
 
     componentDidUpdate() {
@@ -48,9 +64,28 @@ class SimulatorTools extends React.Component {
       }
     }
 
-    toggleDownload () {
-      this.props.toggleDownloadStitches();
+    savePattern(action) {
+      switch(action) {
+        case "download":
+          this.download();
+          break;
+        case 'thumbnail':
+          this.saveThumbnail();
+          break;
+        case 'minecraft':
+          this.downloadMinecraft();
+          break;
+        default:
+          break;
+      }
+    }
 
+    saveThumbnail() {
+      let imgData = this.getCurrentStitchCanvas().toDataURL();
+      ImageManager.saveProjectImage(ProjectManager.getCurrentID(),imgData);
+    }
+
+    download() {
       let zip = new JSZip();
 
       this.downloadPixelPattern(zip);
@@ -61,6 +96,10 @@ class SimulatorTools extends React.Component {
           // see FileSaver.js
           saveAs(content, `${this.props.projectName}.zip`);
       });
+    }
+
+    downloadMinecraft() {
+
     }
 
     downloadPixelPattern(zip) {
@@ -114,11 +153,10 @@ class SimulatorTools extends React.Component {
         );
     }
 
-    downloadStitchPattern(zip) {
+    getCurrentStitchCanvas() {
       const {pixelCount, pixelColors} = {...this.props};
       const stitchCanvas = document.createElement('canvas');
 
-      // tally up all stitches that are actually colors
       let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
       pixelColors.splice(totalStitches); /// removing transparent pixels
 
@@ -133,6 +171,12 @@ class SimulatorTools extends React.Component {
         stitchctx.drawStitch(25*(i%pixelCount), 25*currentRow, 20);
       }
 
+      return stitchCanvas;
+    }
+
+    downloadStitchPattern(zip) {
+      const stitchCanvas = this.getCurrentStitchCanvas();
+
       zip.file(
         `KnitPattern.png`, 
         stitchCanvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""), 
@@ -142,7 +186,11 @@ class SimulatorTools extends React.Component {
 
     render() {
         return (
-            <SimulatorToolsComponent {...this.props} />
+            <SimulatorToolsComponent 
+              showMinecraft={this.state.showMinecraft} 
+              savePattern = {this.savePattern} 
+              {...this.props} 
+            />
         );
     }
 }
@@ -157,13 +205,5 @@ const mapStateToProps = state => ({
     downloadingStitchesName: state.pixels.downloadingStitchesName
 });
 
-const mapDispatchToProps = dispatch => ({
-    openImageExport : () => dispatch(openImageExport()),
-    triggerDownload: () => dispatch(downloadTheStitches(true)),
-    toggleDownloadStitches: () => dispatch(downloadTheStitches(false)),
-});
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SimulatorTools);
+export default connect(mapStateToProps)(SimulatorTools);
