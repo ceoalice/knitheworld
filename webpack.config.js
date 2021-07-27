@@ -1,7 +1,13 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebPackPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 module.exports = {
+  output: {
+		filename: '[name].bundle.js',
+		path: path.resolve(__dirname, 'dist'),
+    publicPath: "/"
+	},
   module: {
     rules: [
       {
@@ -103,5 +109,19 @@ module.exports = {
             },
         ]
     }),
-  ]
+  ],
+  optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'modules',
+					chunks: 'all'
+				}
+			}
+		}
+	},
+  devServer: {
+    historyApiFallback: true
+  }
 };
