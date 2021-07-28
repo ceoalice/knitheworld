@@ -3,7 +3,7 @@ import React from 'react';
 import RgbQuant from "rgbquant";
 import { bindAll } from 'lodash';
 
-import ProjectManager from '../lib/project-manager';
+import ProjectAPI from '../lib/project-api.js';
 import { blocksToXML, RGBToHex } from "../lib/image-import";
 
 import ImageImporterComponent from "../components/image-importer/image-importer";
@@ -141,7 +141,7 @@ class ImageImporter extends React.Component {
       
       let xmlString = blocksToXML(blocks);
       this.props.closeModal();
-      ProjectManager.newProject(xmlString);
+      ProjectAPI.newProject(xmlString);
     }
 
     onDrop(event, err) {

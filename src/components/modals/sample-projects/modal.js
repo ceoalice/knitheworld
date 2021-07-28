@@ -9,7 +9,7 @@ import { updateProjectName } from '../../../reducers/project-state.js';
 import Modal from '../../../containers/modal';
 import ProjectItem from '../../../containers/project-item.js';
 
-import ProjectManager from "../../../lib/project-manager.js";
+import ProjectAPI from "../../../lib/project-api.js";
 
 import styles from './modal.scss';
 
@@ -23,11 +23,11 @@ class SampleProjectsModal extends React.Component {
     }
 
     componentDidMount() {
-      this.setState({projects : ProjectManager.getSampleProjects()});
+      this.setState({projects : ProjectAPI.getSampleProjects()});
     }
 
     openProject(xml) {
-      ProjectManager.newProject(xml);
+      ProjectAPI.newProject(xml);
       this.props.onCancel();
     }
 

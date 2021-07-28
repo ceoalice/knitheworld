@@ -13,7 +13,7 @@ import Card from '@material-ui/core/Card';
 
 import Button from '@material-ui/core/Button';
 
-import ProjectManager from "../../lib/project-manager.js"
+import ProjectAPI from "../../lib/project-api.js";
 
 import styles from "./modal.css";
 
@@ -64,7 +64,7 @@ const EditModalComponent = (props) => {
 
   const handleSubmit = (e) => {
     console.log("CHANGED NAME");
-    ProjectManager.changeProjectName(props.id, name);
+    ProjectAPI.changeProjectName(props.id, name);
     props.handleClose(e);
   }
   

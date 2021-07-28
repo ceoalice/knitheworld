@@ -8,7 +8,7 @@ import SimulatorToolsComponent from '../components/simulator-tools/simulator-too
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
 
-import ProjectManager from "../lib/project-manager.js";
+import ProjectAPI from "../lib/project-api.js";
 import ImageManager from "../lib/image-manager.js";
 
 function RGBArrayToUIntArray(array) {
@@ -82,7 +82,7 @@ class SimulatorTools extends React.Component {
 
     saveThumbnail() {
       let imgData = this.getCurrentStitchCanvas().toDataURL();
-      ImageManager.saveProjectImage(ProjectManager.getCurrentID(),imgData);
+      ImageManager.saveProjectImage(ProjectAPI.getCurrentID(),imgData);
     }
 
     download() {

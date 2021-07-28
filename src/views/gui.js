@@ -19,7 +19,7 @@ import {
 
 
 import VMScratchBlocks from '../lib/blocks.js';
-import ProjectManager from '../lib/project-manager';
+import ProjectAPI from '../lib/project-api';
 import BlockParser from "../lib/parser";
 import Suggester from "../lib/suggest";
 
@@ -79,8 +79,6 @@ class GUI extends React.Component {
         window.addEventListener("beforeunload", this.handleBeforeUnload);
     }
 
-
-
     componentWillUnmount () {
         this.vm.removeListener('PROJECT_RUN_START', this.props.setProjectRunning);
         this.vm.removeListener('PROJECT_RUN_STOP', this.props.setProjectStopped);
@@ -92,7 +90,12 @@ class GUI extends React.Component {
     }
 
     async handleProjectName() { 
-      this.props.updateProjectName(await ProjectManager.getCurrentProjectName());
+      if (!ProjectAPI.getCurrentID()) {
+        this.props.updateProjectName(ProjectAPI.defaultProjectName);
+      } else {
+        let projectName = await ProjectAPI.getProjectName(ProjectAPI.getCurrentID());
+        this.props.updateProjectName(projectName);
+      }
     }
 
     handleBeforeUnload(e) {
@@ -137,11 +140,7 @@ class GUI extends React.Component {
 
         // blocks changed might need to get new set of autosuggestiongs
         // FIGURE OUT NEW SET OF AUTOSUGGESTED BLOCKS BASED ON PROJECT
-        const blocks = BlockParser.parse(ProjectManager.getXML());
-        
-        // console.log({blocks});
-
-        // console.log(blocks.primary);
+        const blocks = BlockParser.parse(VMScratchBlocks.getXML());
       
           if (blocks.primary.length > 1) {
             let lastBlock = blocks.primary[blocks.primary.length - 1];
@@ -160,8 +159,8 @@ class GUI extends React.Component {
       }
 
       // CHECK IF WORKSPACE CODE HAS CHANGED AND NEEDS TO BE SAVED AGAIN
-      if (ProjectManager.getCurrentID()) {
-        ProjectManager.XMLChanged().then((changed) => {
+      if (ProjectAPI.getCurrentID()) {
+        ProjectAPI.XMLChanged().then((changed) => {
           if (changed) {
             this.props.setProjectSaved(false);
           } else if (!this.props.projectSaved) {

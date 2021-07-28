@@ -4,7 +4,8 @@ import { bindAll } from "lodash";
 
 import { closeSaveAs } from "../../../reducers/modals.js";
 import { setProjectSaved } from '../../../reducers/project-state.js';
-import ProjectManager from "../../../lib/project-manager.js";
+
+import ProjectAPI from "../../../lib/project-api.js";
 import ImageManager from "../../../lib/image-manager.js";
 import Modal from '../../../containers/modal.js';
 
@@ -35,8 +36,14 @@ class SaveAsModal extends React.Component {
     }
 
     async componentDidMount() {
-      let projectName = String(await ProjectManager.getCurrentProjectName());
-      this.setState({ projectName, prevProjectName : projectName})
+      let projectName;
+      if (ProjectAPI.getCurrentID()) {
+        projectName = String(await ProjectAPI.getProjectName(ProjectAPI.getCurrentID()));
+      } else {
+        projectName = ProjectAPI.defaultProjectName;
+      }
+
+      this.setState({ projectName, prevProjectName : projectName});
     }
 
     handleInputChange(event) {
@@ -54,8 +61,8 @@ class SaveAsModal extends React.Component {
     saveProject() {
       let imgData = (this.state.imgData == "") ? this.getDefaultImageData() : this.state.imgData;
 
-      ProjectManager.saveProject(this.state.projectName).then(() => {
-          ImageManager.saveProjectImage(ProjectManager.getCurrentID(),imgData);
+      ProjectAPI.saveProject(this.state.projectName).then(() => {
+          ImageManager.saveProjectImage(ProjectAPI.getCurrentID(),imgData);
           this.props.projectSaved();
       });
     }

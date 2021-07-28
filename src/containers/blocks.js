@@ -7,7 +7,8 @@ import VM from 'scratch-vm';
 import { clearThePixels } from '../reducers/pixels.js';
 
 import VMScratchBlocks from '../lib/blocks.js';
-import ProjectManager from '../lib/project-manager.js';
+import ProjectAPI from '../lib/project-api.js';
+
 import defaultToolbox, {getToolBox} from '../lib/toolbox.js';
 import UserManager from '../lib/user-manager.js';
 
@@ -23,7 +24,7 @@ class Blocks extends React.Component {
         }
         
         VMScratchBlocks.setVM(props.vm);
-        ProjectManager.setVM(props.vm);
+        ProjectAPI.setVM(props.vm);
         UserManager.setVM(props.vm);
         
         bindAll(this,[
@@ -50,11 +51,11 @@ class Blocks extends React.Component {
 
             let params = new URLSearchParams(window.location.search)
             
-            if (params.has('projectID')) {
-              ProjectManager.loadProjectFromUrl();
-            } else {
-              ProjectManager.loadCurrentProject();
-            }
+            // if (params.has('projectID')) {
+              
+            // } 
+
+            ProjectAPI.loadCurrentProject();
 
             this.attachVM();
         }).then(() => {

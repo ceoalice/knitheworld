@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 
 import Modal from '../../../containers/modal'; '../../containers/modal';
 import styles from './modal.scss';
-import ProjectManger from "../../../lib/project-manager.js";
+
+import ProjectAPI from "../../../lib/project-api.js";
 import { closeShareProject } from '../../../reducers/modals.js';
 
 import { 
@@ -16,9 +17,8 @@ import {
   EmailIcon } from "react-share";
 
 const ShareProjectModal = props => {
-  // console.log(window.location.host)
-  const isSharable = Boolean(ProjectManger.getCurrentID());
-  const url = window.location.href + `?projectID=${ProjectManger.getCurrentID()}`;
+  const isSharable = Boolean(ProjectAPI.getCurrentID());
+  const url = window.location.href + `?projectID=${ProjectAPI.getCurrentID()}`;
 
   return (
     <Modal

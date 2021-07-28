@@ -41,14 +41,24 @@ class VMScratchBlocks {
       ScratchBlocks.Procedures.externalProcedureDefCallback = callback;
     }
 
-    loadXML (xml) {
-        const domXML = ScratchBlocks.Xml.textToDom(xml);
-        ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(domXML, this.workspace);              
+    loadXML (xml = VMScratchBlocks.BLANK_WORKSPACE) {
+      const domXML = ScratchBlocks.Xml.textToDom(xml);
+      ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(domXML, this.workspace);              
     }
 
+    /**
+     * 
+     * @returns {String} XML string
+     */
     getXML () {
-        return ScratchBlocks.Xml.domToText(ScratchBlocks.Xml.workspaceToDom(this.workspace));
+      return ScratchBlocks.Xml.domToText(ScratchBlocks.Xml.workspaceToDom(this.workspace));
     }
 }
+
+VMScratchBlocks.BLANK_WORKSPACE =`<xml>
+  <block type="event_whenstarted" deletable="false" x="25" y="50">
+  </block>
+</xml>`;
+
 
 export default new VMScratchBlocks();

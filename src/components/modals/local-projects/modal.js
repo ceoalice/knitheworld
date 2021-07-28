@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import { closeLocalProjects } from '../../../reducers/modals.js';
 
-import ProjectManager from "../../../lib/project-manager.js";
+import ProjectAPI from "../../../lib/project-api.js";
 import ImageManager from "../../../lib/image-manager.js";
 
 import Modal from '../../../containers/modal';
@@ -36,17 +36,21 @@ class LocalProjectsModal extends React.Component {
     }
 
     async handleProjectsUpdate() {
-      let projects = await ProjectManager.getProjects();
-      this.setState({projects});
+      return ProjectAPI.getProjectsByUserID(ProjectAPI.getUserID())
+        .then(res => {
+          let projects = res.data;
+          console.log({projects});
+          this.setState({projects});
+        })
     }
 
     openProject(id) {
       this.props.onCancel();
-      ProjectManager.loadProject(id);
+      ProjectAPI.loadProject(id);
     }
 
     deleteProject(id) {
-      ProjectManager.deleteProject(id).then(()=> {
+      ProjectAPI.deleteProject(id).then(()=> {
         ImageManager.deleteProjectImage(id).then(() => {
           this.handleProjectsUpdate();
         })
