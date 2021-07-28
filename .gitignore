@@ -11,5 +11,8 @@ package-lock.json
 
 # firebase stuff
 .firebase
-firebase.config.js
 *-debug.log
+
+# Confidential don't put in repo!
+firebase.config.js
+firebase.service.json
