@@ -4,7 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import ProjectItemComponent from '../components/project-item/project-item.js';
-import ImageManager from "../lib/image-manager.js"
+import ImageAPI from "../lib/image-api.js"
 
 
 class ProjectItem extends React.PureComponent {
@@ -28,10 +28,16 @@ class ProjectItem extends React.PureComponent {
     }
 
     async handleUpdate() {
-      let imageURL = this.props.isExample 
-      ? ImageManager.getSampleImage(this.props.project.id)
-      : await ImageManager.getProjectImageURL(this.props.project.id)
-      this.setState({imageURL});
+      if (this.props.isExample) {
+        this.setState({imageURL : ImageAPI.getSampleImage(this.props.project.id)});
+      } else {
+        ImageAPI.getProjectImageURL(this.props.userID, this.props.project.id)
+          .then(res => {
+            if (res.status == 200) {
+              this.setState({imageURL : res.data});
+            }
+          });
+      }
     }
 
 
@@ -81,7 +87,8 @@ ProjectItem.propTypes = {
 const mapStateToProps = state => ({
   pixelCount: state.pixels.pixelCount,
   pixelColors: state.pixels.pixelColors,
-  rowCount: state.pixels.rowCount
+  rowCount: state.pixels.rowCount,
+  userID : state.user.uid
 });
 
 

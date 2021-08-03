@@ -6,7 +6,7 @@ import { closeSaveAs } from "../../../reducers/modals.js";
 import { setProjectSaved } from '../../../reducers/project-state.js';
 
 import ProjectAPI from "../../../lib/project-api.js";
-import ImageManager from "../../../lib/image-manager.js";
+import ImageAPI from "../../../lib/image-api.js";
 import Modal from '../../../containers/modal.js';
 
 import Button from '@material-ui/core/Button';
@@ -62,8 +62,10 @@ class SaveAsModal extends React.Component {
       let imgData = (this.state.imgData == "") ? this.getDefaultImageData() : this.state.imgData;
 
       ProjectAPI.saveProject(this.state.projectName).then(() => {
-          ImageManager.saveProjectImage(ProjectAPI.getCurrentID(),imgData);
-          this.props.projectSaved();
+
+        ImageAPI.saveProjectImage(ProjectAPI.getCurrentID(),imgData);
+        
+        this.props.projectSaved();
       });
     }
 

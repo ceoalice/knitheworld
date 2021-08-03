@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
-import ImageManager from "../../lib/image-manager.js"
+import ImageAPI from "../../lib/image-api.js"
 
 import styles from "./modal.css"
 
@@ -60,8 +60,8 @@ const DownloadModalComponent = (props) => {
     }
 
     if (state.thumbnail) {
-      let data = await ImageManager.getProjectImageData(props.imageURL);
-      zip.file(`thumbnail.png`, data);
+      let res = await ImageAPI.getProjectImageData(props.imageURL);
+      zip.file(`thumbnail.png`, res.data);
     }
 
     if (state.xml || state.thumbnail) {

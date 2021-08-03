@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import { closeLocalProjects } from '../../../reducers/modals.js';
 
 import ProjectAPI from "../../../lib/project-api.js";
-import ImageManager from "../../../lib/image-manager.js";
+import ImageAPI from "../../../lib/image-api.js"
 
 import Modal from '../../../containers/modal';
 import ProjectItem from '../../../containers/project-item.js';
@@ -51,9 +51,9 @@ class LocalProjectsModal extends React.Component {
 
     deleteProject(id) {
       ProjectAPI.deleteProject(id).then(()=> {
-        ImageManager.deleteProjectImage(id).then(() => {
+        ImageAPI.deleteProjectImage(id).then( () => {
           this.handleProjectsUpdate();
-        })
+        });
       });
     }
 
