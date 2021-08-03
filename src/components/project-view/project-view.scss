@@ -3,10 +3,43 @@
 .body {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background: $ui-white;
   user-select: text;
 }
 
 .modal-content {
   width: 439px;
+  max-height: 60vh;
+  overflow: scroll;
+}
+
+.thumbnail-container {
+  position: relative;
+  // min-height: 200px;
+
+  max-width: 85%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 3px solid hsla(0, 0, 0, 0.25);
+  border-radius: 1.5rem;
+  margin: 10px;
+  padding: 0.5rem;
+}
+
+object.thumbnail, img.thumbnail {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+
+}
+
+.demo-button:global(.MuiButton-root) {
+  color: white !important;
+  background-color: $ui-tertiary !important;
+  margin: 10px;
+  background: hsla(215, 100%, 65%, 0.9);
 }

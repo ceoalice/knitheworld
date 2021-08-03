@@ -75,7 +75,8 @@ class SaveAsModal extends React.Component {
       const {pixelCount, pixelColors, rowCount} = {...this.props};
       const stitchCanvas = document.createElement('canvas');
 
-      let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
+      let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0);
+      if (totalStitches > pixelCount*rowCount) totalStitches = pixelCount*rowCount;
 
       stitchCanvas.width = 25*pixelCount+10;
       stitchCanvas.height = 25*(Math.ceil(totalStitches/pixelCount))+10;

@@ -121,7 +121,7 @@ class SimulatorTools extends React.Component {
         // we store data about every pixel on the canvas, regardless of whether
         // it has been knit. this handles the "empty" (transparent) stitches
         let totalPixels = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
-
+        if (totalPixels > pixelCount*rowCount) totalPixels = pixelCount*rowCount;
         // pixelColors.splice(totalPixels);
         // console.log(pixelColors.length);
 
@@ -154,11 +154,13 @@ class SimulatorTools extends React.Component {
     }
 
     getCurrentStitchCanvas() {
-      const {pixelCount, pixelColors} = {...this.props};
+      const {pixelCount, rowCount,  pixelColors} = {...this.props};
       const stitchCanvas = document.createElement('canvas');
 
       let totalStitches = pixelColors.reduce((a,b) => a + (!b.includes("rgba(") ? 1 : 0), 0)
-      pixelColors.splice(totalStitches); /// removing transparent pixels
+      if (totalStitches > pixelCount*rowCount) totalStitches = pixelCount*rowCount;
+      
+      // pixelColors.splice(totalStitches); /// removing transparent pixels
 
       stitchCanvas.width = 25*pixelCount+10;
       stitchCanvas.height = 25*(Math.ceil(totalStitches/pixelCount))+10;
