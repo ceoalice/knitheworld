@@ -223,8 +223,8 @@ const getToolBox = (suggestions = []) => (
   <category
     name="%{BKY_CATEGORY_MYBLOCKS}"
     id="myBlocks"
-    colour="#FF6680"
-    secondaryColour="#FF4D6A"
+    colour="#cec1e7"
+    secondaryColour="#c0aee0"
     custom="PROCEDURE" 
   />
   
