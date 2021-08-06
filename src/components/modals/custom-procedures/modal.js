@@ -316,7 +316,9 @@ CustomProcedures.defaultOptions = {
         wheel: false,
         startScale: 0.9
     },
-    media: `${window.location.pathname}static/blocks-media/`,
+    media: window.location.pathname == '/knitheworld/'  
+      ? `${window.location.pathname}static/blocks-media/`
+      : '/static/blocks-media/',
     comments: false,
     collapse: false,
     scrollbars: true

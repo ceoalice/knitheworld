@@ -90,7 +90,10 @@ class BirthDateStep extends React.Component {
                         <JoinFlowStep
                             step={this.props.step}
                             headerImgClass={styles["birthdate-step-image"]}
-                            headerImgSrc={`${window.location.pathname}static/images/birthdate-header.png`}
+                            headerImgSrc={
+                              window.location.pathname == '/knitheworld/'
+                              ? `${window.location.pathname}static/images/birthdate-header.png`
+                              : '/static/images/birthdate-header.png'}
                             innerClassName={styles["join-flow-inner-birthdate-step"]}
                             title={
                               'When were you born?'

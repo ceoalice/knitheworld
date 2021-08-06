@@ -39,7 +39,10 @@ const SimulatorToolsComponent = props => {
               <IconButton size="small" onClick={() => props.savePattern('minecraft')}>
                 <SvgIcon className={styles.icon}>
                   <image 
-                    href={`${window.location.pathname}static/images/minecraft-icon.png`} 
+                    href={
+                      window.location.pathname == '/knitheworld/' 
+                      ? `${window.location.pathname}static/images/minecraft-icon.png`
+                      : '/static/images/minecraft-icon.png'} 
                     height="100%" width="100%"
                   />
                 </SvgIcon>
