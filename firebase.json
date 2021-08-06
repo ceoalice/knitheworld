@@ -7,10 +7,10 @@
       "**/node_modules/**"
     ],
     "rewrites": [ {
-      "source": "/user",
+      "source": "/users/**",
       "function": "user"
       }, {
-      "source": "/project",
+      "source": "/projects/**",
       "function": "project"
     } ]
   }

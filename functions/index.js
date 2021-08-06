@@ -1,8 +1,14 @@
 const functions = require("firebase-functions");
+
 const admin = require('firebase-admin');
+const serviceAccount = require("./firebase.service.json");
+
 const fs = require('fs');
 
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "knitheworld-bb33d.appspot.com",
+});
 
 const trie = require('./trie/trie');
 const examples = JSON.parse(fs.readFileSync("./trie/input/default.json",'utf-8'));
@@ -48,16 +54,49 @@ exports.getEmailByUsername = functions.https.onCall(async (data, context) => {
 // https://firebase.google.com/docs/hosting/functions
 // https://github.com/firebase/functions-samples/blob/main/authorized-https-endpoint/functions/index.js
 
-exports.project = functions.https.onRequest((req, res) => {
-  let metaPlaceholder = '<title>KnitheWorld</title>'
+// function replaceRange
+exports.project = functions.https.onRequest( async (req, res) => {
+
+  const replaceRange = function (orginal, startSubstring, endSubstring, replacement) {
+    let startIndex = orginal.indexOf(startSubstring);
+    let endIndex = orginal.indexOf(endSubstring) + endSubstring.length;
+  
+    if (endIndex == -1 || startIndex == -1) return "";
+    
+    return orginal.substring(0,startIndex) + replacement + orginal.substring(endIndex);
+  }
+
+  const id = req.path.split('/')[2]; // use EXPRESS?
+  const bucket = admin.storage().bucket();
+
+  const doc = await admin.firestore().collection("projects").doc(id).get();
+  const project = doc.data();
+  const thumbnail = bucket.file(`users/${project.creator}/${id}.png`);
+
+  let thumbnailURL = await thumbnail.getSignedUrl({
+      action: 'read',
+      expires: '03-09-2491'
+    }).then(signedUrls => {
+      return signedUrls[0] // contains the file's public URL
+  });
 
   try {
-    let indexHTML = defaultHTML.replace(metaPlaceholder, '<title>PROJECT PAGE</title>');
+    let indexHTML = replaceRange(
+      defaultHTML,
+      '<meta name="og-marker-start">',
+      '<meta name="og-marker-end">',
+      `<meta property="og:type" content="website">
+      <meta property="og:title" content="${project.name}">
+      <meta property="og:description" content="Check out this project in KnitheWorld">
+      <meta property="og:image" content="${thumbnailURL}">`);
+
     res.status(200).send(indexHTML);
   } catch(error) {
     res.status(500).send(error);
   }
 });
+
+
 
 exports.user = functions.https.onRequest((req, res) => {
   let metaPlaceholder = '<title>KnitheWorld</title>'
@@ -69,6 +108,8 @@ exports.user = functions.https.onRequest((req, res) => {
     res.status(500).send(error);
   }
 });
+
+
 
 // trigger functions -------------------------------------------
 
