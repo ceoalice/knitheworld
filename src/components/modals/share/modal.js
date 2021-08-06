@@ -18,7 +18,7 @@ import {
 
 const ShareProjectModal = props => {
   const isSharable = Boolean(ProjectAPI.getCurrentID());
-  const url = window.location.href + `?projectID=${ProjectAPI.getCurrentID()}`;
+  const url = window.location.origin + `/projects/${ProjectAPI.getCurrentID()}`;
 
   return (
     <Modal
