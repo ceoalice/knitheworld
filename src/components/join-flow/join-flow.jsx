@@ -302,20 +302,11 @@ class JoinFlow extends React.Component {
 
 
 
-JoinFlow.propTypes = {
-    createProjectOnComplete: PropTypes.bool,
-    // intl: intlShape,
-    // onCompleteRegistration: PropTypes.func,
-    
+JoinFlow.propTypes = {    
     refreshSessionWithRetry: PropTypes.func
 };
 
-// const IntlJoinFlow = injectIntl(JoinFlow);
-
 const mapDispatchToProps = dispatch => ({
-    // refreshSessionWithRetry: () => (
-    //     dispatch(sessionActions.refreshSessionWithRetry())
-    // )
     closeJoinModal : () => (dispatch(closeJoin()))
 });
 

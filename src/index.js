@@ -9,9 +9,15 @@ import projectStateReducer from './reducers/project-state.js';
 import customProceduresReducer from './reducers/custom-procedures.js'
 import userReducer from './reducers/user.js'
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
 import GUI from './views/gui.js';
-import ProjectPage from './views/project.js';
-import UserPage from './views/user.js';
+import ProjectView from './views/project-view.js';
+import UserPage from './views/user-view.js';
 
 import {setAppElement} from "react-modal";
 setAppElement(document.getElementById('root'));
@@ -28,7 +34,22 @@ const store = createStore(reducers);
 ReactDOM.render(
     // <React.StrictMode>
         <Provider store={store}>
-            <GUI />
+          <Router>
+            <Switch>
+              <Route path="/users/:id">
+                <div> USER PAGE </div>
+              </Route>
+              <Route path="/projects/:id">
+                <ProjectView />
+              </Route>
+              <Route path="/gui"> 
+                <GUI/>
+              </Route>
+              <Route path="/">
+                <div> HOME PAGE </div>
+              </Route>
+            </Switch>
+          </Router>
         </Provider>
     // </React.StrictMode>,
     ,

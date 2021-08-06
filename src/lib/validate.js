@@ -25,34 +25,6 @@ const validateUsernameRemotely = async username => {
   } else {
     return {requestSucceeded: true, valid: false, errMsgId: 'Username taken. Try another?'}; //registration.validationUsernameExists
   }
-  // return new Promise( resolve => {
-  //   api({
-  //       uri: `/accounts/checkusername/${username}/`
-  //   }, (err, body, res) => {
-  //       if (err || res.statusCode !== 200) {
-  //           resolve({requestSucceeded: false, valid: false, errMsgId: 'general.error'});
-  //       }
-  //       // get the message in a way that will work for both scratchr2 and api
-  //       // versions of the checkusername endpoint
-  //       let msg = '';
-  //       if (body && body.msg) msg = body.msg;
-  //       else if (body && body[0]) msg = body[0].msg;
-  //       switch (msg) {
-  //       case 'valid username':
-  //           resolve({requestSucceeded: true, valid: true});
-  //           break;
-  //       case 'username exists':
-  //           resolve({requestSucceeded: true, valid: false, errMsgId: 'registration.validationUsernameExists'});
-  //           break;
-  //       case 'bad username': // i.e., vulgar
-  //           resolve({requestSucceeded: true, valid: false, errMsgId: 'registration.validationUsernameNotAllowed'});
-  //           break;
-  //       case 'invalid username':
-  //       default:
-  //           resolve({requestSucceeded: true, valid: false, errMsgId: 'registration.validationUsernameNotAllowed'});
-  //       }
-  //   });
-  // });
 }
  
 
@@ -110,27 +82,6 @@ const validateEmailRemotely = async email => {
     } else {
       return {requestSucceeded: true, valid: false, errMsgId: 'Email appears to already be in use. Try another?'}; //registration.validationEmailInUse
     }
-    // new Promise(resolve => {
-    //     api({
-    //         host: '', // not handled by API; use existing infrastructure
-    //         params: {email: email},
-    //         uri: '/accounts/check_email/'
-    //     }, (err, body, res) => {
-    //         if (err || res.statusCode !== 200 || !body || body.length < 1 || !body[0].msg) {
-    //             resolve({requestSucceeded: false, valid: false, errMsgId: 'general.apiError'});
-    //         }
-    //         switch (body[0].msg) {
-    //         case 'valid email':
-    //             resolve({requestSucceeded: true, valid: true});
-    //             break;
-    //         case 'Scratch is not allowed to send email to this address.': // e.g., bad TLD or block-listed
-    //         case 'Enter a valid email address.':
-    //         default:
-    //             resolve({requestSucceeded: true, valid: false, errMsgId: 'registration.validationEmailInvalid'});
-    //             break;
-    //         }
-    //     });
-    // })
 };
 
 const responseErrorMsgs = {
