@@ -228,7 +228,7 @@ Blocks.defaultOptions = {
     horizontalLayout: false,
     toolboxPosition: 'beginning',
     scrollbars: true,
-    media: './static/blocks-media/',
+    media: '/static/blocks-media/',
     sounds: false
 };
 
