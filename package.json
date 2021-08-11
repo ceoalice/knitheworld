@@ -7,7 +7,8 @@
   "scripts": {
     "test": "eslint . --ext .js",
     "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production && mkdir -p functions/hosting/ && cp dist/index.html functions/hosting/",
+    "clean": "rm -rf ./dist && mkdir -p dist",
+    "build": "webpack --mode production && mkdir -p functions/hosting/ && cp dist/*.html functions/hosting/",
     "deploy:github": "gh-pages -d dist",
     "deploy:firebase": "firebase deploy --only hosting"
   },
