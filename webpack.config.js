@@ -7,6 +7,13 @@ require('dotenv').config();
 const defaults = require('lodash').defaults;
 const path = require('path');
 
+const templateConfig = require('./public/template.config.js');
+const routes = require('./routes.json');
+
+let entry = {};
+
+console.log({ENVIRONMENT : process.env.ANALYZE_BUNDLE});
+
 module.exports = {
   output: {
 		filename: '[name].bundle.js',
