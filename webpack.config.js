@@ -1,5 +1,10 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebPackPlugin = require('copy-webpack-plugin');
+
+const webpack = require('webpack');
+require('dotenv').config();
+
+const defaults = require('lodash').defaults;
 const path = require('path');
 
 module.exports = {
@@ -108,6 +113,9 @@ module.exports = {
                 to: "static"
             },
         ]
+    }),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(process.env)
     }),
   ],
   optimization: {

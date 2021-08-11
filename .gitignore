@@ -6,6 +6,9 @@
 npm-*
 package-lock.json
 
+# Environment Variables
+.env
+
 # Build
 /dist*
 
