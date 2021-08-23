@@ -58,6 +58,14 @@ const ImageImporterComponent = (props) => {
               height={`${props.BASE_CANVAS_WIDTH}px`}
             />
           </div>
+          <div className={styles.canvasContainer}>
+            <canvas 
+              ref={props.canvasRef2} id="final2" 
+              width={`${props.BASE_CANVAS_WIDTH}px`} 
+              height={`${props.BASE_CANVAS_WIDTH}px`}
+            />
+          </div>
+
           <Button className={styles.uploadButton} onClick={props.export}> Upload </Button>
         </div>
     );

@@ -12,6 +12,7 @@ class ImageImporter extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
+          showResize : false,
           src: null,
           numPixels : 10,
           numColors : 2,
@@ -26,7 +27,7 @@ class ImageImporter extends React.Component {
           // quantized Image Data (post-quantization)
           qData : null,
           qWidth : 0,
-          qlHeight : 0,          
+          qHeight : 0,          
           // resized Image Data
           rData : null,
           rWidth : 0,
@@ -34,6 +35,7 @@ class ImageImporter extends React.Component {
         };
 
       this.canvasRef = React.createRef();
+      this.canvasRef2 = React.createRef();
       bindAll(this,[
         'onDrop',
         'handleInputChange',
@@ -44,25 +46,34 @@ class ImageImporter extends React.Component {
       ])
     }
 
-    RGBAToCanvas() {
-      let data = this.state.rData;
-      let factor = this.state.rWidth/this.props.BASE_CANVAS_WIDTH;
-      let ctx = this.canvasRef.current.getContext('2d'); 
+    /**
+     * TODO : rename this, refactor, cleanup and ad dev option for seeing quantized image on ANOTHER canvas
+     */
+    updateCanvases() {
+      // draw resized
+      this.drawToCanvas(this.canvasRef,this.state.rData,this.state.rWidth,this.state.rHeight);
+
+      this.drawToCanvas(this.canvasRef2,this.state.qData,this.state.qWidth,this.state.qHeight); 
+    }
+
+    drawToCanvas(ref, data, width, height) {
+      let factor = width/this.props.BASE_CANVAS_WIDTH;
+      let ctx = ref.current.getContext('2d'); 
 
       ctx.canvas.width = this.props.BASE_CANVAS_WIDTH; 
-      ctx.canvas.height = Math.ceil(this.state.rHeight / factor); 
+      ctx.canvas.height = Math.ceil(height / factor); 
 
       let pixelWidth = 1.0/factor;
       let x = 0, y = 0; 
 
       for ( let i = 0; i < data.length-3; i+=4) {
-        ctx.fillStyle = "rgba("+data[i]+","+data[i+1]+","+data[i+2]+","+(data[i+3]/255)+")";
-        ctx.strokeStyle = "rgba("+data[i]+","+data[i+1]+","+data[i+2]+","+(data[i+3]/255)+")";
+        ctx.fillStyle = `rgba(${data[i]},${data[i+1]},${data[i+2]},${(data[i+3]/255)})`;
+        ctx.strokeStyle = `rgba(${data[i]},${data[i+1]},${data[i+2]},${(data[i+3]/255)})`;
         
-        ctx.fillRect( x*pixelWidth , y*pixelWidth, 0.98*pixelWidth, 0.98*pixelWidth);
+        ctx.fillRect( x*pixelWidth , y*pixelWidth, 0.9*pixelWidth, 0.9*pixelWidth);
 
         x+=1;
-        if (x === this.state.rWidth) {
+        if (x === width) {
           x = 0;
           y += 1;
         }
@@ -89,7 +100,7 @@ class ImageImporter extends React.Component {
           );
         }
       }
-      this.setState({rData, rWidth, rHeight}, this.RGBAToCanvas);
+      this.setState({rData, rWidth, rHeight}, this.updateCanvases);
     }
     
     async quantize() {
@@ -184,6 +195,7 @@ class ImageImporter extends React.Component {
         return (
           <ImageImporterComponent
             canvasRef={this.canvasRef}
+            canvasRef2={this.canvasRef2}
             numPixels={this.state.numPixels}
             numColors={this.state.numColors}
             errors={this.state.errors}
