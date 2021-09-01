@@ -22,9 +22,9 @@ class VMScratchBlocks {
     }
     resize() {
       try {
-        ScratchBlocks.svgResize(this.workspace);
-      } catch {
-        console.log("IDK something went wrong")
+        ScratchBlocks.svgResize(this.getWorkspace());
+      } catch (err) {
+        console.log("IDK something went wrong", err)
       }
     }
 

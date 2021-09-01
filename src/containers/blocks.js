@@ -51,9 +51,11 @@ class Blocks extends React.Component {
 
             let params = new URLSearchParams(window.location.search)
             
-            // if (params.has('projectID')) {
-              
-            // } 
+            if (params.has('projectID')) {
+              // ProjectAPI.x/
+              ProjectAPI.loadProject(params.get('projectID'))
+              // ProjectAPI
+            }
 
             ProjectAPI.loadCurrentProject();
 

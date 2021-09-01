@@ -1,13 +1,13 @@
-const SET_PIXEL = 'setPixel';
-const NEXT_PIXEL = 'nextPixel';
-const PREV_PIXEL = 'previousPixel';
-const CHANGE_PIXEL_COLOR = 'changePixelColor';
-const SET_PIXEL_COLOR = 'setPixelColor';
-const SET_ALL_PIXEL_COLOR = 'setAllPixelColor';
+// const SET_PIXEL = 'setPixel';
+// const NEXT_PIXEL = 'nextPixel';
+// const PREV_PIXEL = 'previousPixel';
+// const CHANGE_PIXEL_COLOR = 'changePixelColor';
+// const SET_PIXEL_COLOR = 'setPixelColor';
+// const SET_ALL_PIXEL_COLOR = 'setAllPixelColor';
 
-const SET_PIXEL_TYPE = 'setPixelType';
-const FORWARD_PIXEL = 'forwardPixel';
-const BACK_PIXEL = 'backPixel';
+// const SET_PIXEL_TYPE = 'setPixelType';
+// const FORWARD_PIXEL = 'forwardPixel';
+// const BACK_PIXEL = 'backPixel';
 const NEXT_ROW = 'nextRow';
 const REMOVE_ROW = 'removeRow';
 
@@ -22,10 +22,10 @@ const CHANGE_YARN_COLOR = 'changeColorTo';
 
 const CLEAR_PIXELS = 'clearPixels';
 
-const DOWNLOAD_PIXELS = 'downloadPixels';
-const DOWNLOAD_CODE = 'downloadCode';
-const DOWNLOAD_STITCHES = 'downloadStitches';
-const DOWNLOAD_STITCHES_NAME = 'downloadStitchesName';
+// const DOWNLOAD_PIXELS = 'downloadPixels';
+// const DOWNLOAD_CODE = 'downloadCode';
+// const DOWNLOAD_STITCHES = 'downloadStitches';
+// const DOWNLOAD_STITCHES_NAME = 'downloadStitchesName';
 
 // const randomInt = max => {
 //     return Math.floor(Math.random() * Math.floor(max));
@@ -378,13 +378,13 @@ const reducer = function (state, action) {
         });
     }
     
-    case DOWNLOAD_STITCHES: {
-        console.log("logged download stitches!");
+    // case DOWNLOAD_STITCHES: {
+    //     console.log("logged download stitches!");
 
-        return Object.assign({}, state, {
-            downloadingStitches: action.value
-        });
-    }
+    //     return Object.assign({}, state, {
+    //         downloadingStitches: action.value
+    //     });
+    // }
     default:
         return state;
     }
@@ -562,7 +562,7 @@ export {
     castOnXStitches,
     castOffXStitches,
     changeYarnColor,
-    
+
     clearThePixels,
     // downloadThePixels,
     // downloadTheStitches,

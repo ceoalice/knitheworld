@@ -1,4 +1,4 @@
-import lodash  from "lodash";
+import {omit}  from "lodash";
 import React from 'react';
 import PropTypes from 'prop-types';
 // const injectIntl = require('react-intl').injectIntl;
@@ -15,7 +15,7 @@ const NextStepButton = props => (
         className={styles.modalFlushBottomButton}
         disabled={props.waiting}
         type="submit"
-        {...lodash.omit(props, ['intl', 'text', 'waiting'])}
+        {...omit(props, ['intl', 'text', 'waiting'])}
     >
         {props.waiting ? (
             <CircularProgress className={styles.nextStepSpinner} />
