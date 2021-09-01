@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 
-import ProjectViewComponent from "../components/project-view/project-view.js";
+import ProjectViewComponent from "../components/projects/projects.js";
 
 import ImageAPI from "../lib/image-api.js";
 
