@@ -57,12 +57,12 @@ class SimulatorTools extends React.Component {
       }
     }
 
-    componentDidUpdate() {
-      if (this.props.downloadingStitches){
-        this.toggleDownload();
-        console.log("downloading stitches!");
-      }
-    }
+    // componentDidUpdate() {
+    //   if (this.props.downloadingStitches){
+    //     this.toggleDownload();
+    //     console.log("downloading stitches!");
+    //   }
+    // }
 
     savePattern(action) {
       switch(action) {
@@ -203,8 +203,8 @@ const mapStateToProps = state => ({
     rowCount: state.pixels.rowCount,
     pixelType: state.pixels.pixelType,
     projectName: state.projectState.currentProjectName,
-    downloadingStitches: state.pixels.downloadingStitches,
-    downloadingStitchesName: state.pixels.downloadingStitchesName
+    // downloadingStitches: state.pixels.downloadingStitches,
+    // downloadingStitchesName: state.pixels.downloadingStitchesName
 });
 
 
