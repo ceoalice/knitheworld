@@ -7,7 +7,8 @@
   "scripts": {
     "test": "eslint . --ext .js",
     "start": "webpack-dev-server --open --mode development",
-    "clean": "rm -rf ./dist && mkdir -p dist",
+    "emulate": "firebase emulators:start --only hosting",
+    "clean": "rm -rf ./dist ./functions/hosting && mkdir -p dist",
     "build": "webpack --mode production && mkdir -p functions/hosting/ && cp dist/*.html functions/hosting/",
     "deploy:github": "gh-pages -d dist",
     "deploy:firebase": "firebase deploy --only hosting"
@@ -49,6 +50,7 @@
     "style-loader": "^1.3.0",
     "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },

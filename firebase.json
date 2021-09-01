@@ -6,7 +6,14 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [ {
+    "rewrites": [ 
+      {
+      "source": "/home",
+      "destination": "/index.html"
+      }, {
+      "source": "/gui",
+      "destination": "/gui.html"
+      }, {
       "source": "/users/**",
       "function": "user"
       }, {

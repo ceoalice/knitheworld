@@ -1,35 +1,35 @@
 [
   {
-    "name" : "index",
-    "path":  "^/home",
+    "name" : "main",
+    "pattern":  "^/home",
     "filename" : "index.html",
     "view" : "./src/views/home/home.js",
     "title" : "KnitheWorld"
   },
   {
     "name" : "gui",
-    "path":  "^/gui/?$",
+    "pattern":  "^/gui",
     "filename" : "gui.html",
     "view" : "./src/views/gui/gui.js",
     "title" : "KnitheWorld - Simulator"
   },
   {
     "name" : "users",
-    "path":  "^/users/?$",
+    "pattern":  "^/users/",
     "filename" : "users.html",
     "view" : "./src/views/users/users.js",
     "title" : "KnitheWorld - Users"
   },
   {
     "name" : "projects",
-    "path":  "^/projects/?$",
+    "pattern":  "^/projects/",
     "filename" : "projects.html",
     "view" : "./src/views/projects/projects.js",
     "title" : "KnitheWorld - Projects"
   },
   {
     "name" : "404",
-    "path":  "^/404/?$", 
+    "pattern":  ".", 
     "filename" : "404.html",
     "view" : "./src/views/404/404.js",
     "title" : "Not Found"
