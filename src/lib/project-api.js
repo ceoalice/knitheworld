@@ -50,8 +50,14 @@ class ProjectAPI extends API {
 
     try {
       let doc = await db.collection("projects").doc(id).get();
-      this.cache_.updateProject(doc.id, doc.data())
-      return { status : 200, data : this.cache_.getProject(id) };
+      console.log(doc.exists);
+      if (doc.exists) {
+        this.cache_.updateProject(doc.id, doc.data())
+        return { status : 200, data : this.cache_.getProject(id) };
+      } else {
+        return { status : 404, error : 'Not Found'}
+      }
+
     } catch (error) {
       return { status : 500, error };
     }
@@ -207,7 +213,6 @@ class ProjectAPI extends API {
     console.log("")
     if (res.status == 200) {
       let project = res.data;
-      console.log()
       if (project.creator == this.getUserID()) { // owner
         this.cache_.cacheCurrentProjectID(id);
         VMScratchBlocks.loadXML(project.xml);
