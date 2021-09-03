@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import styles from './simulator.css';
 
@@ -18,8 +17,6 @@ class SimulatorComponent extends React.Component {
 
         this.refreshCanvas = this.refreshCanvas.bind(this);
         this.handleResize = this.handleResize.bind(this);
-
-        window.download = this.toggleDownload;
     }
 
     componentDidMount() {
@@ -263,16 +260,4 @@ CanvasRenderingContext2D.prototype.drawStitch = function(x, y, size) {
     this.restore();
 }
 
-const mapStateToProps = state => ({
-    downloadingStitchesName: state.pixels.downloadingStitchesName
-});
-
-const mapDispatchToProps = dispatch => ({
-    downloadCode: () => dispatch(downloadTheCode()),
-    unravelPixels: () => dispatch(clearThePixels())
-});
-
-export default connect(
-    null,
-    mapDispatchToProps
-)(SimulatorComponent);
+export default SimulatorComponent;

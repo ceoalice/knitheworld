@@ -1,7 +1,6 @@
 import { bindAll } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
 
 import ModalComponent from '../components/modal/modal.js';
 
@@ -53,10 +52,8 @@ Modal.propTypes = {
     onRequestOpen: PropTypes.func
 };
 
-const mapStateToProps = state => ({
-    isRtl: true
-});
+Modal.defaultProps = {
+  isRtl: false
+}
 
-export default connect(
-    mapStateToProps
-)(Modal);
+export default Modal;
