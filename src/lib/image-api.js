@@ -25,16 +25,15 @@ class ImageAPI extends API {
    */
   async getProjectImageURL(userID,id) {
     if (this.cache_.getImage(id)) return { status : 200, data : this.cache_.getImage(id) };
-
-    let usersRef = firebase.storage().ref('users');
-    return usersRef.child(`${userID}/${id}.png`)
+    
+    return firebase.storage().ref(`users/${userID}/${id}.png`)
       .getDownloadURL()
       .then((url) => {
         this.cache_.updateImage(id, url);
         return { status : 200, data : this.cache_.getImage(id) };
       })
       .catch((error) => {
-        console.log("could not find: ",`${userID}/${id}.png`);
+        console.log("could not find: ",`users/${userID}/${id}.png`);
         return { status : 404, error };
       });
   }
