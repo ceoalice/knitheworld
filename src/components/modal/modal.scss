@@ -16,17 +16,21 @@
     left: 0;
     right: 0;
     bottom: 0;
-    /* z-index: $z-index-modal; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     z-index: 510;
     background-color: $ui-primary-tranparent;
 }
 
-.modal-content * {
+.modal * {
     box-sizing: border-box;
 }
 
-.modal-content {
-    margin: 100px auto;
+.modal {
+    // margin: 100px auto;
     outline: none;
     /* border: 4px solid $ui-white-transparent; */
     border: 5px solid hsla(0, 100%, 100%, 0.25);
@@ -41,7 +45,7 @@
     overflow: hidden;
 }
 
-.modal-content.full-screen {
+.modal.full-screen {
     position: absolute;
 
     display: flex;
@@ -52,7 +56,6 @@
     -webkit-overflow-scrolling: 'touch';
     user-select: none;
 
-    // background-color: $ui-aqua; 
     background-color: hsla(215, 75%, 95%, 1); 
 
     /* Default modal resets */

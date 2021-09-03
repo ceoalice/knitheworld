@@ -1,30 +1,33 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactModal from 'react-modal';
+import Modal from 'react-modal';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { ReactComponent as BackIcon} from '../../lib/assets/icon--back.svg';
-import { ReactComponent as HelpIcon} from '../../lib/assets/icon--help.svg';
+import CloseIcon from '@material-ui/icons/Close';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import HelpIcon from '@material-ui/icons/Help';
 
 import styles from './modal.scss';
 
-const ModalComponent = props => (
-    <ReactModal
+const ModalComponent = props => {
+  return (
+    <Modal 
         isOpen
-        className={classNames(styles.modalContent, props.className, {
+        className={classNames(styles.modal, props.className, {
             [styles.fullScreen]: props.fullScreen
         })}
-        shouldCloseOnOverlayClick={false}
+        shouldCloseOnOverlayClick={props.closeOnOverlayClick}
         contentLabel={props.contentLabel}
         overlayClassName={styles.modalOverlay}
         onRequestClose={props.onRequestClose}
     >
-        <div dir="ltr" className={styles.box}>
+        <div
+        dir= {props.dir}
+        className={styles.box}>
             <div className={props.noHeader ? styles.noHeader : styles.header}>
             <div className={classNames(styles.headerContents, props.headerClassName)}>
                 <div
@@ -48,12 +51,6 @@ const ModalComponent = props => (
                       styles.headerItemTitle
                   )}
                   >
-                    {/* {props.headerImage ? (
-                        <img
-                            className={styles.headerImage}
-                            src={props.headerImage}
-                        />
-                    ) : null} */}
                     {props.contentLabel}
                   </div>
                   : null
@@ -66,24 +63,27 @@ const ModalComponent = props => (
                   } 
                 )}
                 >
-                  {props.fullScreen ? (    
-                    <Button
-                      className={classNames(styles.backButton)}
-                      onClick={props.onRequestClose}
-                    >
-                        <BackIcon /> 
-                        <div style={{textTransform: "none"}}> Back </div>
-                    </Button>
-             
-                  ) : (
-                    <IconButton 
-                      size='small'
-                      onClick={props.onRequestClose}
-                      className={styles.closeButton}
-                    >
-                      <CloseIcon/>
-                    </IconButton>
-                  )}
+                  {props.noExit 
+                    ? null
+                    : props.fullScreen ? (    
+                        <Button
+                          className={classNames(styles.backButton)}
+                          onClick={props.onRequestClose}
+                        >
+                            <ArrowBackIcon style={{color:'white'}}/> 
+                            <div style={{textTransform: "none"}}> Back </div>
+                        </Button>
+                
+                      ) : (
+                        <IconButton 
+                          size='small'
+                          onClick={props.onRequestClose}
+                          className={styles.closeButton}
+                        >
+                          <CloseIcon/>
+                        </IconButton>
+                      )
+                    }
                 </div>
             </div>
             </div>
@@ -92,8 +92,8 @@ const ModalComponent = props => (
               : <div className={styles.loadIcon}> <CircularProgress /> </div>
             }
         </div>
-    </ReactModal>
-);
+    </Modal>
+)};
 
 ModalComponent.propTypes = {
     children: PropTypes.node,
@@ -105,16 +105,19 @@ ModalComponent.propTypes = {
     fullScreen: PropTypes.bool,
     headerClassName: PropTypes.string,
     headerImage: PropTypes.string,
-    isRtl: PropTypes.bool,
     onHelp: PropTypes.func,
     onRequestClose: PropTypes.func,
-    noHeader: PropTypes.bool
+    noHeader: PropTypes.bool,
+    noExit: PropTypes.bool,
+    closeOnOverlayClick : PropTypes.bool,
 };
 
 ModalComponent.defaultProps = {
   noHeader : false,
-  isRtl : false,
-  fullScreen: false
+  noExit : false,
+  dir : 'ltr',
+  fullScreen: false,
+  closeOnOverlayClick : false,
 }
 
 export default ModalComponent;
