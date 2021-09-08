@@ -54,9 +54,9 @@ class Blocks extends React.Component {
               // ProjectAPI.x/
               ProjectAPI.loadProject(params.get('projectID'))
               // ProjectAPI
+            } else {
+              ProjectAPI.loadCurrentProject();
             }
-
-            ProjectAPI.loadCurrentProject();
 
             this.attachVM();
         }).then(() => {
