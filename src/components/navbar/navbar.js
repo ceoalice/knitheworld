@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import VM from 'scratch-vm';
+import { withRouter } from "react-router-dom";
 
 import styles from './navbar.scss';
 import { ReactComponent as KnitheworldLogo} from './knitheworld-logo.svg';
@@ -16,6 +16,9 @@ const NavBarComponent = props => {
     save : null,
     upload: null
   });
+
+  const { match } = props;
+  const isGUI = (match && match.path == "/gui");
 
   const handleClick = (event) => {
     setAnchorEl({ ...anchorEl, [event.currentTarget.name]: event.currentTarget });
@@ -31,20 +34,26 @@ const NavBarComponent = props => {
             <Toolbar disableGutters variant="dense" className={styles.topnav}>
               <div className={styles.topnavLeft}>
                 <KnitheworldLogo className={styles.logo} />
-                <button onClick={props.newProject}>
-                  New
-                </button>
-                <button name="save" onClick={handleClick}>
-                  Save
-                </button>
-                <button name="upload" onClick={handleClick}>
-                  Upload
-                </button>
-                <button onClick={props.openSampleProjects}>
-                  Examples
-                </button>
 
-                { props.signedIn 
+                { isGUI 
+                ? <div>
+                    <button onClick={props.newProject}>
+                      New
+                    </button>
+                    <button name="save" onClick={handleClick}>
+                      Save
+                    </button>
+                    <button name="upload" onClick={handleClick}>
+                      Upload
+                    </button>
+                    <button onClick={props.openSampleProjects}>
+                      Examples
+                    </button>
+                  </div>
+                : null
+                }
+
+                { props.signedIn && isGUI
                 ? <button onClick={props.openShareProject}>
                   Share
                 </button>
@@ -110,4 +119,4 @@ NavBarComponent.propTypes = {
     openJoin: PropTypes.func.isRequired
 };
 
-export default NavBarComponent;
+export default withRouter(NavBarComponent);

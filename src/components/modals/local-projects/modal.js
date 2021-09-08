@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
+import { withRouter } from "react-router-dom";
 
 import { closeLocalProjects } from '../../../reducers/modals.js';
 
@@ -23,16 +24,19 @@ class LocalProjectsModal extends React.Component {
         this.openProject = this.openProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
         this.handleProjectsUpdate = this.handleProjectsUpdate.bind(this);
-        // this.closeModal = this.closeModal.bind(this);
     }
 
     async componentDidMount() {
       this.handleProjectsUpdate();
-      this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+      if (this.vm) {
+        this.vm.on('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+      }
     }
 
     componentWillUnmount() {
-      this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+      if (this.vm) {
+        this.vm.removeListener('PROJECT_NAME_CHANGED', this.handleProjectsUpdate);
+      }
     }
 
     async handleProjectsUpdate() {
@@ -41,12 +45,18 @@ class LocalProjectsModal extends React.Component {
           let projects = res.data;
           console.log({projects});
           this.setState({projects});
-        })
+        });
     }
 
-    openProject(id) {
-      this.props.onCancel();
-      ProjectAPI.loadProject(id);
+    openProject(id) { 
+      const { match } = { ...this.props };
+
+      if (match.path == "/gui") {
+        this.props.onCancel();
+        ProjectAPI.loadProject(id);
+      } else {
+        window.location.assign(`/gui?projectID=${id}`);
+      }
     }
 
     deleteProject(id) {
@@ -61,12 +71,6 @@ class LocalProjectsModal extends React.Component {
         const props = {...this.props};
 
         return (
-            // <LocalProjectsModalComponent
-            //     onCancel={this.props.onCancel}
-            //     projects={this.state.projects}
-            //     openProject={this.openProject}
-            //     deleteProject={this.deleteProject}
-            // />
             <Modal
               fullScreen
               contentLabel={"My Projects"}
@@ -98,4 +102,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     null,
     mapDispatchToProps
-)(LocalProjectsModal);
+)(withRouter(LocalProjectsModal));
