@@ -96,7 +96,7 @@ const NavBarComponent = props => {
 };
 
 NavBarComponent.propTypes = {
-    vm: PropTypes.instanceOf(VM).isRequired,
+    vm: PropTypes.object,
     uploadCode: PropTypes.func.isRequired,
     downloadCode: PropTypes.func.isRequired,
     saveProject: PropTypes.func.isRequired,

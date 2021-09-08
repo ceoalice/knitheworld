@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {bindAll} from "lodash";
 import {connect} from 'react-redux';
-import VM from 'scratch-vm';
 
 import { clearThePixels } from '../reducers/pixels.js';
 
@@ -235,7 +234,7 @@ Blocks.defaultOptions = {
 };
 
 Blocks.propTypes = {
-    vm: PropTypes.instanceOf(VM).isRequired,
+    vm: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

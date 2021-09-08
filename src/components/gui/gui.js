@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import VM from 'scratch-vm';
 
 import Blocks from '../../containers/blocks.js';
 import SimulatorPanelComponent from '../simulator-panel/simulator-panel.js';
@@ -34,7 +33,7 @@ const GUIComponent = props => {
 };
 
 GUIComponent.propTypes = {
-    vm: PropTypes.instanceOf(VM).isRequired,
+    vm: PropTypes.object.isRequired,
 };
 
 export default GUIComponent;
