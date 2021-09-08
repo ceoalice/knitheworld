@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
 import {withStyles} from '@material-ui/core/styles';
 
@@ -8,10 +7,11 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import styles from "./account.scss";
-
-import UserManager from "../../lib/user-manager"
 
 const SigninInput = withStyles({
   root: {
@@ -47,11 +47,18 @@ const Signin = props => {
   }
 
   const handleChange = async (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
+    const target = event.target;
+    setForm({ ...form, 
+      [target.name] : (target.type == "checkbox") 
+        ? target.checked 
+        : target.value 
+    })
   };
 
   return (
-    <form className={styles.signin} onSubmit={handleSubmit}>
+    props.waiting
+    ? <div className={styles.loading}> <CircularProgress /> </div>
+    : <form className={styles.signin} onSubmit={handleSubmit}>
       <FormControl>
         <InputLabel htmlFor="component-simple"> Email</InputLabel> { /* Username or */}
         <SigninInput
@@ -65,13 +72,25 @@ const Signin = props => {
         <InputLabel htmlFor="component-simple">Password</InputLabel>
         <SigninInput
           name='password'
-          // fullWidth
           type="password"
-          // defaultValue={props.name}
           onChange={handleChange}
           id="password-input"
         />
       </FormControl>
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            className={styles.rememberMe}
+            checked={form.rememberMe}
+            onChange={handleChange}
+            name="rememberMe"
+          />
+        }
+        label="Remember Me"
+        id="remember-me-input"
+      />
+
       <Button
         type="submit"
         className={styles.button}
@@ -82,20 +101,8 @@ const Signin = props => {
   );
 }
 
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
-  // openJoin: () => dispatch(openJoin()),
-});
-
 Signin.propTypes = {
   onSubmit: PropTypes.func.isRequired
 };
 
-Signin.defaultProps = {
-
-}
-
-export default connect(null,mapDispatchToProps)(Signin);
+export default Signin;

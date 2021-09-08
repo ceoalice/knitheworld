@@ -6,11 +6,13 @@ import {connect} from 'react-redux';
 import {openJoin} from '../../reducers/modals.js';
 import { setSignedOut } from "../../reducers/user.js";
 
-import Tooltip from "../tooltip/tooltip";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+import Tooltip from "../tooltip/tooltip";
+
 import Signin from "./signin";
 import AccountTools from "./account-tools";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import styles from "./account.scss";
 
@@ -22,6 +24,7 @@ class Account extends React.Component {
     super(props);
     this.state = {
       tooltip : false,
+      waiting: false
     }
     bindAll(this, [
       'closeTooltip',
@@ -31,15 +34,15 @@ class Account extends React.Component {
     ]);
   }
 
-  handleSignIn(form) {
-    UserManager.signInUser(form);
+  async handleSignIn(form) {
+    this.setState({waiting:true});
+    await UserManager.signInUser(form)
     this.closeTooltip();
-    // this.setState({tooltip : false});
+    this.setState({waiting:false});
   }
   async handleSignOut() {
     await UserManager.signOut();
     this.closeTooltip();
-    // this.setState({tooltip : false});
   }
   
   componentDidMount() {
@@ -66,7 +69,10 @@ class Account extends React.Component {
               <Tooltip
                 interactive
                 open={this.state.tooltip} 
-                title={<Signin onSubmit={this.handleSignIn} />}
+                title={<Signin 
+                  waiting={this.state.waiting} 
+                  onSubmit={this.handleSignIn} 
+                  />}
                 placement="bottom"
               >
                 <button onClick={this.openTooltip}>
@@ -85,7 +91,10 @@ class Account extends React.Component {
               <Tooltip
                 interactive
                 open={this.state.tooltip} 
-                title={<AccountTools onClose={this.closeTooltip} onSignOut={this.handleSignOut} />}
+                title={<AccountTools 
+                    onClose={this.closeTooltip} 
+                    onSignOut={this.handleSignOut} 
+                  />}
                 placement="bottom"
               >
                 <AccountCircleIcon 
