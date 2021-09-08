@@ -1,7 +1,7 @@
 [
   {
-    "name" : "main",
-    "pattern":  "^/home",
+    "name" : "home",
+    "pattern":  "^/$",
     "filename" : "index.html",
     "view" : "./src/views/home.js",
     "title" : "KnitheWorld"
@@ -11,7 +11,7 @@
     "pattern":  "^/gui",
     "filename" : "gui.html",
     "view" : "./src/views/gui.js",
-    "title" : "KnitheWorld - Simulator"
+    "title" : "KnitheWorld - GUI"
   },
   {
     "name" : "users",
