@@ -33,7 +33,7 @@ const NavBarComponent = props => {
         <React.Fragment>
             <Toolbar disableGutters variant="dense" className={styles.topnav}>
               <div className={styles.topnavLeft}>
-                <KnitheworldLogo className={styles.logo} />
+                <KnitheworldLogo onClick={props.goToHomePage} className={styles.logo} />
 
                 { isGUI 
                 ? <div>
@@ -116,7 +116,8 @@ NavBarComponent.propTypes = {
     openSampleProjects: PropTypes.func.isRequired,
     openLocalProjects: PropTypes.func.isRequired,
     openShareProject: PropTypes.func.isRequired,
-    openJoin: PropTypes.func.isRequired
+    openJoin: PropTypes.func.isRequired,
+    goToHomePage : PropTypes.func.isRequired
 };
 
 export default withRouter(NavBarComponent);

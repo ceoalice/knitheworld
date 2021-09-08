@@ -32,7 +32,8 @@ class NavBar extends React.Component {
           'saveProject',
           'saveAsCopy',
           'downloadCode',
-          'handleUserStateChange'
+          'handleUserStateChange',
+          'goToHomePage'
         ]);
 
         this.fileChooser = React.createRef();
@@ -100,6 +101,10 @@ class NavBar extends React.Component {
         }
     }
 
+    goToHomePage() {
+      window.location.assign('/');
+    }
+
     render () {
         const {...componentProps} = this.props;
         return (
@@ -111,6 +116,7 @@ class NavBar extends React.Component {
               newProject = {this.newProject}
               saveProject = {this.saveProject}
               saveAsCopy = {this.saveAsCopy}
+              goToHomePage = {this.goToHomePage}
               {...componentProps}
             />
         );
