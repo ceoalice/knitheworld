@@ -6,7 +6,7 @@ setAppElement(document.getElementById('root'));
  * Console warning
  * -----------------------------------------------------------------------------
  */
-(() => {
+if (process.env.NODE_ENV != "development") (() => {
     window.onload = function () {
         /* eslint-disable no-console */
         console.log('%cStop!', 'color: #F00; font-size: 35px; -webkit-text-stroke: 1px black; font-weight:bold');

@@ -36,13 +36,6 @@ module.exports = (env, argv) => {
 // console.log({entry, rewrites, htmlPlugins})
 return {
   entry : entry, 
-  // entry : {
-  //   main: ["./src/init.js", './src/views/home/home.js'],
-  //   gui: ["./src/init.js", './src/views/gui/gui.js'],
-  //   projects: ["./src/init.js", './src/views/projects/projects.js'],
-  //   users: ["./src/init.js", './src/views/users/users.js'],
-  //   404: './src/views/404/404.js',
-  // },
   output: {
 		filename: '[name].bundle.js', // 'js/[name].bundle.js',
 		path: path.resolve(__dirname, 'dist'),
@@ -108,11 +101,6 @@ return {
           'style-loader',
           {
             loader: 'css-loader',
-            // options: {
-            //   modules: true,
-            //   localIdentName: '[name]_[local]_[hash:base64:5]',
-            //   camelCase: true
-            // }
             options: {
               modules: {
                   localIdentName: '[name]_[local]_[hash:base64:5]',
@@ -122,6 +110,16 @@ return {
           }
         ]
       },
+      // some libraries in node_modules REQUIRE that you don't use exclusively CSS-modules
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ],
+        include: /node_modules/,
+      },
+
       {
         test: /\.html$/,
         use: [
@@ -154,30 +152,7 @@ return {
     new BundleAnalyzerPlugin()
   ] : []),
 
-  // optimization: {
-	// 	splitChunks: {
-	// 		cacheGroups: {
-	// 			commons: {
-	// 				test: /[\\/]node_modules[\\/]/,
-	// 				name: 'vendor',
-	// 				chunks: 'all'
-	// 			}
-	// 		}
-	// 	}
-	// }, 
-
   // reduced splittng
-  // optimization: {
-  //   splitChunks: {
-  //       cacheGroups: {
-  //           common: {
-  //               chunks: 'all',
-  //               name: 'common',
-  //               minChunks: routes.length // Extract only chunks common to all html pages
-  //           }
-  //       }
-  //   }
-  // },
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
@@ -205,8 +180,9 @@ return {
       // EXAMPLES: 
       // - localhost:8080/users/:id => localhost:8080/users.html
       // - localhost:8080/projects/:id => localhost:8080/projects.html
+      // - localhost:8080/gui => localhost:8080/gui.html
       
-      // Rewrites for firebase hosting are configured in ./firbase.json, 
+      // Rewrites for firebase hosting are configured in ./firebase.json, 
       // and should be similar to patterns in ./routes.json
       rewrites: rewrites
     }

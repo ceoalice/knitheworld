@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { withRouter } from 'react-router-dom';
 
 import ProjectViewComponent from "../components/projects/projects.js";
 
@@ -11,7 +10,7 @@ import UserManager from "../lib/user-manager.js";
 
 import {
   BrowserRouter as Router,
-  Route,
+  Route
 } from "react-router-dom";
 
 
@@ -62,14 +61,10 @@ class ProjectView extends React.Component {
     }
 };
 
-const ProjectViewWithRouter = withRouter(ProjectView);
-
 ReactDOM.render(
   // <React.StrictMode>
   <Router>
-    <Route path="/projects/:id">
-      <ProjectViewWithRouter />
-    </Route>
+    <Route path="/projects/:id" component={ProjectView} />
   </Router>
   // </React.StrictMode>,
 ,document.getElementById('root'));
