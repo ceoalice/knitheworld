@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {Provider} from 'react-redux';
+import store from "../store.js";
+
 import ProjectViewComponent from "../components/projects/projects.js";
 
 import ImageAPI from "../lib/image-api.js";
@@ -33,6 +36,8 @@ class ProjectView extends React.Component {
       if ( res.status == 200 ) {
         let res2 = await ImageAPI.getProjectImageURL(res.data.creator, res.data.id);
 
+        this.setState({project : res.data});
+        
         if ( res2.status == 200 ) {
               
           console.log(res2.data)
@@ -40,7 +45,7 @@ class ProjectView extends React.Component {
           let res3 = await UserManager.getUsernameByID(res.data.creator);
 
           console.log(res3);
-          this.setState({project : res.data, thumbnail : res2.data, username : res3});
+          this.setState({ thumbnail : res2.data, username : res3});
         }
       } else {
         // redirecting to 404 page and letting it know in path that its a 404 for a project
@@ -63,8 +68,10 @@ class ProjectView extends React.Component {
 
 ReactDOM.render(
   // <React.StrictMode>
-  <Router>
-    <Route path="/projects/:id" component={ProjectView} />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <Route path="/projects/:id" component={ProjectView} />
+    </Router>
+  </Provider>
   // </React.StrictMode>,
 ,document.getElementById('root'));
