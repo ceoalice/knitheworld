@@ -11,21 +11,21 @@
     "pattern":  "^/gui",
     "filename" : "gui.html",
     "view" : "./src/views/gui.js",
-    "title" : "KnitheWorld - GUI"
+    "title" : "KnitheWorld GUI"
   },
   {
     "name" : "users",
     "pattern":  "^/users/",
     "filename" : "users.html",
     "view" : "./src/views/users.js",
-    "title" : "KnitheWorld - Users"
+    "title" : "KnitheWorld Users"
   },
   {
     "name" : "projects",
     "pattern":  "^/projects/",
     "filename" : "projects.html",
     "view" : "./src/views/projects.js",
-    "title" : "KnitheWorld - Projects"
+    "title" : "KnitheWorld Projects"
   },
   {
     "name" : "404",
