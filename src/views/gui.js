@@ -4,33 +4,33 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import VM from 'scratch-vm';
 import {Provider} from 'react-redux';
-import {createStore, combineReducers} from 'redux';
 
 import GUIComponent from '../components/gui/gui.js';
 
-// import {
-//   downloadThePixels
-// } from '../../reducers/pixels.js';
-import projectStateReducer, { 
+import { 
   setProjectRunState, 
   updateProjectName, 
   setProjectSaved, 
   toggleProjectLoading
 } from '../reducers/project-state.js';
-import customProceduresReducer, {
+import {
   activateCustomProcedures
 } from '../reducers/custom-procedures';
-import pixelReducer, {
+import  {
   clearThePixels,
 } from '../reducers/pixels.js';
 
-import modalReducer from '../reducers/modals';
-import userReducer from '../reducers/user.js'
+import store from "../store.js";
 
 import VMScratchBlocks from '../lib/blocks.js';
 import ProjectAPI from '../lib/project-api';
 import BlockParser from "../lib/parser";
 import Suggester from "../lib/suggest";
+
+import {
+  BrowserRouter as Router,
+  Route
+} from "react-router-dom";
 
 function blocksEqual(a,b) { // need to check 'parent', 'opcode', 'next', 'inputs',  'fields'
   let check = true;
@@ -129,9 +129,9 @@ class GUI extends React.Component {
       // this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
     }
     
-    log(obj) {
-      console.log(JSON.parse(JSON.stringify(obj)));
-    }
+    // log(obj) {
+    //   console.log(JSON.parse(JSON.stringify(obj)));
+    // }
 
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
@@ -224,7 +224,6 @@ const mapDispatchToProps = dispatch => ({
     setProjectRunning: () => dispatch(setProjectRunState(true)),
     setProjectStopped: () => dispatch(setProjectRunState(false)),
     clearPixels: () => dispatch(clearThePixels()),
-    // downloadPixels: () => dispatch(downloadThePixels(true)),
     updateProjectName : (value) => dispatch(updateProjectName(value)),
     startProjectLoading: () => dispatch(toggleProjectLoading(true)),
     stopProjectLoading: () => dispatch(toggleProjectLoading(false)), 
@@ -234,27 +233,12 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
-const GUIWithRedux = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GUI);
-
-const reducers = combineReducers({
-  modals: modalReducer,
-  pixels: pixelReducer,
-  projectState: projectStateReducer,
-  customProcedures: customProceduresReducer,
-  user: userReducer
-});
-
-const store = createStore(reducers);
-
 ReactDOM.render(
   // <React.StrictMode>
       <Provider store={store}>
-        <GUIWithRedux />
+        <Router>
+          <Route path="/gui" component={connect(mapStateToProps,mapDispatchToProps)(GUI)}/>
+        </Router>
       </Provider>
   // </React.StrictMode>,
-  ,
-  document.getElementById('root')
-);
+  , document.getElementById('root'));
