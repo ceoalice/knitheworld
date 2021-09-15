@@ -18,14 +18,16 @@ const NavBarComponent = props => {
   });
 
   const { match } = props;
+
   const isGUI = (match && match.path == "/gui");
+  const isUserPage = (match && match.path == "/users/:id");
 
   const handleClick = (event) => {
-    setAnchorEl({ ...anchorEl, [event.currentTarget.name]: event.currentTarget });
+    setAnchorEl(anchorEl => ({ ...anchorEl, [event.currentTarget.name]: event.currentTarget }));
   };
 
   const handleClose = (el) => {
-    setAnchorEl({ ...anchorEl, [el]: null });
+    setAnchorEl(anchorEl => ({ ...anchorEl, [el]: null }));
   };
   
   const {save, upload} = anchorEl;
@@ -53,7 +55,7 @@ const NavBarComponent = props => {
                 : null
                 }
 
-                { props.signedIn && isGUI
+                { (isGUI && props.signedIn) || isUserPage
                 ? <button onClick={props.openShareProject}>
                   Share
                 </button>
