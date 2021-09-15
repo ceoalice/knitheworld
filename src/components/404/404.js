@@ -14,7 +14,7 @@ const NotFoundComponent = props => {
     <Modal    
       noHeader
       noExit
-      noBorder
+      noOverlay
       className={styles.modal}
       id="notFound"
       onRequestClose={() => {}}
