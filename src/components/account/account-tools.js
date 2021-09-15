@@ -31,11 +31,16 @@ const AccountTools = props => {
     props.onClose();
     props.openLocalProjects();
   }
+
+  const handleOpenProfile = () => {
+    props.onClose();
+    window.location.assign(`/users/${props.userID}`);
+  }
   
   return (
     <Paper className={classes.paper}>
       <MenuList>
-        <MenuItem>Profile</MenuItem>
+        <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
         <MenuItem onClick={handleOpenProjects}>My Projects</MenuItem>
         <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
       </MenuList>
@@ -44,7 +49,7 @@ const AccountTools = props => {
 }
 
 const mapStateToProps = state => ({
-
+  userID: state.user.uid,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -56,8 +61,4 @@ AccountTools.propTypes = {
   onSignOut: PropTypes.func.isRequired
 };
 
-AccountTools.defaultProps = {
-
-}
-
-export default connect(null,mapDispatchToProps)(AccountTools);
+export default connect(mapStateToProps,mapDispatchToProps)(AccountTools);
