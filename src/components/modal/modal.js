@@ -16,11 +16,13 @@ import styles from './modal.scss';
 const ModalComponent = props => {
   return (
     <Modal 
-        isOpen
+        isOpen={props.isOpen}
         className={classNames(styles.modal, props.className, {
             [styles.fullScreen]: props.fullScreen
         })}
-        overlayClassName={classNames(styles.modalOverlay, props.overlayClassName)}
+        overlayClassName={classNames(styles.modalOverlay, props.overlayClassName , {
+          [styles.invisible]: props.noOverlay
+        })}
 
         shouldCloseOnOverlayClick={props.closeOnOverlayClick}
         onRequestClose={props.onRequestClose}
@@ -96,6 +98,13 @@ const ModalComponent = props => {
 )};
 
 ModalComponent.propTypes = {
+    isOpen : PropTypes.bool,
+    noHeader: PropTypes.bool,
+    noExit: PropTypes.bool,
+    noOverlay : PropTypes.bool,
+    closeOnOverlayClick : PropTypes.bool,
+    fullScreen: PropTypes.bool,
+
     children: PropTypes.node,
     className: PropTypes.string,
     overlayClassName : PropTypes.string,
@@ -103,22 +112,22 @@ ModalComponent.propTypes = {
         PropTypes.string,
         PropTypes.object
     ]),
-    fullScreen: PropTypes.bool,
+
     headerClassName: PropTypes.string,
     headerImage: PropTypes.string,
     onHelp: PropTypes.func,
     onRequestClose: PropTypes.func,
-    noHeader: PropTypes.bool,
-    noExit: PropTypes.bool,
-    closeOnOverlayClick : PropTypes.bool,
 };
 
 ModalComponent.defaultProps = {
+  isOpen : true,
   noHeader : false,
+  noOverlay : false,
   noExit : false,
-  dir : 'ltr',
   fullScreen: false,
   closeOnOverlayClick : false,
+
+  dir : 'ltr',
 }
 
 export default ModalComponent;

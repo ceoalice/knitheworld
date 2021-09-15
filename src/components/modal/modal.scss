@@ -26,6 +26,11 @@
     background-color: $ui-primary-tranparent;
 }
 
+.invisible {
+  background: none;
+  pointer-events: none;
+}
+
 .modal * {
     box-sizing: border-box;
 }
