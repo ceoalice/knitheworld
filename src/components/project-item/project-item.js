@@ -43,9 +43,10 @@ function lastModified(timestamp) {
 
 /* eslint-disable react/prefer-stateless-function */
 const ProjectItemComponent = (props) => {  
-  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
   const [openDownload, setOpenDownload] = React.useState(false);
 
+  // prevent clicks from triggering on any elements behind modals
   const stopEvent = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -61,13 +62,13 @@ const ProjectItemComponent = (props) => {
     stopEvent(e);
   }
 
-  const handleClick = (e) => {
-    setOpen(true);
+  const handleClickEdit = (e) => {
+    setOpenEdit(true);
     stopEvent(e);
   }
   
-  const handleClose = (e) => {
-    setOpen(false);
+  const handleCloseEdit = (e) => {
+    setOpenEdit(false);
     stopEvent(e);
   }
   
@@ -83,21 +84,12 @@ const ProjectItemComponent = (props) => {
           <div className={styles.featuredImageContainer}>
             <object
               className={styles.featuredImage}
-              data={props.iconURL}
+              data={props.iconURL || "/static/images/placeholder-image.png"}
               type="image/png"
             >
               {props.project.name}
             </object>
           </div>
-
-          {/* {props.insetIconURL ? (
-              <div className={styles.libraryItemInsetImageContainer}>
-                  <img
-                      className={styles.libraryItemInsetImage}
-                      src={props.insetIconURL}
-                  />
-              </div>
-          ) : null} */}
 
           <div className={styles.featuredText}>
             {
@@ -115,8 +107,7 @@ const ProjectItemComponent = (props) => {
             </span>
           </div>
           
-          {
-            !props.isExample 
+          {!props.isExample 
               ? (
                 <div>
                   <SaveAltIcon
@@ -124,7 +115,7 @@ const ProjectItemComponent = (props) => {
                   className={classNames(styles.icon,styles.save)} 
                   /> 
                   <EditIcon 
-                  onClick={handleClick}
+                  onClick={handleClickEdit}
                   className={classNames(styles.icon,styles.edit)} 
                   />
                 </div>
@@ -132,8 +123,7 @@ const ProjectItemComponent = (props) => {
               : null
           }
 
-          {
-            !props.isExample 
+          {!props.isExample 
               ? (
                 <div className={classNames(styles.deleteProjectButton)}>
                   <DeleteForeverIcon
@@ -149,8 +139,8 @@ const ProjectItemComponent = (props) => {
            ? (
             <div>
               <EditModal 
-                open={open} 
-                handleClose={handleClose} 
+                open={openEdit} 
+                handleClose={handleCloseEdit} 
                 id={props.project.id} 
                 name={props.project.name}
               /> 
