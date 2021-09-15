@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 
 import styles from './image-importer.scss';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Carousel from 'react-bootstrap/Carousel';
 
 const ImageImporterComponent = (props) => {
     return (
@@ -51,21 +53,33 @@ const ImageImporterComponent = (props) => {
             <Button type="submit" className={styles.previewButton}> Preview </Button>
           </form>
 
-          <div className={styles.canvasContainer}> 
-            <canvas 
-              ref={props.canvasRef} id="final" 
-              width={`${props.BASE_CANVAS_WIDTH}px`} 
-              height={`${props.BASE_CANVAS_WIDTH}px`}
-            />
-          </div>
-          <div className={styles.canvasContainer}>
-            <canvas 
-              ref={props.canvasRef2} id="final2" 
-              width={`${props.BASE_CANVAS_WIDTH}px`} 
-              height={`${props.BASE_CANVAS_WIDTH}px`}
-            />
-          </div>
-
+          <Carousel interval={props.canvasFilled ? 5000 : null}>
+            <Carousel.Item>
+              <div className={styles.canvasContainer}> 
+                <canvas 
+                  ref={props.finalCanvasRef} id="final" 
+                  width={`${props.BASE_CANVAS_WIDTH}px`} 
+                  height={`${props.BASE_CANVAS_WIDTH}px`}
+                />
+              </div>
+              <Carousel.Caption>
+                <p>Knit Pattern</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+    
+            <Carousel.Item>
+              <div className={styles.canvasContainer}>
+                  <canvas 
+                    ref={props.midCanvasRef} id="middle" 
+                    width={`${props.BASE_CANVAS_WIDTH}px`} 
+                    height={`${props.BASE_CANVAS_WIDTH}px`}
+                  />
+                </div>
+              <Carousel.Caption>
+                <p>Color Reduced Image</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+          </Carousel>
           <Button className={styles.uploadButton} onClick={props.export}> Upload </Button>
         </div>
     );
@@ -77,7 +91,7 @@ ImageImporterComponent.propTypes = {
   numColors: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   BASE_CANVAS_WIDTH : PropTypes.number.isRequired,
   errors : PropTypes.object.isRequired,
-
+  canvasFilled : PropTypes.bool.isRequired,
   onDrop: PropTypes.func.isRequired, 
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

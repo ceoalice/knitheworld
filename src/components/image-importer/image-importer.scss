@@ -20,11 +20,15 @@
   text-transform: none !important;
 }
 
-.upload-button {
-  color: white !important;
-  background-color: $ui-tertiary !important;
-  padding: 10px;
-  background: hsla(215, 100%, 65%, 0.9);
+.upload-button:global(.MuiButton-root) {
+  margin-top: 10px;
+  background-color: $ui-tertiary;
+
+  &:hover {
+    background-color: $ui-tertiary;
+  }
+
+  color: white;
 }
 
 .canvas-container {

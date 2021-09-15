@@ -12,7 +12,7 @@ class ImageImporter extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-          showResize : false,
+          canvasFilled : false,
           src: null,
           numPixels : 10,
           numColors : 2,
@@ -34,8 +34,8 @@ class ImageImporter extends React.Component {
           rHeight : 0
         };
 
-      this.canvasRef = React.createRef();
-      this.canvasRef2 = React.createRef();
+      this.finalCanvasRef = React.createRef();
+      this.midCanvasRef= React.createRef();
       bindAll(this,[
         'onDrop',
         'handleInputChange',
@@ -51,9 +51,11 @@ class ImageImporter extends React.Component {
      */
     updateCanvases() {
       // draw resized
-      this.drawToCanvas(this.canvasRef,this.state.rData,this.state.rWidth,this.state.rHeight);
+      this.drawToCanvas(this.finalCanvasRef,this.state.rData,this.state.rWidth,this.state.rHeight);
 
-      this.drawToCanvas(this.canvasRef2,this.state.qData,this.state.qWidth,this.state.qHeight); 
+      this.drawToCanvas(this.midCanvasRef,this.state.qData,this.state.qWidth,this.state.qHeight); 
+
+      this.setState({})
     }
 
     drawToCanvas(ref, data, width, height) {
@@ -187,6 +189,7 @@ class ImageImporter extends React.Component {
     handleSubmit(event) {
       if (!this.state.errors.numColors && !this.state.errors.numColors) {
         this.quantize();
+        this.setState({canvasFilled : true});
       }
       event.preventDefault();
     }
@@ -194,12 +197,13 @@ class ImageImporter extends React.Component {
     render() {
         return (
           <ImageImporterComponent
-            canvasRef={this.canvasRef}
-            canvasRef2={this.canvasRef2}
+            finalCanvasRef={this.finalCanvasRef}
+            midCanvasRef={this.midCanvasRef}
             numPixels={this.state.numPixels}
             numColors={this.state.numColors}
             errors={this.state.errors}
             bounds={this.state.bounds}
+            canvasFilled={this.state.canvasFilled}
 
             onDrop={this.onDrop}
             handleInputChange={this.handleInputChange}
