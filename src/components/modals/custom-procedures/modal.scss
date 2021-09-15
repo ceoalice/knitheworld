@@ -7,6 +7,7 @@
   /* background: $ui-white; */
   background: white;
   padding: 1.5rem 2.25rem;
+  width : 100%;
 }
 
 .body input[type="checkbox"],
@@ -16,6 +17,7 @@
 
 /* Blocks workspace for custom procedure declaration editor */
 .workspace {
+  width : 100%;
   min-height: 200px;
   position: relative;
 }

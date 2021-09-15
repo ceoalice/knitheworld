@@ -20,9 +20,9 @@ const ModalComponent = props => {
         className={classNames(styles.modal, props.className, {
             [styles.fullScreen]: props.fullScreen
         })}
+        overlayClassName={classNames(styles.modalOverlay, props.overlayClassName)}
+
         shouldCloseOnOverlayClick={props.closeOnOverlayClick}
-        contentLabel={props.contentLabel}
-        overlayClassName={styles.modalOverlay}
         onRequestClose={props.onRequestClose}
     >
         <div
@@ -98,6 +98,7 @@ const ModalComponent = props => {
 ModalComponent.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    overlayClassName : PropTypes.string,
     contentLabel: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object
