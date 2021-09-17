@@ -21,12 +21,13 @@ routes.forEach(route => {
   entry[route.name] =  [ "./src/init.js", route.view ];
 
   rewrites.push({ from : route.pattern , to : `/${route.filename}` });
-
+  
   htmlPlugins.push(
     new HtmlWebPackPlugin(defaults({}, {
       filename: route.filename,
       chunks: [route.name],
       title : route.title,
+      og_image : route.og_image
     }, templateConfig) )
   );
 });

@@ -18,7 +18,8 @@
     "pattern":  "^/users/",
     "filename" : "users.html",
     "view" : "./src/views/users.js",
-    "title" : "KnitheWorld Users"
+    "title" : "KnitheWorld Users",
+    "og_image": "https://knitheworld-bb33d.web.app/static/images/placeholder-avatar.png"
   },
   {
     "name" : "projects",
