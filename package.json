@@ -7,11 +7,16 @@
   "scripts": {
     "test": "eslint . --ext .js",
     "start": "webpack-dev-server --open --mode development",
-    "emulate": "firebase emulators:start --only hosting",
-    "clean": "rm -rf ./dist ./functions/hosting && mkdir -p dist",
-    "build": "webpack --mode production && mkdir -p functions/hosting/ && cp dist/*.html functions/hosting/",
-    "deploy:github": "gh-pages -d dist",
-    "deploy:firebase": "firebase deploy --only hosting"
+
+    "emulate:hosting": "firebase emulators:start --only hosting",
+    "emulate:functions": "firebase emulators:start --only functions",
+
+    "clean": "rm -rf ./dist && mkdir -p dist",
+    "build": "webpack --mode production",
+    
+    "predeploy" : "cd ./functions && firebase deploy --only functions:router && cd ..",
+    "deploy": "firebase deploy --only hosting",
+    "deploy:github": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
