@@ -16,21 +16,24 @@ class Scratch3MicroworldBlocks {
     getPrimitives () {
         return {
             event_whenstarted: this.clearPixels,
-            looks_nextpixel: this.nextPixel,
-            looks_previouspixel: this.previousPixel,
-            looks_changecolor: this.changeColor,
-            looks_setcolor: this.setColor,
-            control_waitms: this.waitForMs,
-            looks_forwardpixel: this.forwardPixels,
-            looks_backpixel: this.backPixels,
-            looks_setallcolors: this.setAllPixels,
+            // looks_nextpixel: this.nextPixel,
+            // looks_previouspixel: this.previousPixel,
+            // looks_changecolor: this.changeColor,
+            // looks_setcolor: this.setColor,
+            // control_waitms: this.waitForMs,
+            // looks_forwardpixel: this.forwardPixels,
+            // looks_backpixel: this.backPixels,
+            // looks_setallcolors: this.setAllPixels,
+
+            // are these two used at all?
             knit_nextrow: this.nextRow,
+            knit_removerow: this.removeRow,
+
             knit_knitstitches: this.knitStitches,
             knit_knituntilendofrow: this.knitUntilEndOfRow,
             knit_castonstitches: this.castOnStitches,
             knit_castoffstitches: this.castOffStitches,
             knit_changecolorto: this.changeColorTo,
-            knit_removerow: this.removeRow,
         };
     }
 
@@ -51,62 +54,62 @@ class Scratch3MicroworldBlocks {
     }
 
 
-    nextPixel () {
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'nextPixel'
-        });
-    }
+    // nextPixel () {
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'nextPixel'
+    //     });
+    // }
 
-    previousPixel () {
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'previousPixel'
-        });
-    }
+    // previousPixel () {
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'previousPixel'
+    //     });
+    // }
 
-    changeColor (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'changeColor',
-            value: value
-        });
-    }
+    // changeColor (args) {
+    //     const value = Cast.toNumber(args.VALUE);
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'changeColor',
+    //         value: value
+    //     });
+    // }
 
-    setColor (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'setColor',
-            value: value
-        });
-    }
+    // setColor (args) {
+    //     const value = Cast.toNumber(args.VALUE);
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'setColor',
+    //         value: value
+    //     });
+    // }
 
-    waitForMs (args) {
-        const duration = Cast.toNumber(args.VALUE);
-        return new Promise(resolve => setTimeout(resolve, duration));
-    }
+    // waitForMs (args) {
+    //     const duration = Cast.toNumber(args.VALUE);
+    //     return new Promise(resolve => setTimeout(resolve, duration));
+    // }
 
-    forwardPixels (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'forwardPixel',
-            value: value
-        });
-    }
+    // forwardPixels (args) {
+    //     const value = Cast.toNumber(args.VALUE);
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'forwardPixel',
+    //         value: value
+    //     });
+    // }
 
-    backPixels (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'backPixel',
-            value: value
-        });
-    }
+    // backPixels (args) {
+    //     const value = Cast.toNumber(args.VALUE);
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'backPixel',
+    //         value: value
+    //     });
+    // }
 
-    setAllPixels (args) {
-        const value = Cast.toNumber(args.VALUE);
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'setAllPixels',
-            value: value
-        });
-    }
+    // setAllPixels (args) {
+    //     const value = Cast.toNumber(args.VALUE);
+    //     this.runtime.emit('PIXEL_EVENT', {
+    //         type: 'setAllPixels',
+    //         value: value
+    //     });
+    // }
 
     nextRow () {
         this.runtime.emit('PIXEL_EVENT', {
@@ -114,6 +117,12 @@ class Scratch3MicroworldBlocks {
         });
 //        console.log("test next row :)")
     }
+    removeRow (){
+      this.runtime.emit('PIXEL_EVENT', {
+          type: 'removeRow'
+      });
+//        console.log("test remove row")
+    } 
 
     knitStitches (args) {
         const value = Cast.toNumber(args.VALUE);
@@ -154,13 +163,6 @@ class Scratch3MicroworldBlocks {
             value: color
         });
 //        console.log("test change color to " + color)
-    }
-
-    removeRow (){
-        this.runtime.emit('PIXEL_EVENT', {
-            type: 'removeRow'
-        });
-//        console.log("test remove row")
     }
 }
 
