@@ -100,9 +100,20 @@ class Blocks extends React.Component {
 
     handleSuggest(suggestions) {
       console.log({suggestions})
-      if (!this.state.anchorElOpen) this.setState({anchorElOpen : true});
+
+      // always update suggestions toolbox
       this.workspace.updateToolbox( getToolBox(suggestions) );
-      this.setPopoverAnchorEl();
+
+      // only sometimes show popover to view suggestions
+      if (this.state.firstLoad) {
+        this.setState({ firstLoad : false });
+        setTimeout(() => {
+          this.setState({ firstLoad : true });
+        }, 60000);
+
+        if (!this.state.anchorElOpen) this.setState({anchorElOpen : true});
+        this.setPopoverAnchorEl();
+      }
     }
 
     attachVM () {
