@@ -6,7 +6,7 @@ import emailValidator from 'email-validator';
 class UserManager {
   constructor() {
     this.cache_ = FirebaseCache;
-
+    this.subscriptions = {};
     this.onAuthStateChanged(user => {
       if (user) {
         if (user.uid != this.cache_.getUserID()) {
@@ -29,7 +29,19 @@ class UserManager {
    * @param {Function} callback 
    */
   onAuthStateChanged(callback) {
-    firebase.auth().onAuthStateChanged(callback);
+    const unsubscribe = firebase.auth().onAuthStateChanged(callback);
+    this.subscriptions[callback] = unsubscribe;
+  }
+
+  /**
+   * removes listener, call when component using this listener will unmount
+   * @param {Function} callback 
+   */
+  removeAuthStateChanged(callback) {
+    if (this.subscriptions[callback]) {
+      this.subscriptions[callback]();
+      console.log('unsubscribed', callback);
+    }
   }
 
   async createUser(formData) {
@@ -55,7 +67,7 @@ class UserManager {
         return firestore
         .collection("users")
         .doc(user.uid)
-        .set(omit(formData,["email","password","passwordConfirm"]))
+        .set(omit(formData,["email","password","passwordConfirm"])) // don't store email/password publicly lol
         .then(() => {
           console.log("User written in firestore with ID: ", user.uid);
           return {isSuccess : true};
@@ -132,6 +144,22 @@ class UserManager {
     }
 
     return;
+  }
+
+  async getUsernameByID(id) {
+    let fs =  firebase.firestore();
+    let ref = fs.collection("usernames");
+    let query = ref.where('uid', '==' , id);
+    
+    return query.get().then((querySnapshot) => {
+      let username;
+      if (querySnapshot.size == 1) {
+        querySnapshot.forEach((doc) => {
+          username = doc.id;
+        });
+      }
+      return username;
+    });
   }
 
   async validateEmailRemotely(email) {
