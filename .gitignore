@@ -17,5 +17,4 @@ package-lock.json
 *-debug.log
 
 # Confidential don't put in repo!
-firebase.config.js
 firebase.service.json
