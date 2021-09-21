@@ -18,8 +18,9 @@ const NavBarComponent = props => {
   });
 
   const { match } = props;
-
+  console.log(match.path)
   const isGUI = (match && match.path == "/gui");
+  const isHome = (match && match.path == "*");
   const isUserPage = (match && match.path == "/users/:id");
 
   const handleClick = (event) => {
@@ -60,6 +61,14 @@ const NavBarComponent = props => {
                   Share
                 </button>
                 : null
+                }
+
+                {!isGUI && !isHome
+                  ? 
+                    <button onClick={() => window.location.assign("/gui")}>
+                      Create
+                    </button>
+                  : null
                 }
                 
                 <input
