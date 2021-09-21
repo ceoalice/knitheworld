@@ -1,15 +1,49 @@
+@import "../../../css/colors.scss";
+
 .body {
   /* background: $ui-white; */
   display: flex;
   flex-direction: column;
   background: #fff;
   padding: 25px;
-  width: 300px;
+  width: 400px;
   user-select: text;
+  
+  text-align: center;
 }
 
-.submit-button {
-  color: white;
-  padding: 10px;
-  background: hsla(215, 100%, 65%, 0.9);
+.url-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  word-wrap: break-word;
+  align-items: center;
+  margin : 10px;
+  // height : 100%;
+  border-radius: 3px;
+  border: 1px solid $active-dark-gray;
+}
+
+.url {
+  flex : 1;
+  width : 80%;
+  // height : 100%;
+  padding: 10px; 
+  border-right: 1px solid $active-dark-gray;
+}
+
+.copy-button {
+  flex : 1;
+  padding : auto;
+  cursor: pointer;
+
+  width : 20%;
+  height : 100%;
+
+  color : $ui-tertiary;
+
+}
+
+.share-icon {
+  margin : 5px;
 }
