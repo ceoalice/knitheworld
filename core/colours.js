@@ -82,10 +82,10 @@ Blockly.Colours = {
     "secondary": "#FF5500",
     "tertiary": "#E64D00"
   },
-  "more": {
-    "primary": "#ffa686",
-    "secondary": "#ff875c",
-    "tertiary": "#ff875c"
+  "more": { // custom procedures?
+    "primary": "#ddd3ee",
+    "secondary": "#b19cd9",
+    "tertiary": "#b19cd9"
   },
   "text": "#777777",
   "workspace": "#F9F9F9",
