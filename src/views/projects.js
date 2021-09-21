@@ -23,7 +23,8 @@ class ProjectView extends React.Component {
       this.state = {
         project : null,
         thumbnail : '',
-        username : ''
+        username : '',
+        uid : ''
       }
     }
 
@@ -42,10 +43,12 @@ class ProjectView extends React.Component {
               
           console.log(res2.data)
           
-          let res3 = await UserManager.getUsernameByID(res.data.creator);
+          let res3 = await UserAPI.getUserInfo(res.data.creator);
+          // console.log(res3);
 
-          console.log(res3);
-          this.setState({ thumbnail : res2.data, username : res3});
+          if (res3.status == 200) {
+            this.setState({ thumbnail : res2.data, uid : res3.data.id, username : res3.data.username});
+          }
         }
       } else {
         // redirecting to 404 page and letting it know in path that its a 404 for a project
@@ -60,6 +63,7 @@ class ProjectView extends React.Component {
               project={this.state.project} 
               thumbnail={this.state.thumbnail}
               username={this.state.username}
+              uid={this.state.uid}
             />
           : null
         );

@@ -110,7 +110,8 @@ ModalComponent.propTypes = {
     overlayClassName : PropTypes.string,
     contentLabel: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.object
+        PropTypes.object,
+        PropTypes.node
     ]),
 
     headerClassName: PropTypes.string,

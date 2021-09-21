@@ -21,7 +21,11 @@ const ProjectViewComponent = props => {
           <Modal    
             noExit
             noOverlay
-            contentLabel={`"${props.project.name}" by @${props.username}`}
+            contentLabel={
+              <div>
+                "{props.project.name}" by <a href={`../users/${props.uid}`}>@{props.username}</a> 
+              </div>
+              }
             className={styles.modal}
             id="projectView"
             onRequestClose={() => {}}
@@ -53,6 +57,7 @@ ProjectViewComponent.propTypes = {
     timestamp: PropTypes.object
   }).isRequired,
   thumbnail : PropTypes.string,
-  username : PropTypes.string
+  username : PropTypes.string,
+  uid : PropTypes.string,
 }
 export default ProjectViewComponent;
