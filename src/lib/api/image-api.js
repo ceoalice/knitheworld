@@ -1,4 +1,4 @@
-import firebase from "./firebase.js";
+import firebase, {getFileData} from "./firebase.js";
 import API from "./api.js";
 
 class ImageAPI extends API {
@@ -24,18 +24,16 @@ class ImageAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<String>>}
    */
   async getProjectImageURL(userID,id) {
-    if (this.cache_.getImage(id)) return { status : 200, data : this.cache_.getImage(id) };
-    
-    return firebase.storage().ref(`users/${userID}/${id}.png`)
-      .getDownloadURL()
-      .then((url) => {
-        this.cache_.updateImage(id, url);
-        return { status : 200, data : this.cache_.getImage(id) };
-      })
-      .catch((error) => {
-        console.log("could not find: ",`users/${userID}/${id}.png`);
-        return { status : 404, error };
-      });
+    if (!this.cache_.hasImage(id)) {
+      try {
+        let url =  await firebase.storage().ref(`users/${userID}/${id}.png`).getDownloadURL();
+        this.cache_.cacheImage(id, url);
+      } catch (error) {
+        return { status : 404, error};
+      }
+    }
+  
+    return { status : 200, data : this.cache_.getImage(id) };
   }
 
   /**
@@ -44,19 +42,12 @@ class ImageAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<Blob>>} image data as Blob , can now be saved to files locally
    */
     async getProjectImageData(url) {
-      return new Promise((response,reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = () => {
-          response({ status : 200, data : xhr.response });
-        };
-        try {
-          xhr.open('GET', url);
-          xhr.send();
-        } catch {
-          reject({ status : 500 , error : "idk what happened" });
-        }
-      });
+
+      try {
+        return { status : 200, data : await getFileData(url) }
+      } catch {
+        return { status : 500 , error : "idk what happened" };
+      }
     }
 
   /**
@@ -74,9 +65,9 @@ class ImageAPI extends API {
     return usersRef.child(`${this.getUserID()}/${id}.png`)
       .putString(imgData, 'data_url')
       .then(async snapshot => {
-        this.cache_.updateImage(id, await snapshot.ref.getDownloadURL());
+        this.cache_.cacheImage(id, await snapshot.ref.getDownloadURL());
         console.log("Saved Image");
-        return {status : 200, message : "Saved Image", data : this.cache_.getImage(id)};
+        return {status : 200, message : "Saved Image" };
       })
       .catch( error => {
         return { status : 500 , error };

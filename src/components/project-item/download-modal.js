@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
-import ImageAPI from "../../lib/image-api.js"
+import {ImageAPI} from "../../lib/api"
 
 import styles from "./modal.css"
 

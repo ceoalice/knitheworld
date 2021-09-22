@@ -17,8 +17,7 @@ import RegistrationErrorStep from './steps/registration-error-step.jsx';
 import {closeJoin} from "../../reducers/modals.js"
 
 
-import UserManager from "../../lib/user-manager";
-import validate from "../../lib/validate";
+import { AuthAPI } from "../../lib/api";
 
 class JoinFlow extends React.Component {
     constructor (props) {
@@ -157,7 +156,7 @@ class JoinFlow extends React.Component {
             // if there was exactly one error, check if we have a pre-written message
             // about that precise error
             if (errorsFromResponse.length === 1) {
-                const singleErrMsgId = validate.responseErrorMsg(
+                const singleErrMsgId = AuthAPI.responseErrorMsg(
                     errorsFromResponse[0].fieldName,
                     errorsFromResponse[0].errorStr
                 );
@@ -185,7 +184,7 @@ class JoinFlow extends React.Component {
             registrationError: null, // clear any existing error
             waiting: true
         }, () => {
-          UserManager.createUser(formData)
+          AuthAPI.createUser(formData)
             .then((res) => {
 
               this.handleRegistrationResponse(res);

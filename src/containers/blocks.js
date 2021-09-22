@@ -6,10 +6,9 @@ import {connect} from 'react-redux';
 import { clearThePixels } from '../reducers/pixels.js';
 
 import VMScratchBlocks from '../lib/blocks.js';
-import ProjectAPI from '../lib/project-api.js';
+import {ProjectAPI, AuthAPI} from '../lib/api';
 
 import defaultToolbox, {getToolBox} from '../lib/toolbox.js';
-import UserManager from '../lib/user-manager.js';
 
 import BlocksComponent from '../components/blocks/blocks.js';
 import Popover from "../components/popover/popover.js";
@@ -19,12 +18,13 @@ class Blocks extends React.Component {
         super(props);
         this.state = {
           anchorEl : null,
-          anchorElOpen : false
+          anchorElOpen : false,
+          firstLoad : true
         }
         
         VMScratchBlocks.setVM(props.vm);
         ProjectAPI.setVM(props.vm);
-        UserManager.setVM(props.vm);
+        AuthAPI.setVM(props.vm);
         
         bindAll(this,[
           'setBlocks',
@@ -99,7 +99,7 @@ class Blocks extends React.Component {
     }
 
     handleSuggest(suggestions) {
-      console.log({suggestions})
+      // console.log({suggestions})
 
       // always update suggestions toolbox
       this.workspace.updateToolbox( getToolBox(suggestions) );

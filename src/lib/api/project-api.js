@@ -1,4 +1,4 @@
-import VMScratchBlocks from "./blocks";
+import VMScratchBlocks from "../blocks";
 import firebase from "./firebase.js";
 import API from "./api.js";
 
@@ -52,7 +52,7 @@ class ProjectAPI extends API {
       let doc = await db.collection("projects").doc(id).get();
       console.log(doc.exists);
       if (doc.exists) {
-        this.cache_.updateProject(doc.id, doc.data())
+        this.cache_.cacheProject(doc.id, doc.data())
         return { status : 200, data : this.cache_.getProject(id) };
       } else {
         return { status : 404, error : 'Not Found'}
@@ -70,19 +70,30 @@ class ProjectAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<Project[]>>}
    */
   async getProjectsByUserID(userID) {
-    let db = firebase.firestore();
-    let ref = db.collection("projects");
-    let query = ref.where('creator', '==' , userID);
+    let db = firebase.firestore();    
 
-    return query.get().then((querySnapshot) => {
-      let out = [];
-      querySnapshot.forEach((doc) => {
-        out.push(doc.data());
-      });
+    if (!this.cache_.hasCreatorProjects(userID)) {
+      try {
+        let query = db.collection("projects").where('creator', '==' , userID);
 
-      return {status : 200, data : out };
-    });
+        let projects = await query.get().then((querySnapshot) => {
+          let out = [];
+            querySnapshot.forEach((doc) => {
+              out.push(doc.data());
+            });
+          return out;
+        });
+  
+        this.cache_.cacheProjectCreator(userID);
+        projects.forEach(project => this.cache_.cacheProject(project.id, project));
 
+      } catch (error) {
+        return {status : 200, error };
+      }
+
+    }
+
+    return {status : 200, data : this.cache_.getProjects(userID) };
   }
 
   /**
@@ -145,7 +156,7 @@ class ProjectAPI extends API {
     return ref.set(newData)
       .then(() => {
         this.cache_.cacheCurrentProjectID(newData.id);
-        this.cache_.updateProject(newData.id, newData);
+        this.cache_.cacheProject(newData.id, newData);
         this.vm.emit("PROJECT_NAME_CHANGED");
         return { status : 200, message : `Sucessfully saved new project ${projectName}.`};
       })
@@ -179,7 +190,7 @@ class ProjectAPI extends API {
 
     return ref.update(newData)
       .then(() => {
-        this.cache_.updateProject(currentID, newData)
+        this.cache_.cacheProject(currentID, newData)
         this.vm.emit("PROJECT_NAME_CHANGED");
         return { status : 200, message : `Successfully saved project.`};
       })
@@ -296,7 +307,7 @@ class ProjectAPI extends API {
       .doc(id)
       .update(newData)
       .then(() => {
-        this.cache_.updateProject(id, newData);
+        this.cache_.cacheProject(id, newData);
         this.vm.emit("PROJECT_NAME_CHANGED");
         return { status : 200 , message : "Project name changed" };
       })
@@ -306,7 +317,5 @@ class ProjectAPI extends API {
       });
   }
 }
-
-ProjectAPI
 
 export default new ProjectAPI();

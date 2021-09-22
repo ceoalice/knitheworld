@@ -18,7 +18,7 @@ const NavBarComponent = props => {
   });
 
   const { match } = props;
-  console.log(match.path)
+  
   const isGUI = (match && match.path == "/gui");
   const isHome = (match && match.path == "*");
   const isUserPage = (match && match.path == "/users/:id");

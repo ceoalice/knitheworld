@@ -11,7 +11,6 @@ import styles from "./modal.scss";
 const JoinModal = (props) => (
     <Modal    
     noHeader
-    className={styles.modalContent}
     id="joinModal"
     onRequestClose={props.closeModal}
     >

@@ -7,7 +7,8 @@ import {Formik} from 'formik';
 // const {injectIntl, intlShape} = require('react-intl');
 // const FormattedMessage = require('react-intl').FormattedMessage;
 
-import validate from "../../../lib/validate";
+import {AuthAPI} from "../../../lib/api";
+
 import JoinFlowStep from './join-flow-step.jsx';
 import FormikInput from'../../formik-forms/formik-input.jsx';
 
@@ -49,28 +50,12 @@ class EmailStep extends React.Component {
     handleCaptchaLoad () {
         this.setState({captchaIsLoading: false});
     }
-    // simple function to memoize remote requests for usernames
-    // validateEmailRemotelyWithCache (email) {
-    //     if (this.emailRemoteCache.hasOwnProperty(email)) {
-    //         return Promise.resolve(this.emailRemoteCache[email]);
-    //     }
-    //     // email is not in our cache
-    //     return validate.validateEmailRemotely(email).then(
-    //         remoteResult => {
-    //             // cache result, if it successfully heard back from server
-    //             if (remoteResult.requestSucceeded) {
-    //                 this.emailRemoteCache[email] = remoteResult;
-    //             }
-    //             return remoteResult;
-    //         }
-    //     );
-    // }
     validateEmail (email) {
         if (!email) return 'Required'; // this.props.intl.formatMessage({id: 'general.required'});
-        const localResult = validate.validateEmailLocally(email);
+        const localResult = AuthAPI.validateEmailLocally(email);
 
         if (!localResult.valid) return localResult.errMsgId; // this.props.intl.formatMessage({id: localResult.errMsgId});
-        return validate.validateEmailRemotely(email).then(
+        return AuthAPI.validateEmailRemotely(email).then(
             remoteResult => {
                 if (remoteResult.valid === true) {
                     return null;

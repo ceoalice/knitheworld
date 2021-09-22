@@ -8,8 +8,7 @@ import SimulatorToolsComponent from '../components/simulator-tools/simulator-too
 import JSZip from "jszip";
 import { saveAs } from 'file-saver';
 
-import ProjectAPI from "../lib/project-api.js";
-import ImageAPI from "../lib/image-api.js";
+import {ImageAPI, ProjectAPI} from "../lib/api";
 
 function RGBArrayToUIntArray(array) {
   let out = []

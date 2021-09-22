@@ -6,8 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { closeLocalProjects } from '../../../reducers/modals.js';
 
-import ProjectAPI from "../../../lib/project-api.js";
-import ImageAPI from "../../../lib/image-api.js"
+import {ImageAPI, ProjectAPI} from "../../../lib/api"
 
 import Modal from '../../../containers/modal';
 import ProjectItem from '../../../containers/project-item.js';
@@ -43,7 +42,7 @@ class LocalProjectsModal extends React.Component {
       return ProjectAPI.getProjectsByUserID(ProjectAPI.getUserID())
         .then(res => {
           let projects = res.data;
-          console.log({projects});
+          // console.log({projects});
           this.setState({projects});
         });
     }

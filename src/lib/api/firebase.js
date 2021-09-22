@@ -1,4 +1,4 @@
-import config from  "../../firebase.config.js";
+import config from  "../../../firebase.config.js";
 
 // import necessary firebase components
 import firebase from "firebase/app";

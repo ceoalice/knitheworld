@@ -13,7 +13,7 @@ import Card from '@material-ui/core/Card';
 
 import Button from '@material-ui/core/Button';
 
-import ProjectAPI from "../../lib/project-api.js";
+import {ProjectAPI} from "../../lib/api";
 
 import styles from "./modal.css";
 

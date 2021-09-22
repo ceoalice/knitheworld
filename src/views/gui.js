@@ -23,9 +23,9 @@ import  {
 import store from "../store.js";
 
 import VMScratchBlocks from '../lib/blocks.js';
-import ProjectAPI from '../lib/project-api';
-import BlockParser from "../lib/parser";
-import Suggester from "../lib/suggest";
+import BlockParser from "../lib/parser.js";
+
+import {ProjectAPI, SuggestAPI} from '../lib/api';
 
 import {
   BrowserRouter as Router,
@@ -71,10 +71,6 @@ class GUI extends React.Component {
         this.handleProjectLoading = this.handleProjectLoading.bind(this);
         this.handleProjectName = this.handleProjectName.bind(this);
 
-        // this.blockingCheck()
-        // this.vm.on('PROJECT_IMAGE_CHANGED', () => {
-        //   // console.log("WHATS GOOD: PROJECT_IMAGE_CHANGED");
-        // })
     }
 
     componentDidMount () {
@@ -121,17 +117,8 @@ class GUI extends React.Component {
     }
 
     handleProjectLoading() {
-      // this.forceUpdate();
-      // console.log("PROJECT LOADING");
-      // console.log(this.props.projectLoading);
-      // console.log("TOTAL STACKS: ", stacks.length);
       this.props.startProjectLoading();
-      // this.setState({ totalStacks: stacks.length, stacksLoaded : 1});
     }
-    
-    // log(obj) {
-    //   console.log(JSON.parse(JSON.stringify(obj)));
-    // }
 
     checkProjectChanged() {
       // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
@@ -158,8 +145,8 @@ class GUI extends React.Component {
               lastBlock = blocks.primary[blocks.primary.length - 2];
             }
 
-            console.log({lastBlock});
-            Suggester.suggest(lastBlock).then((res) => {
+            // console.log({lastBlock});
+            SuggestAPI.suggest(lastBlock).then((res) => {
               this.vm.emit("SUGGEST_EVENT", res.data);
             })
           }

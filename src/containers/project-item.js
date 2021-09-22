@@ -4,8 +4,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import ProjectItemComponent from '../components/project-item/project-item.js';
-import ImageAPI from "../lib/image-api.js"
 
+import {ImageAPI} from "../lib/api"
 
 class ProjectItem extends React.PureComponent {
     constructor (props) {
@@ -16,18 +16,11 @@ class ProjectItem extends React.PureComponent {
         bindAll(this, [
             'handleClick',
             'handleClickClose',
-            'handleUpdate'
+            // 'handleUpdate'
         ]);
     }
 
     componentDidMount() {      
-      this.handleUpdate();
-    }
-    componentDidUpdate() {
-      this.handleUpdate();
-    }
-
-    async handleUpdate() {
       if (this.props.isExample) {
         this.setState({imageURL : ImageAPI.getSampleImage(this.props.project.id)});
       } else {
@@ -40,6 +33,8 @@ class ProjectItem extends React.PureComponent {
       }
     }
 
+    // async handleUpdate() {
+    // }
 
     handleClick (e) {
       if (!this.props.disabled) {

@@ -3,7 +3,7 @@ import React from 'react';
 import RgbQuant from "rgbquant";
 import { bindAll } from 'lodash';
 
-import ProjectAPI from '../lib/project-api.js';
+import {ProjectAPI} from '../lib/api';
 import { blocksToXML, RGBToHex } from "../lib/image-import";
 
 import ImageImporterComponent from "../components/image-importer/image-importer";

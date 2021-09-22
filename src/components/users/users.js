@@ -12,7 +12,7 @@ import Modals from "../modals/modals.js";
 
 import styles from "./users.scss";
 
-import ImageAPI from "../../lib/image-api";
+import {ImageAPI} from "../../lib/api";
 
 const useStyles = makeStyles((theme) => ({
 

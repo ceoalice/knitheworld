@@ -7,8 +7,7 @@ import store from "../store.js";
 
 import UserViewComponent from "../components/users/users.js";
 
-import AuthAPI from '../lib/auth-api';
-import ProjectsAPI from '../lib/project-api';
+import {UserAPI, ProjectAPI} from '../lib/api';
 
 import {
   BrowserRouter as Router,
@@ -30,7 +29,7 @@ class UserView extends React.Component {
     const { match: { params } } = this.props;
     console.log('UserView: ',  params.id);
 
-    let res = await AuthAPI.getUserInfo(params.id);
+    let res = await UserAPI.getUserInfo(params.id);
 
     console.log({res});
 
@@ -38,7 +37,7 @@ class UserView extends React.Component {
 
       this.setState({user : res.data });
 
-      let res2 = await ProjectsAPI.getProjectsByUserID(params.id);
+      let res2 = await ProjectAPI.getProjectsByUserID(params.id);
 
       if ( res2.status == 200 ) {
         

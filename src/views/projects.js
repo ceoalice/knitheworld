@@ -6,10 +6,7 @@ import store from "../store.js";
 
 import ProjectViewComponent from "../components/projects/projects.js";
 
-import ImageAPI from "../lib/image-api.js";
-
-import ProjectsAPI from "../lib/project-api.js";
-import UserManager from "../lib/user-manager.js";
+import {ImageAPI, ProjectAPI, UserAPI} from "../lib/api";
 
 import {
   BrowserRouter as Router,
@@ -30,9 +27,9 @@ class ProjectView extends React.Component {
 
     async componentDidMount() {
       const { match: { params } } = this.props;
-      console.log('ProjectView: ',  params.id);
+      // console.log('ProjectView: ',  params.id);
 
-      let res = await ProjectsAPI.getProject(params.id);
+      let res = await ProjectAPI.getProject(params.id);
 
       if ( res.status == 200 ) {
         let res2 = await ImageAPI.getProjectImageURL(res.data.creator, res.data.id);
@@ -41,7 +38,7 @@ class ProjectView extends React.Component {
         
         if ( res2.status == 200 ) {
               
-          console.log(res2.data)
+          // console.log(res2.data)
           
           let res3 = await UserAPI.getUserInfo(res.data.creator);
           // console.log(res3);

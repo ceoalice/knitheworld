@@ -5,8 +5,7 @@ import { bindAll } from "lodash";
 import { closeSaveAs } from "../../../reducers/modals.js";
 import { setProjectSaved } from '../../../reducers/project-state.js';
 
-import ProjectAPI from "../../../lib/project-api.js";
-import ImageAPI from "../../../lib/image-api.js";
+import {ImageAPI, ProjectAPI} from "../../../lib/api";
 import Modal from '../../../containers/modal.js';
 
 import Button from '@material-ui/core/Button';

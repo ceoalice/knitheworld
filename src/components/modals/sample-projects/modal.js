@@ -9,7 +9,7 @@ import { updateProjectName } from '../../../reducers/project-state.js';
 import Modal from '../../../containers/modal';
 import ProjectItem from '../../../containers/project-item.js';
 
-import ProjectAPI from "../../../lib/project-api.js";
+import {ProjectAPI} from "../../../lib/api";
 
 import styles from './modal.scss';
 

@@ -17,8 +17,7 @@ import { setSignedIn } from "../reducers/user.js";
 import NavBarComponent from '../components/navbar/navbar.js';
 
 import VMScratchBlocks from '../lib/blocks.js';
-import ProjectAPI from '../lib/project-api.js';
-import UserManager from '../lib/user-manager';
+import {ProjectAPI, AuthAPI, UserAPI} from '../lib/api';
 
 
 class NavBar extends React.Component {
@@ -40,17 +39,17 @@ class NavBar extends React.Component {
     }
 
     componentDidMount() {
-      UserManager.onAuthStateChanged(this.handleUserStateChange);
+      AuthAPI.onAuthStateChanged(this.handleUserStateChange);
     }
     
     componentWillUnmount() {
-      UserManager.removeAuthStateChanged(this.handleUserStateChange);
+      AuthAPI.removeAuthStateChanged(this.handleUserStateChange);
     }
 
     async handleUserStateChange( user ) {
       if (user) {
         this.props.setSignedIn({ 
-          username : await UserManager.getUsername(),
+          username : (await UserAPI.getCurrentUsername()).data,
           uid: user.uid
         });
         console.log('user is logged: ', user.uid);
