@@ -52,9 +52,9 @@ class NavBar extends React.Component {
           username : (await UserAPI.getCurrentUsername()).data,
           uid: user.uid
         });
-        console.log('user is logged: ', user.uid);
+        // console.log('user is logged: ', user.uid);
       } else {
-        console.log('user not logged');
+        // console.log('user not logged');
       }
     }
 
@@ -82,7 +82,7 @@ class NavBar extends React.Component {
 
     downloadCode() {
       let xml = VMScratchBlocks.getXML();
-      console.log("downloading code");
+      // console.log("downloading code");
       var xmlFile = new Blob([xml], { type: "application/xml;charset=utf-8" });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(xmlFile);

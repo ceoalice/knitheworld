@@ -162,7 +162,7 @@ class ImageImporter extends React.Component {
         let src = URL.createObjectURL(event.target.files[0]);
 
         if (src) {
-          console.log("FILE DROPPED");
+          // console.log("FILE DROPPED");
           this.setState({src});
         }
       }

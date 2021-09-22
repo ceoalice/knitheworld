@@ -66,7 +66,7 @@ class ImageAPI extends API {
       .putString(imgData, 'data_url')
       .then(async snapshot => {
         this.cache_.cacheImage(id, await snapshot.ref.getDownloadURL());
-        console.log("Saved Image");
+        // console.log("Saved Image");
         return {status : 200, message : "Saved Image" };
       })
       .catch( error => {
@@ -85,9 +85,9 @@ class ImageAPI extends API {
     let file = usersRef.child(`${this.getUserID()}/${id}.png`);
 
     file.delete().then(() => {
-      console.log("Deleted Image");
+      // console.log("Deleted Image");
     }).catch(() => {
-      console.log("Could Not Delete Image");
+      // console.log("Could Not Delete Image");
     });
   }
 }

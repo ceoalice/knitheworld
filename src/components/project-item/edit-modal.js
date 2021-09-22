@@ -63,7 +63,7 @@ const EditModalComponent = (props) => {
   }
 
   const handleSubmit = (e) => {
-    console.log("CHANGED NAME");
+    // console.log("CHANGED NAME");
     ProjectAPI.changeProjectName(props.id, name);
     props.handleClose(e);
   }

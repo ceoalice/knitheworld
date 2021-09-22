@@ -58,7 +58,7 @@ class AuthAPI extends API {
   removeAuthStateChanged(callback) {
     if (this.subscriptions[callback]) {
       this.subscriptions[callback]();
-      console.log('unsubscribed', callback);
+      // console.log('unsubscribed', callback);
     }
   }
 
@@ -87,27 +87,27 @@ class AuthAPI extends API {
       .createUserWithEmailAndPassword(formData.email, formData.password)
       .then(userCredential => {
         let user = userCredential.user;
-        console.log("User created with ID: ", user.uid);
+        // console.log("User created with ID: ", user.uid);
         return firestore
         .collection("users")
         .doc(user.uid)
         .set(omit(formData,["email","password","passwordConfirm"])) // don't store email/password publicly lol
         .then(() => {
-          console.log("User written in firestore with ID: ", user.uid);
+          // console.log("User written in firestore with ID: ", user.uid);
           return {isSuccess : true};
         })
         .catch((error) => {
           // something went wrong
           // delete user since info wasn't added to firestore
           user.delete(); 
-          console.log(error);
+          // console.log(error);
           return {isSuccess : false, ...error};
         })
       })
       .catch((error) => {
         // "auth/email-already-in-use"
         // "auth/weak-password"
-        console.log(error);
+        // console.log(error);
         return {isSuccess : false, ...error};
       });
   }
@@ -149,7 +149,7 @@ class AuthAPI extends API {
         return true;
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         return false;
       });
   }
@@ -178,7 +178,7 @@ class AuthAPI extends API {
     })
     .catch((error) => {
       window.alert(`Something went wrong: ${error.message}`)
-      console.log(error);
+      // console.log(error);
     });   
   }
 

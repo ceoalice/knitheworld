@@ -27,11 +27,11 @@ class UserView extends React.Component {
 
   async componentDidMount() {
     const { match: { params } } = this.props;
-    console.log('UserView: ',  params.id);
+    // console.log('UserView: ',  params.id);
 
     let res = await UserAPI.getUserInfo(params.id);
 
-    console.log({res});
+    // console.log({res});
 
     if ( res.status == 200 ) {
 
@@ -43,7 +43,7 @@ class UserView extends React.Component {
         
         
         let projects = res2.data;
-        console.log( { projects });
+        // console.log( { projects });
         this.setState({ projects });
       }
     } else {

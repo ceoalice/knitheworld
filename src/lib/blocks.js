@@ -24,7 +24,7 @@ class VMScratchBlocks {
       try {
         ScratchBlocks.svgResize(this.getWorkspace());
       } catch (err) {
-        console.log("IDK something went wrong", err)
+        // console.log("IDK something went wrong", err)
       }
     }
 

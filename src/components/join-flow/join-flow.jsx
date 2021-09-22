@@ -121,9 +121,6 @@ class JoinFlow extends React.Component {
     //   * "birth_month": ["Ensure this value is less than or equal to 12."]
     //   * "birth_month": ["Ensure this value is greater than or equal to 1."]
     handleRegistrationResponse (res) {
-      console.log("GOT HERE")
-      console.log(res);
-
         this.setState({
             numAttempts: this.state.numAttempts + 1
         }, () => {
@@ -232,7 +229,7 @@ class JoinFlow extends React.Component {
         this.setState(this.initialState);
     }
     sendAnalytics (path) {
-      console.log("sending analytics")
+      // console.log("sending analytics")
         // const gaID = window.GA_ID;
         // if (!window.ga) {
         //     return;

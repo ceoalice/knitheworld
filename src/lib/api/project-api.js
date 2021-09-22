@@ -45,12 +45,12 @@ class ProjectAPI extends API {
       return { status : 200, data : this.cache_.getProject(id) };
     }
 
-    console.log("pulled from firebase: ", id);
+    // console.log("pulled from firebase: ", id);
     let db = firebase.firestore();
 
     try {
       let doc = await db.collection("projects").doc(id).get();
-      console.log(doc.exists);
+      // console.log(doc.exists);
       if (doc.exists) {
         this.cache_.cacheProject(doc.id, doc.data())
         return { status : 200, data : this.cache_.getProject(id) };
@@ -221,7 +221,7 @@ class ProjectAPI extends API {
    */
   async loadProject(id) { 
     let res = await this.getProject(id);
-    console.log("")
+    // console.log("")
     if (res.status == 200) {
       let project = res.data;
       if (project.creator == this.getUserID()) { // owner
