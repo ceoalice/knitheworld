@@ -24,7 +24,24 @@
   flex-direction: column;
   background-color: $ui-white-15percent;
   padding: 10px; 
-  width: 200px;
+  width: 250px;
+}
+
+.forgot-password {
+  font-size: 13px;
+  cursor: pointer;
+  &:hover {
+    background-color: $ui-white-15percent;
+  }
+  margin-bottom: 5px;;
+}
+
+.button:global(.MuiButton-root){
+  background-color: $ui-white-50percent;
+
+  &:hover {
+    background-color: $ui-white-15percent;
+  }
 }
 
 .loading {

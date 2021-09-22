@@ -91,6 +91,8 @@ const Signin = props => {
         id="remember-me-input"
       />
 
+      <div onClick={props.openPasswordReset} className={styles.forgotPassword}> Forgot Password? </div>
+
       <Button
         type="submit"
         className={styles.button}
@@ -102,7 +104,8 @@ const Signin = props => {
 }
 
 Signin.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  openPasswordReset: PropTypes.func.isRequired
 };
 
 export default Signin;

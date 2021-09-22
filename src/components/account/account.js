@@ -3,7 +3,7 @@ import { bindAll } from "lodash";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {openJoin} from '../../reducers/modals.js';
+import {openJoin, openPasswordReset} from '../../reducers/modals.js';
 import { setSignedOut } from "../../reducers/user.js";
 
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -16,7 +16,8 @@ import AccountTools from "./account-tools";
 
 import styles from "./account.scss";
 
-import UserManager from "../../lib/user-manager";
+// import UserManager from "../../lib/user-manager";
+import {AuthAPI} from "../../lib/api";
 
 
 class Account extends React.Component {
@@ -30,22 +31,25 @@ class Account extends React.Component {
       'closeTooltip',
       'openTooltip',
       'handleSignIn',
-      'handleSignOut'
+      'handleSignOut',
+      'handlePasswordReset'
     ]);
   }
 
   async handleSignIn(form) {
     this.setState({waiting:true});
-    await UserManager.signInUser(form)
+    await AuthAPI.signInUser(form);
     this.closeTooltip();
     this.setState({waiting:false});
   }
   async handleSignOut() {
-    await UserManager.signOut();
+    await AuthAPI.signOut();
     this.closeTooltip();
   }
-  
-  componentDidMount() {
+
+  async handlePasswordReset() {
+    this.closeTooltip();
+    this.props.openPasswordReset();
   }
 
   openTooltip() {
@@ -72,6 +76,7 @@ class Account extends React.Component {
                 title={<Signin 
                   waiting={this.state.waiting} 
                   onSubmit={this.handleSignIn} 
+                  openPasswordReset={this.handlePasswordReset}
                   />}
                 placement="bottom"
               >
@@ -119,7 +124,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   openJoin: () => dispatch(openJoin()),
-  signOut: () => dispatch(setSignedOut())
+  signOut: () => dispatch(setSignedOut()),
+  openPasswordReset : () => dispatch(openPasswordReset())
 });
 
 Account.propTypes = {

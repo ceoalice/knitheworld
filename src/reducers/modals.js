@@ -9,6 +9,7 @@ const MODAL_LOCAL_PROJECTS = 'localProjects';
 const MODAL_SAVE_AS = 'saveAs';
 const MODAL_SHARE_PROJECT = "shareProject";
 const MODAL_JOIN = "join";
+const MODAL_PASSWORD_RESET = "passwordReset"
 
 const initialState = {
     [MODAL_SIMULATOR]: false, 
@@ -18,7 +19,8 @@ const initialState = {
     [MODAL_LOCAL_PROJECTS]: false,
     [MODAL_SAVE_AS]: false,
     [MODAL_SHARE_PROJECT]: false,
-    [MODAL_JOIN] : false
+    [MODAL_JOIN] : false,
+    [MODAL_PASSWORD_RESET] : false
 };
 
 const reducer = function (state, action) {
@@ -36,6 +38,7 @@ const reducer = function (state, action) {
         return state;
     }
 };
+
 const openModal = function (modal) {
     return {
         type: OPEN_MODAL,
@@ -48,6 +51,8 @@ const closeModal = function (modal) {
         modal: modal
     };
 };
+
+
 const openFullscreenSimulator = function () {
     return openModal(MODAL_SIMULATOR);
 };
@@ -104,6 +109,14 @@ const closeJoin = function() {
   return closeModal(MODAL_JOIN);
 }
 
+const openPasswordReset = function() {
+  return openModal(MODAL_PASSWORD_RESET);
+}
+
+const closePasswordReset = function() {
+  return closeModal(MODAL_PASSWORD_RESET);
+}
+
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -122,5 +135,7 @@ export {
     openShareProject,
     closeShareProject,
     openJoin,
-    closeJoin
+    closeJoin,
+    openPasswordReset,
+    closePasswordReset
 };

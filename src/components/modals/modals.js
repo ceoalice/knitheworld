@@ -9,6 +9,7 @@ import SampleProjectsModal from "./sample-projects/modal.js";
 import SaveAsModal from "./save-as/modal.js";
 import ShareModal from "./share/modal.js";
 import JoinModal from "./join/modal.js";
+import PasswordResetModal from "./password-reset/modal.js";
 import CustomProcedures from "./custom-procedures/modal.js";
 
 const ModalLayerComponent = props => {
@@ -42,6 +43,10 @@ const ModalLayerComponent = props => {
               ? <JoinModal/>
               : null
             } 
+            { props.passwordReset
+              ? <PasswordResetModal/>
+              : null
+            }
         </React.Fragment>
     );
 };
@@ -55,7 +60,8 @@ ModalLayerComponent.propTypes = {
     saveAsVisible: PropTypes.bool.isRequired,
     shareProjectVisible: PropTypes.bool.isRequired,
     customProceduresVisible: PropTypes.bool.isRequired,
-    joinVisible: PropTypes.bool.isRequired
+    joinVisible: PropTypes.bool.isRequired,
+    passwordReset: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -67,6 +73,7 @@ const mapStateToProps = state => ({
   shareProjectVisible : state.modals.shareProject,
   customProceduresVisible: state.customProcedures.active,
   joinVisible: state.modals.join,
+  passwordReset : state.modals.passwordReset
 });
 
 export default connect(mapStateToProps)(ModalLayerComponent);
