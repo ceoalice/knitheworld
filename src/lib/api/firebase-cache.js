@@ -123,7 +123,7 @@ class FirebaseCache {
    * @returns {import("./project-api").Project}
    */
   getProject(id) {
-    return this.projects.hasOwnProperty(id);
+    return this.projects[id];
   }
 
   /**
