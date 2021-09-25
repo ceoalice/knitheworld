@@ -63,7 +63,7 @@ class NavBar extends React.Component {
     }
 
     saveProject () {
-      if (ProjectAPI.getCurrentID()) {
+      if (ProjectAPI.getCurrentProjectID()) {
         ProjectAPI.saveProject().then(() => {
           this.props.projectSaved();
         });

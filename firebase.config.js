@@ -1,6 +1,7 @@
 const config = {
   apiKey: "AIzaSyBT_Bpt9X85tY2Qi76nl7VH9oOWWg8rdmM",
   authDomain: "knitheworld-bb33d.firebaseapp.com",
+  databaseURL: "https://knitheworld-bb33d-default-rtdb.firebaseio.com",
   projectId: "knitheworld-bb33d",
   storageBucket: "knitheworld-bb33d.appspot.com",
   messagingSenderId: "737704448227",

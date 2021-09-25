@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import NavBar from "../../containers/navbar.js";
+import Modals from "../modals/modals.js";
+
 import Modal from "../../containers/modal.js";
 
 import Button from '@material-ui/core/Button';
@@ -18,6 +20,8 @@ const ProjectViewComponent = props => {
       <React.Fragment>
         <div className={styles.container}>
           <NavBar vm={props.vm} />
+          <Modals vm={props.vm} />
+
           <Modal    
             noExit
             noOverlay

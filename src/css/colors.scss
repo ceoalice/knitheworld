@@ -9,7 +9,9 @@ $ui-tertiary: rgb(77, 151, 255);
 
 $ui-splitpane : #eee;
 
-
+body {
+  background-color: $ui-secondary;
+}
 
 // Scratch Colors 
 $ui-blue: hsla(215, 100, 65, 1); // #4C97FF Motion Primary
@@ -53,6 +55,9 @@ $ui-white-50percent: hsla(0, 100%, 100%, .5); //#FFF
 $ui-white-15percent: hsla(0, 100%, 100%, .15); //#FFF
 $ui-light-primary: hsl(215, 100, 95);
 $ui-light-primary-transparent: hsla(215, 100, 95, 0);
+
+$ui-black : hsla(0, 0%, 0%, 1); //#000
+$ui-black-transparent : hsla(0, 0%, 0%, 0.15);
 
 $ui-border: hsla(0, 0, 85, 1); //#D9D9D9
 

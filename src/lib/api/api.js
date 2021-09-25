@@ -13,8 +13,8 @@ class API {
     return this.cache_.getUserID(); // localStorage.getItem(USER_ID);
   }
 
-  getCurrentID() {
-    return this.cache_.getCurrentProjectID(); // localStorage.getItem(CURRENT_PROJECT_ID);
+  getCurrentProjectID() {
+    return this.cache_.getLastEditedProjectID(); // localStorage.getItem(LAST_EDITED_PROJECT_ID)
   }
 }
 

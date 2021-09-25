@@ -37,7 +37,6 @@ class AuthAPI extends API {
         }
       } else {
         this.cache_.clearLocalStore();
-        this.cache_.clearProjectCache();
       }
     });
   }

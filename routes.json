@@ -8,7 +8,7 @@
   },
   {
     "name" : "gui",
-    "pattern":  "^/gui",
+    "pattern":  "^/gui$",
     "filename" : "gui.html",
     "view" : "./src/views/gui.js",
     "title" : "KnitheWorld GUI"

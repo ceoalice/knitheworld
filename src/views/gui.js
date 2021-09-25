@@ -95,10 +95,10 @@ class GUI extends React.Component {
     }
 
     async handleProjectName() { 
-      if (!ProjectAPI.getCurrentID()) {
+      if (!ProjectAPI.getCurrentProjectID()) {
         this.props.updateProjectName(ProjectAPI.defaultProjectName);
       } else {
-        let projectName = await ProjectAPI.getProjectName(ProjectAPI.getCurrentID());
+        let projectName = await ProjectAPI.getProjectName(ProjectAPI.getCurrentProjectID());
         this.props.updateProjectName(projectName);
       }
     }
@@ -155,7 +155,7 @@ class GUI extends React.Component {
       }
 
       // CHECK IF WORKSPACE CODE HAS CHANGED AND NEEDS TO BE SAVED AGAIN
-      if (ProjectAPI.getCurrentID()) {
+      if (ProjectAPI.getCurrentProjectID()) {
         ProjectAPI.XMLChanged().then((changed) => {
           if (changed) {
             this.props.setProjectSaved(false);

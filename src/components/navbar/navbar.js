@@ -22,6 +22,7 @@ const NavBarComponent = props => {
   const isGUI = (match && match.path == "/gui");
   const isHome = (match && match.path == "*");
   const isUserPage = (match && match.path == "/users/:id");
+  const isProjectPage = (match && match.path == "/projects/:id");
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl => ({ ...anchorEl, [event.currentTarget.name]: event.currentTarget }));
@@ -56,7 +57,7 @@ const NavBarComponent = props => {
                 : null
                 }
 
-                { (isGUI && props.signedIn) || isUserPage
+                { (isGUI && props.signedIn) || isUserPage || isProjectPage
                 ? <button onClick={props.openShareProject}>
                   Share
                 </button>

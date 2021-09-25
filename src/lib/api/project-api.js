@@ -41,7 +41,7 @@ class ProjectAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<Project>>} contains project information 
    */
   async getProject(id) {
-    if (this.cache_.getProject(id)) {
+    if (this.cache_.hasProject(id)) {
       return { status : 200, data : this.cache_.getProject(id) };
     }
 
@@ -120,7 +120,7 @@ class ProjectAPI extends API {
   async saveProject(projectName = undefined) {
     // USER MUST BE SIGNED IN
     if (this.getUserID()) {
-      if (this.getCurrentID()) { 
+      if (this.getCurrentProjectID()) { 
         // resaving current project
         return this.saveCurrentProject(projectName);
       } else { 
@@ -155,7 +155,7 @@ class ProjectAPI extends API {
 
     return ref.set(newData)
       .then(() => {
-        this.cache_.cacheCurrentProjectID(newData.id);
+        this.cache_.cacheLastEditedProjectID(newData.id);
         this.cache_.cacheProject(newData.id, newData);
         this.vm.emit("PROJECT_NAME_CHANGED");
         return { status : 200, message : `Sucessfully saved new project ${projectName}.`};
@@ -172,7 +172,7 @@ class ProjectAPI extends API {
    * @returns 
    */
   async saveCurrentProject(projectName = undefined) {
-    let currentID = this.getCurrentID();
+    let currentID = this.getCurrentProjectID();
     let db = firebase.firestore();
 
     let newData = {
@@ -209,7 +209,7 @@ class ProjectAPI extends API {
     if (xml) VMScratchBlocks.loadXML(xml);
     else VMScratchBlocks.loadXML();
 
-    this.cache_.clearCurrentProjectID();
+    this.cache_.clearLastEditedProjectID();
     this.vm.emit("PROJECT_NAME_CHANGED");
 
     return { status : 200, message : "Blank project workspace loadeed."};
@@ -225,7 +225,7 @@ class ProjectAPI extends API {
     if (res.status == 200) {
       let project = res.data;
       if (project.creator == this.getUserID()) { // owner
-        this.cache_.cacheCurrentProjectID(id);
+        this.cache_.cacheLastEditedProjectID(id);
         VMScratchBlocks.loadXML(project.xml);
         this.vm.emit("PROJECT_NAME_CHANGED");
         return { status : 200, message : `Project ${project.id} loaded.`};
@@ -241,7 +241,7 @@ class ProjectAPI extends API {
    * @returns {Promise<void>} 
    */
   async loadCurrentProject() {
-    let currentID = this.getCurrentID();
+    let currentID = this.getCurrentProjectID();
 
     if (currentID) {
       return this.loadProject(currentID);
@@ -255,7 +255,7 @@ class ProjectAPI extends API {
    * @returns {Boolean} Boolean set to true is XML has changed from previously cached XML.
    */
   async XMLChanged() {
-    let res = await this.getProject(this.getCurrentID()); // assumes output is from cache. 
+    let res = await this.getProject(this.getCurrentProjectID()); // assumes output is from cache. 
     if (res.status == 200) {
       let project = res.data;
       let workspaceXML = VMScratchBlocks.getXML();
@@ -279,8 +279,8 @@ class ProjectAPI extends API {
       .then(() => {
         this.cache_.deleteProject(id)
 
-        if (this.getCurrentID() === id) {
-          this.cache_.clearCurrentProjectID();
+        if (this.getCurrentProjectID() === id) {
+          this.cache_.clearLastEditedProjectID();
           this.vm.emit("PROJECT_NAME_CHANGED");
         }
 

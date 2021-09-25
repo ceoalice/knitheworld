@@ -81,7 +81,7 @@ class SimulatorTools extends React.Component {
 
     saveThumbnail() {
       let imgData = this.getCurrentStitchCanvas().toDataURL();
-      ImageAPI.saveProjectImage(ProjectAPI.getCurrentID(), imgData)
+      ImageAPI.saveProjectImage(ProjectAPI.getCurrentProjectID(), imgData)
     }
 
     download() {

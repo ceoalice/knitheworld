@@ -1,16 +1,13 @@
 .library-scroll-grid {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-content: flex-start;
   align-items: flex-start;
-  /* background: $ui-secondary; */
   background: hsla(215, 75%, 95%, 1);
   flex-grow: 1;
   flex-wrap: wrap;
   overflow-y: auto;
   height: auto;
-  padding: 0.5rem;
-  /* height: calc(100% - $library-header-height); */
   height: calc(100% - 3.125rem);
 }
 

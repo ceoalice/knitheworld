@@ -36,8 +36,8 @@ class SaveAsModal extends React.Component {
 
     async componentDidMount() {
       let projectName;
-      if (ProjectAPI.getCurrentID()) {
-        projectName = String(await ProjectAPI.getProjectName(ProjectAPI.getCurrentID()));
+      if (ProjectAPI.getCurrentProjectID()) {
+        projectName = String(await ProjectAPI.getProjectName(ProjectAPI.getCurrentProjectID()));
       } else {
         projectName = ProjectAPI.defaultProjectName;
       }
@@ -62,7 +62,7 @@ class SaveAsModal extends React.Component {
 
       ProjectAPI.saveProject(this.state.projectName).then(() => {
 
-        ImageAPI.saveProjectImage(ProjectAPI.getCurrentID(),imgData);
+        ImageAPI.saveProjectImage(ProjectAPI.getCurrentProjectID(),imgData);
         
         this.props.projectSaved();
       });

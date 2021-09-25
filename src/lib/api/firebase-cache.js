@@ -1,6 +1,6 @@
 import firebase, { getFileData } from "./firebase.js";
 
-const CURRENT_PROJECT_ID = "currentProjectID";
+const LAST_EDITED_PROJECT_ID = "lastEditedProjectID";
 const USER_ID = "userID";
 
 /**
@@ -38,29 +38,29 @@ class FirebaseCache {
   // window.localStorage stores ID of the current signed in user and the most recent project edited
   // (firestore re-affirms auth so IDs can be stored locally and only signed in users can alter their docs)
   // userID -> localStorage.getItem(USER_ID)
-  // projectID -> localStorage.getItem(CURRENT_PROJECT_ID)
+  // projectID -> localStorage.getItem(LAST_EDITED_PROJECT_ID)
   
   cacheUserID(userID) {
     localStorage.setItem(USER_ID, userID);
   }
-  cacheCurrentProjectID(projectID) {
-    localStorage.setItem(CURRENT_PROJECT_ID, projectID);
+  cacheLastEditedProjectID(projectID) {
+    localStorage.setItem(LAST_EDITED_PROJECT_ID, projectID);
   }
 
   clearLocalStore() {
     this.clearUserID();
-    this.clearCurrentProjectID();
+    this.clearLastEditedProjectID();
   }
   
-  clearCurrentProjectID() {
-    localStorage.removeItem(CURRENT_PROJECT_ID);
+  clearLastEditedProjectID() {
+    localStorage.removeItem(LAST_EDITED_PROJECT_ID);
   }
   clearUserID() {
     localStorage.removeItem(USER_ID);
   }
 
-  getCurrentProjectID() {
-    return localStorage.getItem(CURRENT_PROJECT_ID);
+  getLastEditedProjectID() {
+    return localStorage.getItem(LAST_EDITED_PROJECT_ID);
   }
   getUserID() {
     return localStorage.getItem(USER_ID);
@@ -109,12 +109,21 @@ class FirebaseCache {
   */
 
   /**
-   * Determines whether cache already has projects from this creator made
+   * Determines whether cache already has projects from this creator cached
    * @param {String} id - ID of specific user 
    * @returns {Boolean}
    */
   hasCreatorProjects(id) {
     return this.creators.has(id);
+  }
+
+  /**
+   * Determines whether cache already has project
+   * @param {String} id - ID of specific project 
+   * @returns {Boolean}
+   */
+  hasProject(id) {
+    return this.projects.hasOwnProperty(id);
   }
 
   /**
