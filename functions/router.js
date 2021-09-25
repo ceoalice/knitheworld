@@ -15,10 +15,6 @@ app.use(cors);
 //   headers: {'Access-Control-Allow-Origin': '*'}
 // };
 
-// const fs = require('fs');
-// const projectsHTML = fs.readFileSync('./hosting/projects.html').toString();
-// const usersHTML = fs.readFileSync('./hosting/users.html').toString();
-
 // https://medium.com/@jalalio/dynamic-og-tags-in-your-statically-firebase-hosted-polymer-app-476f18428b8b
 // https://firebase.google.com/docs/hosting/functions
 // https://github.com/firebase/functions-samples/blob/main/authorized-https-endpoint/functions/index.js
@@ -42,24 +38,24 @@ async function getDefaultHTML(filename) {
   return html;
 }
 
-
 /**
- * Replaces substring in original string with replacement. substring markered by beginning and end markers
- * @param {String} orginal - original string
- * @param {String} startMarker - Indicates where in the original should replacement start. 
- *                               String marker must match EXACTLY in original text
- * @param {String} endMarker - Indicates where in the original should replacement start. 
- *                             String marker must match EXACTLY in original text
- * @param {String} replacement - Content you want placed in original string.
- * @returns  {String} copy of original string with area between star and end markers replaced with replacement string.
+ * Replaces og tags in original html with replacement
+ * 
+ * @param {String} html - original html string
+ * @param {String} tags - og tags to be injected
+ * 
+ *  @returns {String} copy of original html with area between start and end tags replaced with replacement string.
  */
-function replaceRange(orginal, startMarker, endMarker, replacement) {
-  let startIndex = orginal.indexOf(startMarker);
-  let endIndex = orginal.indexOf(endMarker) + endMarker.length; // includes all of endMarker characters
+function injectOGTags(html,tags) {
+  const START_TAG = '<meta name="og-marker-start">';
+  const END_TAG = '<meta name="og-marker-end">';
 
-  if (endIndex == -1 || startIndex == -1) return "";
-  
-  return orginal.substring(0,startIndex) + replacement + orginal.substring(endIndex);
+  let startIndex = html.indexOf(START_TAG);
+  let endIndex = html.indexOf(END_TAG) + END_TAG.length; // includes all of endMarker characters
+
+  if (endIndex == -1 || startIndex == -1) return html;
+
+  return html.substring(0,startIndex) + tags + html.substring(endIndex);
 }
 
 /** 
@@ -125,19 +121,17 @@ app.get('/projects/:id', async (req, res) => {
             return un;
           });
 
-      let start = '<meta name="og-marker-start">';
-      let end = '<meta name="og-marker-end">';
-
       let og = `<meta property="og:type" content="website">`;
-      og += `<meta property="og:title" content="\"${project.name}\" by ${username}">`;
+      og += `<meta property="og:title" content="'${project.name}' by ${username}">`;
       og += `<meta property="og:description" content="Check Out ${username}'s Project on KnitheWorld">`;
       og += `<meta property="og:image" content="${thumbnailURL}">`;
 
       try {
-        let dynamicHTML = replaceRange(projectsHTML, start, end, og);
+        let dynamicHTML = injectOGTags(projectsHTML, og);
 
         res.status(200).send(dynamicHTML);
       } catch(error) {
+        functions.logger.log({error});
         res.status(500).send(error);
       }
     } else {
@@ -164,18 +158,16 @@ app.get('/users/:id', async (req, res) => {
 
       const avatar = user.avatar || "https://knitheworld-bb33d.web.app/static/images/placeholder-avatar.png";
 
-      let start = '<meta name="og-marker-start">';
-      let end = '<meta name="og-marker-end">';
-
       let og = `<meta property="og:type" content="website">`;
       og += `<meta property="og:title" content="${user.username}">`;
       og += `<meta property="og:description" content="Check Out ${user.username}'s Page on KnitheWorld">`;
       og += `<meta property="og:image" content="${avatar}">`;
 
       try {
-        let dynamicHTML = replaceRange(usersHTML, start, end, og);
+        let dynamicHTML = injectOGTags(usersHTML, og);
         res.status(200).send(dynamicHTML);
       } catch(error) {
+        functions.logger.log({error});
         res.status(500).send(error);
       }
     } else {
