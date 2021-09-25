@@ -41,6 +41,22 @@ Module not found: Error: Can't resolve 'htmlparser2' in '/Users/nsendek/Desktop/
  @ ../scratch-vm/src/index.js
  ...
  ```
+ 
+## App Check Debug Token
+
+Our firebase services (firestore, cloud storage, cloud functions) all require [App Check](https://firebase.google.com/docs/app-check/web/recaptcha-provider) Verification in order to be called. The only url accepted is https://knitheworld-bb33d.web.app/ so to run locally, you need to get a debug token from the firebase console and add it to a `APPCHECK_DEBUG_TOKEN` variable in a `main/.env` file.
+
+In `main/.env`:
+```
+APPCHECK_DEBUG_TOKEN=<PASTE-DEBUG-TOKEN-HERE>
+```
+In `main/firebase.config.js`:
+```javascript
+if (process.env.NODE_ENV === 'development') {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = process.env.APPCHECK_DEBUG_TOKEN
+}
+```
+
 # Emulating and Deploying to Firebase
 Knitheworld uses Firebase to store data and host the site/backend. You will need access to the project in order to deploy cloud functions and hosting, however, you can emulate locally. `main` acts as a Firebase project directory with `main/firebase.json`, `main/.firebaserc`, and `main/firebase.config.js` files, as well as a `main/functions` directory where you write and deploy cloud functions. We utilize a few custom scripts defined in `main/package.json` that simplify many commands from the [Firebase CLI](https://firebase.google.com/docs/cli) we will use. For more information on Firebase visit the [Firebase Docs](https://firebase.google.com/docs). 
 
@@ -57,6 +73,29 @@ npm run build && npm run emulate:hosting
 
 ### Functions
 To emulate functions you will need to install the necessary function dependencies. First `cd` into `main/functions` and run `npm install`. Then `cd` back into `main` and run `npm run emulate:functions`
+
+You will also need to make sure to [generate a copy of a service account key](https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app) from your firebase project console and place it in a `firebase.service.json` file within `main/functions`. this key will be used in `admin.js` to give the function admin the right permissions.
+
+In `main/functions/firebase.service.json`:
+```
+{
+  "type": "service_account",
+  "project_id": "knitheworld-bb33d",
+  "private_key_id": "...........",
+  "private_key": "...........",
+  "client_email": "firebase-adminsdk-w3g5g@knitheworld-bb33d.iam.gserviceaccount.com",
+  "client_id": "..........",
+  ........
+}
+```
+In `main/functions/admin.js`:
+```javascript
+const serviceAccount = require("./firebase.service.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+```
 
 ## Deploying
 ### Hosting
