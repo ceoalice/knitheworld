@@ -1,5 +1,5 @@
 import VMScratchBlocks from "../blocks";
-import firebase from "./firebase.js";
+import firebase, {getFirestoreService} from "./firebase.js";
 import API from "./api.js";
 
 /**
@@ -45,8 +45,7 @@ class ProjectAPI extends API {
       return { status : 200, data : this.cache_.getProject(id) };
     }
 
-    // console.log("pulled from firebase: ", id);
-    let db = firebase.firestore();
+    let db = getFirestoreService();
 
     try {
       let doc = await db.collection("projects").doc(id).get();
@@ -70,7 +69,7 @@ class ProjectAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<Project[]>>}
    */
   async getProjectsByUserID(userID) {
-    let db = firebase.firestore();    
+    let db = getFirestoreService();    
 
     if (!this.cache_.hasCreatorProjects(userID)) {
       try {
@@ -138,7 +137,7 @@ class ProjectAPI extends API {
    * @returns 
    */
   async saveNewProject(projectName = 'Untitled') {
-    let db = firebase.firestore();
+    let db = getFirestoreService();
 
     let newData = {
       xml: VMScratchBlocks.getXML(),
@@ -173,7 +172,7 @@ class ProjectAPI extends API {
    */
   async saveCurrentProject(projectName = undefined) {
     let currentID = this.getCurrentProjectID();
-    let db = firebase.firestore();
+    let db = getFirestoreService();
 
     let newData = {
       xml: VMScratchBlocks.getXML(),
@@ -271,7 +270,7 @@ class ProjectAPI extends API {
    * @returns 
    */
   async deleteProject(id) {
-    let db = firebase.firestore();
+    let db = getFirestoreService();
 
     return db.collection("projects")
       .doc(id)
@@ -297,7 +296,7 @@ class ProjectAPI extends API {
    * @param {String} newName - intended new project name
    */
   changeProjectName(id,newName) {
-    let db = firebase.firestore();
+    let db = getFirestoreService();
     let newData = {name : newName};
     if (!this.getUserID()) {
       return { status : 401 , message : "Need to be signed in" };

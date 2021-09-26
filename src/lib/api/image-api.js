@@ -1,4 +1,4 @@
-import firebase, {getFileData} from "./firebase.js";
+import {getFileData, getStorageService} from "./firebase.js";
 import API from "./api.js";
 
 class ImageAPI extends API {
@@ -26,7 +26,7 @@ class ImageAPI extends API {
   async getProjectImageURL(userID,id) {
     if (!this.cache_.hasImage(id)) {
       try {
-        let url =  await firebase.storage().ref(`users/${userID}/${id}.png`).getDownloadURL();
+        let url =  await getStorageService().ref(`users/${userID}/${id}.png`).getDownloadURL();
         this.cache_.cacheImage(id, url);
       } catch (error) {
         return { status : 404, error};
@@ -60,7 +60,7 @@ class ImageAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<String>>} - url of the new saved image.
    */
   async saveProjectImage(id, imgData) {
-    let usersRef = firebase.storage().ref('users');
+    let usersRef = getStorageService().ref('users');
 
     return usersRef.child(`${this.getUserID()}/${id}.png`)
       .putString(imgData, 'data_url')
@@ -80,7 +80,7 @@ class ImageAPI extends API {
    * @param {String} id - ID of the project
    */
   async deleteProjectImage(id) {
-    let usersRef = firebase.storage().ref('users');
+    let usersRef = getStorageService().ref('users');
 
     let file = usersRef.child(`${this.getUserID()}/${id}.png`);
 

@@ -1,4 +1,4 @@
-import firebase from "./firebase";
+import {getFunctionsService} from "./firebase";
 import API from "./api.js";
 
 class SuggestAPI extends API {
@@ -14,7 +14,7 @@ class SuggestAPI extends API {
    */
   async suggest(block, uid) {
     if (!this.cache_.hasSuggestion(block)) {
-      const suggestNext = firebase.functions().httpsCallable('suggestNext');
+      const suggestNext = getFunctionsService().httpsCallable('suggest');
       let res = await suggestNext({block, uid});
       this.cache_.cacheSuggestion(block, res.data)
     }

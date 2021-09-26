@@ -80,6 +80,7 @@ class FirebaseCache {
   }
 
   async loadSampleProjects() {
+    // won't use 'getStorageService' to get emulator service because sample projects are in firebase storage 
     let projects = await firebase.storage().ref("sample_projects").listAll();
 
     projects.prefixes.forEach( async (folderRef, id) => {   

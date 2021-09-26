@@ -1,7 +1,11 @@
 import { omit } from "lodash";
 import emailValidator from 'email-validator';
 
-import firebase from "./firebase.js";
+import firebase, {
+  getAuthService, 
+  getFirestoreService, 
+  getFunctionsService
+} from "./firebase.js";
 
 import API from "./api.js";
 
@@ -46,7 +50,7 @@ class AuthAPI extends API {
    * @param {Function} callback 
    */
   onAuthStateChanged(callback) {
-    const unsubscribe = firebase.auth().onAuthStateChanged(callback);
+    const unsubscribe = getAuthService().onAuthStateChanged(callback);
     this.subscriptions[callback] = unsubscribe;
   }
 
@@ -78,15 +82,16 @@ class AuthAPI extends API {
    * @return {object} {isSuccess : boolean}
    */
   async createUser(formData) {
-    let auth = firebase.auth();
-    let firestore = firebase.firestore();
+    console.log('GOT HERE?: ',formData);
+    let auth = getAuthService();
+    let firestore = getFirestoreService();
 
-    // console.log(formData);
+    console.log('GOT HERE: ',formData);
     return auth
       .createUserWithEmailAndPassword(formData.email, formData.password)
       .then(userCredential => {
         let user = userCredential.user;
-        // console.log("User created with ID: ", user.uid);
+        console.log("User created with ID: ", user.uid);
         return firestore
         .collection("users")
         .doc(user.uid)
@@ -128,20 +133,19 @@ class AuthAPI extends API {
     } else {
       // MAKES EMAILS PUBLIC. might want to make sure emails remain private in future
       // (TODO : do username signin in function and return token to signin with)
-      var getEmailByUsername = firebase.functions().httpsCallable('getEmailByUsername');
+      var getEmailByUsername = getFunctionsService().httpsCallable('getEmailByUsername');
       let result = await getEmailByUsername({username: formData.identifier})
       email = result.data;
     }
 
-    return await firebase
-      .auth()
+    return await getAuthService()
       .setPersistence(
         formData.rememberMe 
         ? firebase.auth.Auth.Persistence.LOCAL 
         : firebase.auth.Auth.Persistence.SESSION
       )
       .then(() => {
-        return firebase.auth().signInWithEmailAndPassword(email, formData.password);
+        return getAuthService().signInWithEmailAndPassword(email, formData.password);
       })
       .then(() => {
         // Signed in 
@@ -154,14 +158,14 @@ class AuthAPI extends API {
   }
 
   async signOut() {
-    await firebase.auth().signOut();
+    await getAuthService().signOut();
   }
 
   /**
    * @returns {Boolean} whether a user is signed in currently
    */
   isSignedIn() {
-    return Boolean(firebase.auth().currentUser);
+    return Boolean(getAuthService().currentUser);
   }
 
   /**
@@ -171,7 +175,7 @@ class AuthAPI extends API {
    * @param {String} email 
    */
   sendPasswordResetEmail(email) {
-   firebase.auth().sendPasswordResetEmail(email)
+    getAuthService().sendPasswordResetEmail(email)
     .then(() => {
       window.alert(`email reset link sent for email: ${email}`)
     })
@@ -205,7 +209,7 @@ class AuthAPI extends API {
    */
   async validateEmailRemotely(email) {
     if (!this.cache_.hasEmail(email)) {
-      let methods = await firebase.auth().fetchSignInMethodsForEmail(email);
+      let methods = await getAuthService().fetchSignInMethodsForEmail(email);
       if (methods.length) {
         this.cache_.cacheEmailValidity(email, false); 
       } else {
@@ -234,7 +238,7 @@ class AuthAPI extends API {
   async validateUsernameRemotely(username) { // false => taken, true => available
     if (!this.cache_.hasUsername(username)) {
       // check firestore and stuff
-      let fs = firebase.firestore();
+      let fs = getFirestoreService();
       let query = fs.collection('usernames').doc(username);
       let results = await query.get();
       

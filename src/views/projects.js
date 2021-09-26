@@ -27,26 +27,22 @@ class ProjectView extends React.Component {
 
     async componentDidMount() {
       const { match: { params } } = this.props;
-      // console.log('ProjectView: ',  params.id);
 
       let res = await ProjectAPI.getProject(params.id);
 
       if ( res.status == 200 ) {
+        this.setState({ project : res.data });
+
         let res2 = await ImageAPI.getProjectImageURL(res.data.creator, res.data.id);
-
-        this.setState({project : res.data});
-        
-        if ( res2.status == 200 ) {
-              
-          // console.log(res2.data)
-          
-          let res3 = await UserAPI.getUserInfo(res.data.creator);
-          // console.log(res3);
-
-          if (res3.status == 200) {
-            this.setState({ thumbnail : res2.data, uid : res3.data.id, username : res3.data.username});
-          }
+        if ( res2.status == 200 ) {  
+          this.setState({ thumbnail : res2.data });
         }
+
+        let res3 = await UserAPI.getUserInfo(res.data.creator);
+        if (res3.status == 200) {
+          this.setState({ uid : res3.data.id, username : res3.data.username});
+        }
+
       } else {
         // redirecting to 404 page and letting it know in path that its a 404 for a project
         window.location.assign(`/404?project&id=${params.id}`);

@@ -1,4 +1,4 @@
-import firebase from "./firebase.js";
+import {getFirestoreService, getAuthService} from "./firebase.js";
 import API from "./api.js";
 
 /**
@@ -20,7 +20,7 @@ class UserAPI extends API {
    */
   async getUserInfo(id) {
 
-    let fs =  firebase.firestore();
+    let fs =  getFirestoreService();
 
     try {
       let doc = await fs.collection("users").doc(id).get();
@@ -40,9 +40,9 @@ class UserAPI extends API {
    * @returns {Promise<import("./api.js").APIResponse<String>>}
    */
   async getCurrentUsername() {
-    let user = firebase.auth().currentUser;
+    let user = getAuthService().currentUser;
     if (user) { 
-      let fs =  firebase.firestore();
+      let fs = getFirestoreService();
       let doc = await fs.collection("users").doc(user.uid).get();
       if (doc.exists) {
         return { status : 200, data : doc.data().username }; 
@@ -51,22 +51,6 @@ class UserAPI extends API {
 
     return { status : 404, error : 'User Not Found'};
   }
-
-  // async getUsernameByID(id) {
-  //   let fs =  firebase.firestore();
-  //   let ref = fs.collection("usernames");
-  //   let query = ref.where('uid', '==' , id);
-    
-  //   return query.get().then((querySnapshot) => {
-  //     let username;
-  //     if (querySnapshot.size == 1) {
-  //       querySnapshot.forEach((doc) => {
-  //         username = doc.id;
-  //       });
-  //     }
-  //     return username;
-  //   });
-  // }
 
 }
 
