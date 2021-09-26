@@ -11,8 +11,9 @@
     "clean": "rm -rf ./dist && mkdir -p dist",
     "prebuild": "npm run clean",
     "build": "webpack --mode production",
-    "predeploy": "cd ./functions && firebase deploy --only functions:router && cd ..",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting",
+    "predeploy:slow": "cd ./functions && firebase deploy --only functions:router && cd ..",
+    "deploy:slow": "npm run deploy"
   },
   "keywords": [],
   "author": "",
